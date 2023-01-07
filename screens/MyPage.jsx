@@ -4,7 +4,10 @@ import Profile from '../components/Profile/Profile';
 
 export default function MyPage({ navigation: { navigate } }) {
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ margin: 10 }}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ padding: 10, backgroundColor: 'white' }}
+    >
       <Profile />
       <MyComments></MyComments>
       <TouchableOpacity onPress={() => navigate('Stack', { screen: 'Login' })}>

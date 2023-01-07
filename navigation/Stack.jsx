@@ -29,8 +29,16 @@ export default function Stack({ navigation: { goBack } }) {
       }}
     >
       <NativeStack.Screen name="Detail" component={Detail} />
-      <NativeStack.Screen name="Login" component={Login} />
-      <NativeStack.Screen name="Join" component={Join} />
+      <NativeStack.Screen
+        options={{ title: '로그인' }}
+        name="Login"
+        component={Login}
+      />
+      <NativeStack.Screen
+        options={{ title: '회원가입' }}
+        name="Join"
+        component={Join}
+      />
     </NativeStack.Navigator>
   );
 }
