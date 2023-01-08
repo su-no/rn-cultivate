@@ -65,6 +65,10 @@ const ProfileDetailContents = styled.TextInput`
   font-size: 12px;
 `;
 
+const Modal = styled.View`
+  background-color: rgba(0, 0, 0, 0.3);
+`;
+
 export {
   ProfileContainer,
   ProfileHeader,
@@ -81,4 +85,5 @@ export {
   ProfileDetailBox,
   ProfileDetailTitle,
   ProfileDetailContents,
+  Modal,
 };
