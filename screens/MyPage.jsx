@@ -1,6 +1,7 @@
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import MyComments from '../components/MyComments/MyComments';
 import Profile from '../components/Profile/Profile';
+import { authService } from '../common/firebase';
 
 export default function MyPage({ navigation: { navigate } }) {
   return (

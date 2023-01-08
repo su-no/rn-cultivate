@@ -1,52 +1,96 @@
 import styled from '@emotion/native';
-import { Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { VIOLET_COLOR, LIGHT_GRAY_COLOR, BLACK_COLOR } from '../common/colors';
+//회원가입 관련
+import { useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { authService } from '../common/firebase';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Join({ navigation: { navigate } }) {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
+  const [checkPw, setCheckPw] = useState('');
+  const [nickName, setNickName] = useState('');
+
+  const handleRegister = () => {
+    createUserWithEmailAndPassword(authService, email, pw).then(() => {
+      console.log('회원가입 완료됬음');
+      updateProfile(authService.currentUser, {
+        displayName: nickName,
+      })
+        .then(() => {
+          alert('회원가입 완료! 홈으로 돌아갑니다.');
+
+          setEmail('');
+          setPw('');
+          setCheckPw('');
+          setNickName('');
+          navigation.navigate('Tabs', { screen: 'Main' });
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    });
+  };
+
   return (
-    <Container>
-      <Logo source={require('../assets/logo.png')} />
-      <SubmitBox>
-        <InputTitle>이메일</InputTitle>
-        <InputBox />
-        <InputTitle>비밀번호</InputTitle>
-        <InputBox />
-        <InputTitle>비밀번호 확인</InputTitle>
-        <InputBox />
-        <InputTitle>닉네임</InputTitle>
-        <InputBox />
-        <SubmitBtn>
-          <Text style={{ color: 'white', fontWeight: '700', fontSize: 15 }}>
-            로그인
-          </Text>
-        </SubmitBtn>
-        <GuideBox>
-          <GuideText>이미 회원이신가요?</GuideText>
-          <SwitchBtn
-            onPress={() => {
-              navigate('Stack', { screen: 'Login' });
-            }}
-          >
-            <Text
-              style={{
-                textDecorationLine: 'underline',
-                fontWeight: '600',
-                fontSize: 12,
+    //스크롤 뷰를 넣어놔야 닉네임<텍스트인풋>을 클릭했을때 포커스가 잘 잡힘
+    <ScrollView style={{ backgroundColor: 'white' }}>
+      <Container>
+        <Logo source={require('../assets/logo.png')} />
+        <SubmitBox>
+          <InputTitle>이메일</InputTitle>
+          <InputBox onChangeText={setEmail} value={email} />
+          <InputTitle>비밀번호</InputTitle>
+          <InputBox
+            textContentType="password"
+            secureTextEntry={true}
+            onChangeText={setPw}
+            value={pw}
+          />
+          <InputTitle>비밀번호 확인</InputTitle>
+          <InputBox
+            textContentType="password"
+            secureTextEntry={true}
+            onChangeText={setCheckPw}
+            value={checkPw}
+          />
+          <InputTitle>닉네임</InputTitle>
+          <InputBox onChangeText={setNickName} value={nickName} />
+          <SubmitBtn onPress={handleRegister}>
+            <Text style={{ color: 'white', fontWeight: '700', fontSize: 15 }}>
+              회원가입
+            </Text>
+          </SubmitBtn>
+          <GuideBox>
+            <GuideText>이미 회원이신가요?</GuideText>
+            <SwitchBtn
+              onPress={() => {
+                navigate('Stack', { screen: 'Login' });
               }}
             >
-              로그인
-            </Text>
-          </SwitchBtn>
-        </GuideBox>
-      </SubmitBox>
-    </Container>
+              <Text
+                style={{
+                  textDecorationLine: 'underline',
+                  fontWeight: '600',
+                  fontSize: 12,
+                }}
+              >
+                로그인
+              </Text>
+            </SwitchBtn>
+          </GuideBox>
+        </SubmitBox>
+      </Container>
+    </ScrollView>
   );
 }
 
 const Container = styled.View`
   flex: 1;
   align-items: center;
-  background-color: white;
 `;
 const Logo = styled.Image`
   width: 80%;
@@ -71,6 +115,7 @@ const InputBox = styled.TextInput`
   width: 92%;
   height: 50px;
   margin-bottom: 20px;
+  margin-top: 5px;
   padding-left: 10px;
 `;
 const SubmitBtn = styled.TouchableOpacity`
