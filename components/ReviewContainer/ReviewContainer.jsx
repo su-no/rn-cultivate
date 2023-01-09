@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, addDoc } from 'firebase/firestore';
 import { authService, dbService } from '../../common/firebase';
 import { getDate } from '../../common/utils';
 import * as S from './styles';
@@ -10,6 +10,10 @@ import ReviewItem from '../ReviewItem/ReviewItem';
 export default function ReviewContainer({ title }) {
   // 리뷰 데이터
   const [reviews, setRivews] = useState([]);
+
+  // firebase 현재 유저 정보
+  const user = authService.currentUser;
+  const nickname = user.displayName;
 
   // firebase에서 title과 일치하는 리뷰 받아오는 함수
   const getReviews = async () => {
@@ -30,17 +34,20 @@ export default function ReviewContainer({ title }) {
     }
   };
 
-  // firebase 현재 유저 정보
-  const user = authService.currentUser;
-  console.log(user);
-
-  const addReview = async (content, nickname) => {
+  // firebase에 리뷰 추가하는 함수
+  const addReview = async (content) => {
     const review = {
       title,
       content, // input에 입력한 내용
       nickname, // firebase - currentUser displayName
-      date: new Date().toLocaleDateString(),
+      date: Date.now(),
     };
+
+    try {
+      await addDoc(collection(dbService, 'reviews'), review);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // 컴포넌트 마운트 시 리뷰 데이터 받아오기
