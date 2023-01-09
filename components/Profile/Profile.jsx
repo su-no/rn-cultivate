@@ -1,5 +1,12 @@
-import React, { useEffect } from 'react';
-import { Alert, Text } from 'react-native';
+import {
+  Alert,
+  Text,
+  TextInput,
+  Modal,
+  StyleSheet,
+  Pressable,
+  View,
+} from 'react-native';
 import {
   ProfileBox,
   ProfileButton,
@@ -21,18 +28,19 @@ import { authService } from '../../common/firebase';
 import { useNavigation } from '@react-navigation/native';
 import {
   deleteUser,
+  signOut,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  signInWithCredential,
-  signOut,
 } from 'firebase/auth';
-import { async } from '@firebase/util';
+import { useRef, useState } from 'react';
+import { LIGHT_GRAY_COLOR, BLUE_COLOR, PINK_COLOR } from '../../common/colors';
 
 function Profile() {
   const navigation = useNavigation();
   const user = authService.currentUser;
-  const email = 'test910@gmail.com';
-  const password = 'tjdghks12';
+  const [password, setPassword] = useState('');
+  const passwordRef = useRef(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const logOutHandler = () => {
     Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
@@ -41,7 +49,7 @@ function Profile() {
         style: 'cancel',
       },
       {
-        text: '삭제',
+        text: '확인',
         style: 'destructive',
         onPress: () => {
           signOut(authService)
@@ -58,36 +66,83 @@ function Profile() {
   };
 
   const deleteUserHandler = () => {
-    Alert.alert('회원탈퇴', '탈퇴하시겠습니까?', [
-      {
-        text: '취소',
-        style: 'cancel',
-      },
-      {
-        text: '삭제',
-        style: 'destructive',
-        onPress: () => {
-          deleteUser(user)
-            .then(() => {
-              alert('회원탈퇴가 완료되었습니다.');
-              navigation.navigate('Tabs', { screen: 'Main' });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        },
-      },
-    ]);
+    const credential = EmailAuthProvider.credential(user.email, password);
+
+    reauthenticateWithCredential(user, credential)
+      .then(() => {
+        deleteUser(user)
+          .then(() => {
+            setModalVisible(!modalVisible);
+            alert('회원탈퇴가 완료되었습니다.');
+            navigation.navigate('Tabs', { screen: 'Main' });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
   return (
     <ProfileContainer>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('modal');
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>비밀번호 확인</Text>
+            <TextInput
+              autoFocus
+              ref={passwordRef}
+              secureTextEntry={true}
+              style={{
+                width: 205,
+                height: 40,
+                backgroundColor: LIGHT_GRAY_COLOR,
+              }}
+              onChangeText={setPassword}
+            ></TextInput>
+            <View style={{ flexDirection: 'row' }}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>취소</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={deleteUserHandler}
+              >
+                <Text style={styles.textStyle}>탈퇴</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <ProfileHeader>
         <ProfileTitle>프로필</ProfileTitle>
         <ProfileHeaderBtns>
           <ProfileButton onPress={logOutHandler}>
             <ProfileButtonText>로그아웃</ProfileButtonText>
           </ProfileButton>
-          <ProfileButton onPress={deleteUserHandler}>
+          <ProfileButton
+            onPress={() => {
+              setModalVisible(true);
+              setTimeout(() => {
+                passwordRef.current.focus();
+              });
+            }}
+          >
             <ProfileButtonText color={'red'}>회원탈퇴</ProfileButtonText>
           </ProfileButton>
         </ProfileHeaderBtns>
@@ -98,7 +153,7 @@ function Profile() {
             <ProfileImg source={require('../../assets/ticket.png')} />
           </ProfileImgBox>
           <ProfileNickNameBox>
-            <ProfileNickName>닉네임님</ProfileNickName>
+            <ProfileNickName>{user?.displayName}님</ProfileNickName>
             <ProfileButton>
               <Text>닉네임 변경</Text>
             </ProfileButton>
@@ -106,18 +161,16 @@ function Profile() {
         </ProfileContents>
         <ProfileContents direction={'column'}>
           <ProfileDetailBox>
-            <ProfileDetailTitle>이메일</ProfileDetailTitle>
-            <ProfileDetailContents>
-              <Text>{user.email}</Text>
-            </ProfileDetailContents>
+            <ProfileDetailTitle></ProfileDetailTitle>
+            <Text>{user?.email}</Text>
           </ProfileDetailBox>
-          <ProfileDetailBox>
+          <ProfileDetailBox style={{ display: 'none' }}>
             <ProfileDetailTitle>현재 비밀번호</ProfileDetailTitle>
             <ProfileDetailContents>
               <Text>비밀번호를 입력해주세요.</Text>
             </ProfileDetailContents>
           </ProfileDetailBox>
-          <ProfileDetailBox>
+          <ProfileDetailBox style={{ display: 'none' }}>
             <ProfileDetailTitle>신규 비밀번호</ProfileDetailTitle>
             <ProfileDetailContents>
               <Text>비밀번호를 입력해주세요.</Text>
@@ -139,5 +192,49 @@ function Profile() {
     </ProfileContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    margin: 2,
+    padding: 10,
+    elevation: 2,
+    width: 100,
+  },
+  buttonOpen: {
+    backgroundColor: PINK_COLOR,
+  },
+  buttonClose: {
+    backgroundColor: BLUE_COLOR,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+});
 
 export default Profile;
