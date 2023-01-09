@@ -5,12 +5,9 @@ import DetailInfoContainer from '../components/DetailInfoContainer/DetailInfoCon
 import Loader from '../components/Loader/Loader';
 import ReviewContainer from '../components/ReviewContainer/ReviewContainer';
 
-export default function Detail() {
+export default function Detail({ route }) {
   // * params : title 받아오기
-
-  const title =
-    'EO(서)발레·서발레씨어터가 함께하는 크리스마스 최고의 선물 호두까기 인형';
-  // const title = '뮤지컬 캣츠 내한공연-서울 (Musical CATS)';
+  const { title } = route.params;
 
   const queries = useQueries([
     {

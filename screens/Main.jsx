@@ -52,7 +52,15 @@ export default function Main({ navigation: { navigate } }) {
         </UpcomingContainer>
         {/* 상세페이지 임시 코드 */}
         <TouchableOpacity
-          onPress={() => navigate('Stack', { screen: 'Detail' })}
+          onPress={() => {
+            // const title =
+            //   'EO(서)발레·서발레씨어터가 함께하는 크리스마스 최고의 선물 호두까기 인형';
+            const title = '뮤지컬 캣츠 내한공연-서울 (Musical CATS)';
+            navigate('Stack', {
+              screen: 'Detail',
+              params: { title },
+            });
+          }}
         >
           <Text>상세페이지 가기</Text>
         </TouchableOpacity>
