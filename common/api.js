@@ -1,3 +1,6 @@
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { dbService } from './firebase';
+
 export const API_KEY = '78526f445070736837397761636864';
 
 export const getDetail = async (title) => {
@@ -9,7 +12,7 @@ export const getDetail = async (title) => {
 };
 
 // firebase에서 title과 일치하는 리뷰 받아오는 함수
-const getReviews = async (title) => {
+export const getReviews = async (title) => {
   const q = query(
     collection(dbService, 'reviews'),
     where('title', '==', title),
@@ -18,4 +21,9 @@ const getReviews = async (title) => {
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => reviews.push({ id: doc.id, ...doc.data() }));
   return reviews;
+};
+
+// firebase에 리뷰를 추가하는 함수
+export const createReview = async (review) => {
+  await addDoc(collection(dbService, 'reviews'), review);
 };

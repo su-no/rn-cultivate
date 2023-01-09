@@ -1,8 +1,7 @@
 import { View } from 'react-native';
-import { useQuery } from 'react-query';
-import { collection, addDoc } from 'firebase/firestore';
-import { authService, dbService } from '../../common/firebase';
-import { getReviews } from '../../common/api';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { authService } from '../../common/firebase';
+import { createReview, getReviews } from '../../common/api';
 import { getDate } from '../../common/utils';
 import * as S from './styles';
 import Input from '../Input/Input';
@@ -14,24 +13,22 @@ export default function ReviewContainer({ title }) {
   const user = authService.currentUser;
   const nickname = user.displayName;
 
+  const queryClient = useQueryClient();
+
+  // firebase에서 리뷰 데이터 받아오는 함수
   const { isLoading, data: reviewData } = useQuery('reviews', () =>
     getReviews(title),
   );
 
-  // firebase에 리뷰 추가하는 함수
-  const addReview = async (content) => {
-    const review = {
-      title,
-      content, // input에 입력한 내용
-      nickname, // firebase - currentUser displayName
-      date: Date.now(),
-    };
+  // firebase에 리뷰 데이터 추가하는 함수
+  const mutationAdd = useMutation(createReview, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('reviews');
+    },
+  });
 
-    try {
-      await addDoc(collection(dbService, 'reviews'), review);
-    } catch (error) {
-      console.log(error);
-    }
+  const addReview = (content) => {
+    mutationAdd.mutate({ title, content, nickname, date: Date.now() });
   };
 
   if (isLoading) return <Loader />;

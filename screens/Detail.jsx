@@ -12,13 +12,11 @@ export default function Detail() {
   const title = '뮤지컬 캣츠 내한공연-서울 (Musical CATS)';
 
   return (
-    <>
-      <ScrollView>
-        {/* 공연 정보 */}
-        <DetailInfoContainer title={title} />
-        {/* 후기 & 기대평 */}
-        <ReviewContainer title={title} />
-      </ScrollView>
-    </>
+    <ScrollView>
+      {/* 공연 정보 */}
+      <DetailInfoContainer title={title} />
+      {/* 후기 & 기대평 */}
+      <ReviewContainer title={title} />
+    </ScrollView>
   );
 }

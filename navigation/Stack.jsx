@@ -1,7 +1,7 @@
 import { useColorScheme } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { YELLOW_COLOR, VIOLET_COLOR } from '../common/colors';
+import { YELLOW_COLOR, VIOLET_COLOR, WHITE_COLOR } from '../common/colors';
 import Detail from '../screens/Detail';
 import Login from '../screens/Login';
 import Join from '../screens/Join';
@@ -26,6 +26,9 @@ export default function Stack({ navigation: { goBack } }) {
             tintColor={isDark ? YELLOW_COLOR : VIOLET_COLOR}
           />
         ),
+        contentStyle: {
+          backgroundColor: WHITE_COLOR,
+        },
       }}
     >
       <NativeStack.Screen name="Detail" component={Detail} />
