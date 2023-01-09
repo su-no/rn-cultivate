@@ -13,7 +13,7 @@ export default function DetailInfo({ period, place, price }) {
           color="black"
           style={{ marginRight: 8 }}
         />
-        <DescriptionText>2023-01-23~2023-03-12</DescriptionText>
+        <DescriptionText>{period}</DescriptionText>
       </View>
       <View style={{ flexDirection: 'row', marginBottom: 10 }}>
         <Ionicons
@@ -22,7 +22,7 @@ export default function DetailInfo({ period, place, price }) {
           color="black"
           style={{ marginRight: 8 }}
         />
-        <DescriptionText>세종대극장</DescriptionText>
+        <DescriptionText>{place}</DescriptionText>
       </View>
       <View style={{ flexDirection: 'row', marginBottom: 10 }}>
         <Ionicons
@@ -31,10 +31,7 @@ export default function DetailInfo({ period, place, price }) {
           color="black"
           style={{ marginRight: 8 }}
         />
-        <DescriptionText>
-          VIP석 170,000원 / 젤리클석 170,000원 / R석 140,000원 / S석 110,000원 /
-          A석 90,000원 / B석 60,000원
-        </DescriptionText>
+        <DescriptionText>{price}</DescriptionText>
       </View>
     </>
   );

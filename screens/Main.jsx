@@ -50,9 +50,13 @@ export default function Main({ navigation: { navigate } }) {
             />
           </UpcomingBox>
         </UpcomingContainer>
+        {/* 상세페이지 임시 코드 */}
         <TouchableOpacity
           onPress={() => navigate('Stack', { screen: 'Detail' })}
-        ></TouchableOpacity>
+        >
+          <Text>상세페이지 가기</Text>
+        </TouchableOpacity>
+        {/* 상세페이지 임시 코드 */}
       </MainAllContainer>
     </ScrollView>
   );
