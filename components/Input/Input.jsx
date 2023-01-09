@@ -9,7 +9,6 @@ export default function Input({ addReview }) {
   const user = authService.currentUser;
 
   const onSubmit = async () => {
-    console.log('submit', content);
     // 유효성 검사
     if (content.trim() === '') {
       Alert.alert('내용을 입력하세요.');

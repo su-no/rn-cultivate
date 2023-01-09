@@ -3,7 +3,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   query,
   updateDoc,
@@ -13,9 +12,9 @@ import { dbService } from './firebase';
 
 export const API_KEY = '78526f445070736837397761636864';
 
+// firebase에서 title과 일치하는 상세정보 받아오는 함수
 export const getDetail = async (title) => {
   // 공백을 _로 변경 후 encoding
-
   const encodedTitle = encodeURI(title.replaceAll(' ', '_'));
   const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/1000/%20/${encodedTitle}`;
   return fetch(path).then((res) => res.json());
@@ -45,6 +44,8 @@ export const deleteReview = async (id) => {
 };
 
 // firebase의 리뷰를 수정하는 함수
-export const updateReview = async (id, editedContent) => {
-  await updateDoc(doc(dbService, 'reviews', id), { content: editedContent });
+export const updateReview = async ({ id, editedContent }) => {
+  await updateDoc(doc(dbService, 'reviews', id), {
+    content: editedContent,
+  });
 };

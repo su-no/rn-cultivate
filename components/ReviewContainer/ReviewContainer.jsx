@@ -35,15 +35,6 @@ export default function ReviewContainer({ title, reviewData }) {
     mutationAdd.mutate({ title, content, nickname, date: Date.now(), uid });
   };
 
-  const handleDelete = (id) => {
-    mutationDelete.mutate(id);
-  };
-
-  // ! 이상함
-  const handleUpdate = (id, content) => {
-    mutationUpdate.mutate(id, content);
-  };
-
   return (
     <S.Container>
       <View>
@@ -54,8 +45,8 @@ export default function ReviewContainer({ title, reviewData }) {
             key={data.id}
             id={data.id}
             data={data}
-            deleteReview={handleDelete}
-            updateReview={handleUpdate}
+            deleteReview={mutationDelete.mutate}
+            updateReview={mutationUpdate.mutate}
           />
         ))}
       </View>

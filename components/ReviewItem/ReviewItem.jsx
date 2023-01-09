@@ -7,7 +7,7 @@ import * as S from './styles';
 import GrayButton from '../GrayButton/GrayButton';
 
 export default function ReviewItem({ data, deleteReview, updateReview }) {
-  const { id, content, nickname, date, uid, title } = data;
+  const { id, content, nickname, date, uid } = data;
   // TODO: 현재 사용자와 일치하는 댓글만 수정/삭제 버튼 보여주기
 
   const [opened, setOpened] = useState(false);
@@ -34,8 +34,7 @@ export default function ReviewItem({ data, deleteReview, updateReview }) {
   };
 
   const handleUpdate = async () => {
-    console.log(id, editedContent);
-    await updateReview(id, editedContent);
+    await updateReview({ id, editedContent });
     setIsEditing(false);
   };
 
