@@ -20,7 +20,8 @@ export const getReviews = async (title) => {
   const reviews = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => reviews.push({ id: doc.id, ...doc.data() }));
-  return reviews;
+  // 작성일자 내림차순 정렬
+  return reviews.sort((a, b) => b.date - a.date);
 };
 
 // firebase에 리뷰를 추가하는 함수
