@@ -5,6 +5,15 @@ export const Container = styled.View`
   margin-bottom: 20px;
 `;
 
+export const EditInput = styled.TextInput`
+  border-width: 1px;
+  border-radius: 4px;
+  padding: 5px 10px;
+  border-color: ${BLACK_COLOR};
+  font-size: 16px;
+  margin-bottom: 5px;
+`;
+
 export const AboveLine = styled.View`
   flex-direction: row;
   justify-content: space-between;
