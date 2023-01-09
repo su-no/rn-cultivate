@@ -32,14 +32,14 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from 'firebase/auth';
-import { useState } from 'react';
-import { GRAY_COLOR, BLUE_COLOR, PINK_COLOR } from '../../common/colors';
+import { useRef, useState } from 'react';
+import { LIGHT_GRAY_COLOR, BLUE_COLOR, PINK_COLOR } from '../../common/colors';
 
 function Profile() {
   const navigation = useNavigation();
   const user = authService.currentUser;
   const [password, setPassword] = useState('');
-
+  const passwordRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   const logOutHandler = () => {
@@ -99,28 +99,32 @@ function Profile() {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>비밀번호 확인</Text>
             <TextInput
+              autoFocus
+              ref={passwordRef}
               secureTextEntry={true}
               style={{
-                width: 200,
+                width: 205,
                 height: 40,
-                backgroundColor: GRAY_COLOR,
+                backgroundColor: LIGHT_GRAY_COLOR,
               }}
               onChangeText={setPassword}
             ></TextInput>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={deleteUserHandler}
-            >
-              <Text style={styles.textStyle}>회원탈퇴</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonOpen]}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={styles.textStyle}>취소</Text>
-            </Pressable>
+            <View style={{ flexDirection: 'row' }}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>취소</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={deleteUserHandler}
+              >
+                <Text style={styles.textStyle}>탈퇴</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </Modal>
@@ -134,6 +138,9 @@ function Profile() {
           <ProfileButton
             onPress={() => {
               setModalVisible(true);
+              setTimeout(() => {
+                passwordRef.current.focus();
+              });
             }}
           >
             <ProfileButtonText color={'red'}>회원탈퇴</ProfileButtonText>
