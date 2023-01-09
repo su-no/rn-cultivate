@@ -43,3 +43,8 @@ export const createReview = async (review) => {
 export const deleteReview = async (id) => {
   await deleteDoc(doc(dbService, 'reviews', id));
 };
+
+// firebase의 리뷰를 수정하는 함수
+export const updateReview = async (id, editedContent) => {
+  await updateDoc(doc(dbService, 'reviews', id), { content: editedContent });
+};

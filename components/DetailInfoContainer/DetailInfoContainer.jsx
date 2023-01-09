@@ -6,26 +6,14 @@ import DetailInfo from '../DetailInfo/DetailInfo';
 import VioletButton from '../VioletButton/VioletButton';
 import Loader from '../Loader/Loader';
 
-export default function DetailTopContainer({ title }) {
-  const {
-    isLoading,
-    isError,
-    data: detail,
-  } = useQuery({
-    queryKey: 'detail',
-    queryFn: () => getDetail(title),
-  });
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
+export default function DetailTopContainer({ detail }) {
   const {
     MAIN_IMG: imgPath,
     DATE: period,
     PLACE: place,
     USE_FEE: price,
     ORG_LINK: link,
+    TITLE: title,
   } = detail.culturalEventInfo.row[0];
 
   return (
