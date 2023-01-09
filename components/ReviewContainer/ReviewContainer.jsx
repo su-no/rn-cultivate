@@ -11,7 +11,7 @@ import Loader from '../Loader/Loader';
 export default function ReviewContainer({ title }) {
   // firebase 현재 유저 정보
   const user = authService.currentUser;
-  const nickname = user.displayName;
+  const { displayName: nickname, uid } = user;
 
   const queryClient = useQueryClient();
 
@@ -28,7 +28,7 @@ export default function ReviewContainer({ title }) {
   });
 
   const addReview = (content) => {
-    mutationAdd.mutate({ title, content, nickname, date: Date.now() });
+    mutationAdd.mutate({ title, content, nickname, date: Date.now(), uid });
   };
 
   if (isLoading) return <Loader />;
