@@ -1,27 +1,43 @@
 import { useState } from 'react';
-import { TextInput } from 'react-native';
-import { BLACK_COLOR } from '../../common/colors';
+import { Alert } from 'react-native';
+import { authService } from '../../common/firebase';
+import { GRAY_COLOR } from '../../common/colors';
+import * as S from './styles';
 
 export default function Input({ addReview }) {
   const [content, setContent] = useState('');
+  const user = authService.currentUser;
+
+  const onSubmit = () => {
+    console.log('submit', content);
+    // 유효성 검사
+    if (content.trim() === '') {
+      Alert.alert('내용을 입력하세요.');
+      setContent('');
+      return;
+    }
+    addReview(content);
+    setContent('');
+  };
 
   return (
-    <TextInput
-      value={content}
-      onChangeText={setContent}
-      onSubmitEditing={() => {
-        addReview(content);
-        setContent('');
-      }}
-      placeholder="내용을 입력하세요."
-      style={{
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: BLACK_COLOR,
-        padding: 10,
-        fontSize: 15,
-        marginBottom: 20,
-      }}
-    />
+    <>
+      {!user ? (
+        <S.Input
+          onPressOut={() => console.log('로그인 페이지로 이동')}
+          placeholder="로그인이 필요한 서비스입니다."
+          placeholderTextColor={GRAY_COLOR}
+          backgroundColor="#e8e8e8"
+        />
+      ) : (
+        <S.Input
+          value={content}
+          onChangeText={setContent}
+          onSubmitEditing={onSubmit}
+          placeholder="내용을 입력하세요."
+          maxLength={50}
+        />
+      )}
+    </>
   );
 }
