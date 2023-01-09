@@ -1,7 +1,7 @@
-import { Linking } from 'react-native';
+import { Linking, View } from 'react-native';
+import * as S from './styles';
 import DetailInfo from '../DetailInfo/DetailInfo';
 import VioletButton from '../VioletButton/VioletButton';
-import * as S from './styles';
 
 export default function DetailTopContainer({ data }) {
   const { imgPath, title, period, place, price, link } = data;
@@ -9,7 +9,16 @@ export default function DetailTopContainer({ data }) {
   return (
     <>
       {/* 포스터 이미지 */}
-      <S.Poster source={{ uri: imgPath }} />
+      <View>
+        <S.Poster source={{ uri: imgPath }} />
+        {/* 관심티켓 버튼 */}
+        <S.TicketContainer
+          activeOpacity={0.8}
+          onPress={() => console.log('관심티켓 추가/삭제')}
+        >
+          <S.Ticket source={require('../../assets/ticket.png')} />
+        </S.TicketContainer>
+      </View>
       {/* 공연 정보 */}
       <S.Container>
         {/* 제목 */}
