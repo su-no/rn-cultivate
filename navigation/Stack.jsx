@@ -31,7 +31,13 @@ export default function Stack({ navigation: { goBack } }) {
         },
       }}
     >
-      <NativeStack.Screen name="Detail" component={Detail} />
+      <NativeStack.Screen
+        options={{
+          title: '상세페이지',
+        }}
+        name="Detail"
+        component={Detail}
+      />
       <NativeStack.Screen
         options={{ title: '로그인' }}
         name="Login"
