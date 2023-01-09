@@ -1,4 +1,14 @@
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { dbService } from './firebase';
 
 export const API_KEY = '78526f445070736837397761636864';
@@ -27,4 +37,9 @@ export const getReviews = async (title) => {
 // firebase에 리뷰를 추가하는 함수
 export const createReview = async (review) => {
   await addDoc(collection(dbService, 'reviews'), review);
+};
+
+// firebase에서 리뷰를 삭제하는 함수
+export const deleteReview = async (id) => {
+  await deleteDoc(doc(dbService, 'reviews', id));
 };

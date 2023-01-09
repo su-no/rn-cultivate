@@ -1,8 +1,12 @@
 import { View } from 'react-native';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { authService } from '../../common/firebase';
-import { createReview, getReviews } from '../../common/api';
-import { getDate } from '../../common/utils';
+import {
+  createReview,
+  deleteReview,
+  getReviews,
+  updateReview,
+} from '../../common/api';
 import * as S from './styles';
 import Input from '../Input/Input';
 import ReviewItem from '../ReviewItem/ReviewItem';
@@ -27,8 +31,29 @@ export default function ReviewContainer({ title }) {
     },
   });
 
-  const addReview = (content) => {
+  const mutationDelete = useMutation(deleteReview, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('reviews');
+    },
+  });
+
+  const mutationUpdate = useMutation(updateReview, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('reviews');
+    },
+  });
+
+  const handleAdd = (content) => {
     mutationAdd.mutate({ title, content, nickname, date: Date.now(), uid });
+  };
+
+  const handleDelete = (id) => {
+    mutationDelete.mutate(id);
+  };
+
+  // ! 이상함
+  const handleUpdate = (id, content) => {
+    mutationUpdate.mutate(id, content);
   };
 
   if (isLoading) return <Loader />;
@@ -37,13 +62,14 @@ export default function ReviewContainer({ title }) {
     <S.Container>
       <View>
         <S.Title>후기 & 기대평</S.Title>
-        <Input addReview={addReview} />
-        {reviewData.map(({ id, content, nickname, date }) => (
+        <Input addReview={handleAdd} />
+        {reviewData.map((data) => (
           <ReviewItem
-            key={id}
-            content={content}
-            nickname={nickname}
-            date={getDate(date)}
+            key={data.id}
+            id={data.id}
+            data={data}
+            deleteReview={handleDelete}
+            updateReview={handleUpdate}
           />
         ))}
       </View>

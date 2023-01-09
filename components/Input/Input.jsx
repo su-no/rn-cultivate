@@ -8,7 +8,7 @@ export default function Input({ addReview }) {
   const [content, setContent] = useState('');
   const user = authService.currentUser;
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     console.log('submit', content);
     // 유효성 검사
     if (content.trim() === '') {
@@ -16,7 +16,7 @@ export default function Input({ addReview }) {
       setContent('');
       return;
     }
-    addReview(content);
+    await addReview(content);
     setContent('');
   };
 
