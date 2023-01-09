@@ -28,6 +28,7 @@ export default function Input({ addReview }) {
           placeholder="로그인이 필요한 서비스입니다."
           placeholderTextColor={GRAY_COLOR}
           backgroundColor="#e8e8e8"
+          editable={false}
         />
       ) : (
         <S.Input
