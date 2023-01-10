@@ -14,15 +14,12 @@ export const API_KEY = '78526f445070736837397761636864';
 
 // firebase에서 title과 일치하는 상세정보 받아오는 함수
 export const getDetail = async (title) => {
-  console.log('title', title);
-
-  const replaced1 = title.split(/[\[\]0-9']/g).join('_');
-  console.log('replaced1', replaced1);
-
-  const replaced2 = replaced1.split('·').join('/');
-  console.log('replaced2', replaced2);
-
-  const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/1000/%20/${replaced2}`;
+  const titleValue = title
+    .split(/[\[\]0-9']/g)
+    .join('_')
+    .split('·')
+    .join('/');
+  const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/1000/%20/${titleValue}`;
   return fetch(path)
     .then((res) => res.json())
     .catch((e) => console.log(e));
