@@ -23,8 +23,7 @@ export default function Login({ navigation: { navigate } }) {
       pwRef.current.focus();
     }
     signInWithEmailAndPassword(authService, email, pw)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then(() => {
         navigation.navigate('Main');
         console.log('로그인한 계정', authService.currentUser.email);
       })
