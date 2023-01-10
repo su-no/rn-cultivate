@@ -1,78 +1,115 @@
 import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import styled from '@emotion/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GRAY_COLOR, BLACK_COLOR } from '../common/colors';
-export default function Category() {
-  const Random = '../assets/Random_img.png';
-  const [category, setCategory] = useState('');
+import Poster from '../components/Poster/Poster';
+import { getData } from '../common/api';
+import { useQuery } from 'react-query';
+import Loader from '../components/Loader/Loader';
 
-  const Movies = [
-    {
-      id: 1,
-      Image: require(Random),
-    },
-    {
-      id: 2,
-      Image: require(Random),
-    },
-    {
-      id: 3,
-      Image: require(Random),
-    },
-    {
-      id: 4,
-      Image: require(Random),
-    },
-    {
-      id: 5,
-      Image: require(Random),
-    },
-    {
-      id: 6,
-      Image: require(Random),
-    },
-  ];
+// 공연
+const shows = [
+  '뮤지컬/오페라',
+  '연극',
+  '무용',
+  '영화',
+  '국악',
+  '콘서트',
+  '클래식',
+  '독주/독창회',
+];
+// 전시
+const exhibitions = ['전시/미술'];
+// 축제
+const festivals = [
+  '축제-문화/예술',
+  '축제-전통/역사',
+  '축제-시민화합',
+  '축제-기타',
+  '축제-자연/경관',
+];
+// 강의
+const lectures = ['문화교양/강좌'];
+
+export default function Category({}) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: 'data',
+    queryFn: () => getData(),
+  });
+
+  const [category, setCategory] = useState('All');
+
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      switch (category) {
+        case 'All':
+          return setFilteredData(data);
+
+        case '강의':
+          return setFilteredData(
+            data.filter((item) => lectures.includes(item.CODENAME)),
+          );
+        case '전시':
+          return setFilteredData(
+            data.filter((item) => exhibitions.includes(item.CODENAME)),
+          );
+        case '공연':
+          return setFilteredData(
+            data.filter((item) => shows.includes(item.CODENAME)),
+          );
+        case '축제':
+          return setFilteredData(
+            data.filter((item) => festivals.includes(item.CODENAME)),
+          );
+      }
+    }
+  }, [data, category]);
 
   const Show = ({ item }) => (
-    <View>
-      <StyledImgWrap>
-        <Image source={item.Image} style={{ width: '32%' }} />
-        <Image source={item.Image} style={{ width: '32%' }} />
-        <Image source={item.Image} style={{ width: '32%' }} />
-      </StyledImgWrap>
-    </View>
+    <PosterWrap>
+      <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
+    </PosterWrap>
   );
 
   return (
     <StyledWrap>
-      <StyledCategory>카테고리</StyledCategory>
       <StyledBtn>
         <TouchableOpacity onPress={() => setCategory('All')}>
           <StyledBtnText color={category === 'All' ? BLACK_COLOR : GRAY_COLOR}>
+            All
+          </StyledBtnText>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setCategory('강의')}>
+          <StyledBtnText color={category === '강의' ? BLACK_COLOR : GRAY_COLOR}>
             강의
           </StyledBtnText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCategory('Kpop')}>
-          <StyledBtnText color={category === 'Kpop' ? BLACK_COLOR : GRAY_COLOR}>
+        <TouchableOpacity onPress={() => setCategory('전시')}>
+          <StyledBtnText color={category === '전시' ? BLACK_COLOR : GRAY_COLOR}>
             전시
           </StyledBtnText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCategory('Musical')}>
-          <StyledBtnText
-            color={category === 'Musical' ? BLACK_COLOR : GRAY_COLOR}
-          >
+        <TouchableOpacity onPress={() => setCategory('공연')}>
+          <StyledBtnText color={category === '공연' ? BLACK_COLOR : GRAY_COLOR}>
             공연
           </StyledBtnText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCategory('theater')}>
-          <StyledBtnText
-            color={category === 'theater' ? BLACK_COLOR : GRAY_COLOR}
-          >
+        <TouchableOpacity onPress={() => setCategory('축제')}>
+          <StyledBtnText color={category === '축제' ? BLACK_COLOR : GRAY_COLOR}>
             축제
           </StyledBtnText>
         </TouchableOpacity>
       </StyledBtn>
-      <FlatList data={Movies} renderItem={Show} />
+
+      <PosterList
+        keyExtractor={(item, index) => index}
+        numColumns={3}
+        data={filteredData}
+        renderItem={Show}
+        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+      />
     </StyledWrap>
   );
 }
@@ -80,19 +117,15 @@ export default function Category() {
 const StyledWrap = styled.View`
   align-items: center;
   margin-top: 10px;
-`;
-
-const StyledCategory = styled.Text`
-  font-size: 30px;
-  font-weight: bolder;
+  flex: 1;
 `;
 
 const StyledBtn = styled.View`
-  /* border: 1px solid black; */
   margin-top: 10px;
   flex-direction: row;
   align-items: center;
-  width: 87%;
+
+  width: 100%;
   justify-content: space-around;
 `;
 
@@ -102,14 +135,13 @@ const StyledBtnText = styled.Text`
   color: ${(props) => props.color};
 `;
 
-const StyledImgWrap = styled.View`
-  flex-direction: row;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  justify-content: space-between;
-  padding: 5px;
+const PosterList = styled.FlatList`
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px;
 `;
 
-const StyledImg = styled.View`
-  flex-direction: row;
+const PosterWrap = styled.TouchableOpacity`
+  width: 33.33%;
+  padding: 0 1%;
 `;
