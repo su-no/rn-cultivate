@@ -14,6 +14,12 @@ export default function Join({ navigation: { navigate } }) {
   const [checkPw, setCheckPw] = useState('');
   const [nickName, setNickName] = useState('');
 
+  // const validataInput = () => {
+  //   if (!email) {
+  //     alert('email을 입력해주세요.');
+  //   }
+  // };
+
   const handleRegister = () => {
     createUserWithEmailAndPassword(authService, email, pw).then(() => {
       console.log('회원가입 완료됬음');

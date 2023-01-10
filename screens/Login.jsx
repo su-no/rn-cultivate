@@ -2,9 +2,10 @@ import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRef, useState } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { Pressable, ScrollView, Text } from 'react-native';
 import { VIOLET_COLOR, LIGHT_GRAY_COLOR } from '../common/colors';
 import { authService } from '../common/firebase';
+import ResetPasswordModal from '../components/ResetPasswordModal/ResetPasswordModal';
 
 export default function Login({ navigation: { navigate } }) {
   const navigation = useNavigation();
@@ -12,6 +13,8 @@ export default function Login({ navigation: { navigate } }) {
   const [pw, setPw] = useState('');
   const emailRef = useRef(null);
   const pwRef = useRef(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  authService.languageCode = 'ko';
 
   const handleLogin = () => {
     //유효성 검사
@@ -25,15 +28,15 @@ export default function Login({ navigation: { navigate } }) {
     signInWithEmailAndPassword(authService, email, pw)
       .then(() => {
         navigation.navigate('Main');
-        console.log('로그인한 계정', authService.currentUser.email);
       })
       .catch((error) => {
-        console.log(error.message);
         if (error.message.includes('user-not-found')) {
-          console.log('등록된 이메일이 아닙니다.');
+          alert('등록된 이메일이 아닙니다.');
+          emailRef.current.focus();
         }
         if (error.message.includes('wrong-password')) {
-          console.log('비밀번호가 틀렸습니다.');
+          alert('비밀번호가 틀렸습니다.');
+          pwRef.current.focus();
         }
       });
   };
@@ -41,6 +44,12 @@ export default function Login({ navigation: { navigate } }) {
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <Container>
+        <ResetPasswordModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          email={email}
+          setEmail={setEmail}
+        />
         <Logo source={require('../assets/logo.png')} />
         <SubmitBox>
           <InputBox
@@ -61,6 +70,24 @@ export default function Login({ navigation: { navigate } }) {
               로그인
             </Text>
           </SubmitBtn>
+          <GuideBox>
+            <GuideText>비밀번호가 기억이 나지 않는다면?</GuideText>
+            <Pressable
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <Text
+                style={{
+                  textDecorationLine: 'underline',
+                  fontWeight: '600',
+                  fontSize: 12,
+                }}
+              >
+                비밀번호 재설정
+              </Text>
+            </Pressable>
+          </GuideBox>
           <GuideBox>
             <GuideText>처음 방문하셨나요?</GuideText>
             <SwitchBtn

@@ -66,7 +66,6 @@ const ProfileDetailContents = styled.TextInput`
 `;
 
 const ChangePwBox = styled.View`
-  /* border: 1px solid blue; */
   flex-direction: row-reverse;
   width: 70px;
   justify-content: space-between;

@@ -3,6 +3,13 @@ import { screenHeight, screenWidth } from '../common/utils';
 import styled from '@emotion/native';
 
 export default function Main({ navigation: { navigate } }) {
+  // const API_KEY = '78526f445070736837397761636864';
+  // const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/1000/%20/용감한 탄티`;
+  // fetch(path)
+  //   .then((res) => res.json())
+  //   .then((data) => console.log(data.culturalEventInfo.row))
+  //   .catch((e) => console.log(e));
+
   return (
     <ScrollView>
       <BannerContainer>
@@ -51,19 +58,25 @@ export default function Main({ navigation: { navigate } }) {
           </UpcomingBox>
         </UpcomingContainer>
         {/* 상세페이지 임시 코드 */}
-        <TouchableOpacity
-          onPress={() => {
-            // const title =
-            //   'EO(서)발레·서발레씨어터가 함께하는 크리스마스 최고의 선물 호두까기 인형';
-            const title = '뮤지컬 캣츠 내한공연-서울 (Musical CATS)';
-            navigate('Stack', {
-              screen: 'Detail',
-              params: { title },
-            });
-          }}
-        >
-          <Text>상세페이지 가기</Text>
-        </TouchableOpacity>
+        {[
+          '뮤지컬 캣츠 내한공연-서울 (Musical CATS)',
+          'EO(서)발레·서발레씨어터가 함께하는 크리스마스 최고의 선물 호두까기 인형',
+          '삶을 통해 배워온 樂_ 현섭하다 Ⅲ',
+          '[2022 서울라이트 DDP] 크리스마스 행사',
+          'TANGO CARNIVAL',
+        ].map((title, idx) => (
+          <TouchableOpacity
+            key={idx}
+            onPress={() => {
+              navigate('Stack', {
+                screen: 'Detail',
+                params: { title },
+              });
+            }}
+          >
+            <Text>{title}</Text>
+          </TouchableOpacity>
+        ))}
         {/* 상세페이지 임시 코드 */}
       </MainAllContainer>
     </ScrollView>
