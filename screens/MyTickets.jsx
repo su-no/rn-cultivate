@@ -16,12 +16,7 @@ import TicketModal from '../components/MyTicket/TicketModal';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import {
-  PINK_COLOR,
-  WHITE_COLOR,
-  BLACK_COLOR,
-  SKY_COLOR,
-} from '../common/colors';
+import { WHITE_COLOR, BLACK_COLOR } from '../common/colors';
 import TicketInfo from '../components/MyTicket/TicketInfo';
 import { useQuery, useQueryErrorResetBoundary } from 'react-query';
 import Loader from '../components/Loader/Loader';
@@ -29,6 +24,7 @@ import { authService } from '../common/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { dbService } from '../common/firebase';
 import { async } from '@firebase/util';
+import { useId } from 'react';
 
 export default function MyTickets({ navigation: { navigate } }) {
   const [bookmarks, setBookmarks] = useState([]);
@@ -96,7 +92,7 @@ export default function MyTickets({ navigation: { navigate } }) {
   return (
     <StSafeArea>
       <ScrollView>
-        {bookmarks.map(() => {
+        {bookmarks.map((bookmark) => {
           return (
             <SwiperChildView
               // onPress={() => navigate('Stack', { screen: 'Detail' })}
@@ -116,7 +112,7 @@ export default function MyTickets({ navigation: { navigate } }) {
 
                 <Column>
                   {/* 텍스트 이모지는 통합해서 */}
-                  <TitleText>{title}</TitleText>
+                  <TitleText>{bookmark}</TitleText>
                   <TicketInfo period={period} place={place} price="상세보기" />
                 </Column>
                 <ModalView>
@@ -152,7 +148,7 @@ export default function MyTickets({ navigation: { navigate } }) {
                         </Pressable>
                         <CheckingBtn
                           onPress={() => {
-                            deleteBookmarks(item.uid),
+                            deleteBookmarks(bookmarks.uid),
                               navigate('Tabs', {
                                 screen: 'MyTickets',
                               });

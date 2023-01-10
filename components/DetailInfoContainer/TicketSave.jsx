@@ -1,11 +1,20 @@
 import React from 'react';
 import * as S from '../DetailInfoContainer/styles';
-import { authService } from '../../common/firebase';
+import { authService, dbService } from '../../common/firebase';
+// import { useMutation, useQueryClient } from 'react-query';
+import { addDoc, collection } from 'firebase/firestore';
+import { async } from '@firebase/util';
 import { useState } from 'react';
 
 export default function TicketSave({ title }) {
   // 티켓 찜하기
+  const [newTicket, setNewTicket] = useState({});
   const user = authService.currentUser;
+
+  // const addTicket = async () => {
+  //   const docRef = await addDoc(collection(dbService, 'bookmarks'));
+  //   console.log(docRef.id)
+  // };
 
   return (
     <S.TicketContainer
