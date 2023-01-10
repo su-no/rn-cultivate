@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 
 // 스크린 사이즈
 export const { width: screenWidth, height: screenHeight } =
@@ -18,4 +18,18 @@ export const getDate = (d) => {
   const hour = String(date.getHours()).padStart(2, '0');
   const minuites = String(date.getMinutes()).padStart(2, '0');
   return `${year}-${month}-${day} ${hour}:${minuites}`;
+};
+
+// Input 유효성 검사
+export const checkInput = (content) => {
+  const contentValue = content.trim();
+  if (contentValue === '') {
+    Alert.alert('내용을 입력하세요.');
+    return false;
+  }
+  if (contentValue.length < 5) {
+    Alert.alert('5자 이상 50자 미만의 내용을 입력해주세요.');
+    return false;
+  }
+  return true;
 };

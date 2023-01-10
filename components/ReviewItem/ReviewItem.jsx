@@ -18,16 +18,12 @@ export default function ReviewItem({ data, deleteReview, updateReview }) {
     Alert.alert('삭제하시겠습니까?', '', [
       {
         text: '취소',
-        onPress: () => {
-          console.log('취소되었습니다.');
-        },
         style: 'cancel',
       },
       {
         text: '삭제',
         onPress: async () => {
           await deleteReview(id);
-          console.log('리뷰가 삭제되었습니다.', id);
         },
       },
     ]);
