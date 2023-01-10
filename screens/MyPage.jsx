@@ -36,12 +36,6 @@ export default function MyPage({ navigation: { navigate, reset } }) {
     >
       <Profile />
       <MyComments></MyComments>
-      <TouchableOpacity onPress={() => navigate('Stack', { screen: 'Login' })}>
-        <Text>로그인</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigate('Stack', { screen: 'Join' })}>
-        <Text>회원가입</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 }

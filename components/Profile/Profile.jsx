@@ -1,13 +1,6 @@
+import { Alert, Text, View } from 'react-native';
 import {
-  Alert,
-  Text,
-  TextInput,
-  Modal,
-  StyleSheet,
-  Pressable,
-  View,
-} from 'react-native';
-import {
+  ChangePwBox,
   ProfileBox,
   ProfileButton,
   ProfileButtonText,
@@ -27,23 +20,29 @@ import {
 import { authService } from '../../common/firebase';
 import { useNavigation } from '@react-navigation/native';
 import {
-  deleteUser,
   signOut,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  updatePassword,
 } from 'firebase/auth';
-import { useRef, useState } from 'react';
-import { LIGHT_GRAY_COLOR, BLUE_COLOR, PINK_COLOR } from '../../common/colors';
-
+import { useState } from 'react';
+import LeaveMemberModal from '../LeaveMemberModal/LeaveMemberModal';
+import ChangeNickNameModal from '../ChangeNickNameModal/ChangeNickNameModal';
 function Profile() {
   const navigation = useNavigation();
   const user = authService.currentUser;
   const [password, setPassword] = useState('');
-  const passwordRef = useRef(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [checkNewPassword, setCheckNewPassword] = useState(null);
+  const [dp, setDp] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalDp, setModalDp] = useState(false);
+  const [newNickName, setNewNickName] = useState('');
+
+  const checkNewPasswordHandler = newPassword === checkNewPassword;
 
   const logOutHandler = () => {
-    Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
+    Alert.alert(null, '로그아웃 하시겠습니까?', [
       {
         text: '취소',
         style: 'cancel',
@@ -54,7 +53,7 @@ function Profile() {
         onPress: () => {
           signOut(authService)
             .then(() => {
-              alert('로그아웃 완료되었습니다. 메인화면으로 이동합니다.');
+              alert('로그아웃 완료되었습니다.');
               navigation.navigate('Tabs', { screen: 'Main' });
             })
             .catch((error) => {
@@ -65,69 +64,45 @@ function Profile() {
     ]);
   };
 
-  const deleteUserHandler = () => {
+  const changePwHandler = () => {
     const credential = EmailAuthProvider.credential(user.email, password);
-
     reauthenticateWithCredential(user, credential)
       .then(() => {
-        deleteUser(user)
-          .then(() => {
-            setModalVisible(!modalVisible);
-            alert('회원탈퇴가 완료되었습니다.');
-            navigation.navigate('Tabs', { screen: 'Main' });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        if (checkNewPasswordHandler) {
+          updatePassword(user, newPassword)
+            .then(() => {
+              alert('비밀번호 변경이 완료되었습니다.');
+              setDp(false);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          alert('비밀번호가 일치하지 않습니다.');
+        }
       })
+
       .catch((e) => {
         console.log(e);
       });
   };
+
   return (
     <ProfileContainer>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('modal');
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>비밀번호 확인</Text>
-            <TextInput
-              autoFocus
-              ref={passwordRef}
-              secureTextEntry={true}
-              style={{
-                width: 205,
-                height: 40,
-                backgroundColor: LIGHT_GRAY_COLOR,
-              }}
-              onChangeText={setPassword}
-            ></TextInput>
-            <View style={{ flexDirection: 'row' }}>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <Text style={styles.textStyle}>취소</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={deleteUserHandler}
-              >
-                <Text style={styles.textStyle}>탈퇴</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <LeaveMemberModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        user={user}
+        password={password}
+        setPassword={setPassword}
+      />
+      <ChangeNickNameModal
+        setModalVisible={setModalDp}
+        modalVisible={modalDp}
+        setNewNickName={setNewNickName}
+        newNickName={newNickName}
+        user={user}
+      />
 
       <ProfileHeader>
         <ProfileTitle>프로필</ProfileTitle>
@@ -138,9 +113,6 @@ function Profile() {
           <ProfileButton
             onPress={() => {
               setModalVisible(true);
-              setTimeout(() => {
-                passwordRef.current.focus();
-              });
             }}
           >
             <ProfileButtonText color={'red'}>회원탈퇴</ProfileButtonText>
@@ -153,88 +125,84 @@ function Profile() {
             <ProfileImg source={require('../../assets/ticket.png')} />
           </ProfileImgBox>
           <ProfileNickNameBox>
-            <ProfileNickName>{user?.displayName}님</ProfileNickName>
-            <ProfileButton>
-              <Text>닉네임 변경</Text>
-            </ProfileButton>
+            <View>
+              <ProfileNickName>안녕하세요,</ProfileNickName>
+              <ProfileNickName>{user?.displayName}님</ProfileNickName>
+              <Text>({user?.email})</Text>
+            </View>
           </ProfileNickNameBox>
         </ProfileContents>
-        <ProfileContents direction={'column'}>
-          <ProfileDetailBox>
-            <ProfileDetailTitle></ProfileDetailTitle>
-            <Text>{user?.email}</Text>
-          </ProfileDetailBox>
-          <ProfileDetailBox style={{ display: 'none' }}>
-            <ProfileDetailTitle>현재 비밀번호</ProfileDetailTitle>
-            <ProfileDetailContents>
-              <Text>비밀번호를 입력해주세요.</Text>
-            </ProfileDetailContents>
-          </ProfileDetailBox>
-          <ProfileDetailBox style={{ display: 'none' }}>
-            <ProfileDetailTitle>신규 비밀번호</ProfileDetailTitle>
-            <ProfileDetailContents>
-              <Text>비밀번호를 입력해주세요.</Text>
-            </ProfileDetailContents>
-          </ProfileDetailBox>
-          <ProfileDetailBox
-            style={{
-              flexDirection: 'row-reverse',
-              marginRight: 50,
-              paddingBottom: 40,
-            }}
-          >
-            <ProfileButton>
+
+        {dp === true && (
+          <ProfileContents direction={'column'}>
+            <ProfileDetailBox>
+              <ProfileDetailTitle>현재 비밀번호</ProfileDetailTitle>
+              <ProfileDetailContents
+                onChangeText={setPassword}
+                placeholder="비밀번호를 입력해주세요"
+                textContentType="password"
+                secureTextEntry={true}
+              />
+            </ProfileDetailBox>
+            <ProfileDetailBox>
+              <ProfileDetailTitle>신규 비밀번호</ProfileDetailTitle>
+
+              <ProfileDetailContents
+                onChangeText={setNewPassword}
+                placeholder="비밀번호를 입력해주세요"
+                textContentType="password"
+                secureTextEntry={true}
+              />
+            </ProfileDetailBox>
+            <ProfileDetailBox>
+              <ProfileDetailTitle>신규 비밀번호 확인</ProfileDetailTitle>
+
+              <ProfileDetailContents
+                onChangeText={setCheckNewPassword}
+                placeholder="비밀번호를 입력해주세요"
+                textContentType="password"
+                secureTextEntry={true}
+              />
+            </ProfileDetailBox>
+          </ProfileContents>
+        )}
+        <ProfileDetailBox
+          style={{
+            flexDirection: 'row-reverse',
+            marginRight: 50,
+            paddingBottom: 40,
+          }}
+        >
+          {dp === true && (
+            <ChangePwBox>
+              <ProfileButton onPress={changePwHandler}>
+                <Text>변경</Text>
+              </ProfileButton>
+              <ProfileButton onPress={() => setDp(false)}>
+                <Text>취소</Text>
+              </ProfileButton>
+            </ChangePwBox>
+          )}
+        </ProfileDetailBox>
+        {dp === false && (
+          <View style={{ flexDirection: 'row-reverse' }}>
+            <ProfileButton onPress={() => setDp(true)}>
               <Text>비밀번호 변경</Text>
             </ProfileButton>
-          </ProfileDetailBox>
-        </ProfileContents>
+
+            <ProfileButton
+              onPress={() => {
+                setModalDp(true);
+              }}
+              style={{ paddingRight: 10 }}
+            >
+              <Text>닉네임 변경</Text>
+            </ProfileButton>
+          </View>
+        )}
       </ProfileBox>
     </ProfileContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    margin: 2,
-    padding: 10,
-    elevation: 2,
-    width: 100,
-  },
-  buttonOpen: {
-    backgroundColor: PINK_COLOR,
-  },
-  buttonClose: {
-    backgroundColor: BLUE_COLOR,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-});
 
 export default Profile;
