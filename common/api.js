@@ -54,3 +54,10 @@ export const updateReview = async ({ id, editedContent }) => {
     content: editedContent,
   });
 };
+
+export const getData = async () => {
+  const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/10`;
+  return fetch(path)
+    .then((res) => res.json())
+    .then((data) => data.culturalEventInfo.row);
+};
