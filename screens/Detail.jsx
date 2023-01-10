@@ -18,16 +18,16 @@ export default function Detail({ route }) {
       queryFn: () => getDetail(title),
       enabled: !!title,
     },
-    // {
-    //   // firebase에서 리뷰 데이터 받아오는 함수
-    //   queryKey: 'reviews',
-    //   queryFn: () => getReviews(title),
-    // },
+    {
+      // firebase에서 리뷰 데이터 받아오는 함수
+      queryKey: 'reviews',
+      queryFn: () => getReviews(title),
+    },
   ]);
 
   const [
     { data: detail, isLoading: isDetailLoading },
-    // { data: reviewData, isLoading: isReviewLoading },
+    { data: reviewData, isLoading: isReviewLoading },
   ] = queries;
 
   if (!detail || isDetailLoading || isReviewLoading) {
