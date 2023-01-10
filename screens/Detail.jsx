@@ -1,4 +1,5 @@
 import { ScrollView } from 'react-native';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { useQueries } from 'react-query';
 import { getDetail, getReviews } from '../common/api';
 import DetailInfoContainer from '../components/DetailInfoContainer/DetailInfoContainer';
@@ -27,7 +28,7 @@ export default function Detail({ route }) {
     { data: reviewData, isLoading: isReviewLoading },
   ] = queries;
 
-  if (isDetailLoading || isReviewLoading) {
+  if (!detail || isDetailLoading || isReviewLoading) {
     return <Loader />;
   }
 
@@ -36,7 +37,12 @@ export default function Detail({ route }) {
       {/* 공연 정보 */}
       <DetailInfoContainer detail={detail} />
       {/* 후기 & 기대평 */}
-      <ReviewContainer title={title} reviewData={reviewData} />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.select({ ios: 'padding' })}
+      >
+        <ReviewContainer title={title} reviewData={reviewData} />
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 }
