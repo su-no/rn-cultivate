@@ -3,13 +3,6 @@ import { screenHeight, screenWidth } from '../common/utils';
 import styled from '@emotion/native';
 
 export default function Main({ navigation: { navigate } }) {
-  // const API_KEY = '78526f445070736837397761636864';
-  // const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/1000/%20/용감한 탄티`;
-  // fetch(path)
-  //   .then((res) => res.json())
-  //   .then((data) => console.log(data.culturalEventInfo.row))
-  //   .catch((e) => console.log(e));
-
   return (
     <ScrollView>
       <BannerContainer>
