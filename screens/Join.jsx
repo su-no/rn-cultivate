@@ -1,11 +1,12 @@
 import styled from '@emotion/native';
-import { ScrollView, Text } from 'react-native';
+import { Alert, ScrollView, Text } from 'react-native';
 import { VIOLET_COLOR, LIGHT_GRAY_COLOR, BLACK_COLOR } from '../common/colors';
 //회원가입 관련
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { authService } from '../common/firebase';
 import { useNavigation } from '@react-navigation/native';
+import { emailRegex, pwRegex } from '../common/utils';
 
 export default function Join({ navigation: { navigate } }) {
   const navigation = useNavigation();
@@ -13,26 +14,67 @@ export default function Join({ navigation: { navigate } }) {
   const [pw, setPw] = useState('');
   const [checkPw, setCheckPw] = useState('');
   const [nickName, setNickName] = useState('');
+  const emailRef = useRef(null);
+  const pwRef = useRef(null);
+
+  const validatianInputs = () => {
+    if (!email) {
+      alert('이메일을 입력해주세요.');
+      emailRef.current.focus();
+      return true;
+    }
+    if (!pw) {
+      alert('비밀번호를 입력해주세요.');
+      pwRef.current.focus();
+      return true;
+    }
+    const matchedEmail = email.match(emailRegex);
+    const matchedPw = pw.match(pwRegex);
+
+    if (matchedEmail === null) {
+      alert('이메일 형식에 맞게 입력해 주세요.');
+      emailRef.current.focus();
+      return true;
+    }
+    if (matchedPw === null) {
+      alert('비밀번호는 8자리 이상 영문자, 숫자, 특수문자 조합이어야 합니다.');
+      pwRef.current.focus();
+      return true;
+    }
+  };
 
   const handleRegister = () => {
-    createUserWithEmailAndPassword(authService, email, pw).then(() => {
-      console.log('회원가입 완료됬음');
-      updateProfile(authService.currentUser, {
-        displayName: nickName,
-      })
+    if (validatianInputs()) {
+      return;
+    }
+    if (pw === checkPw) {
+      createUserWithEmailAndPassword(authService, email, pw)
         .then(() => {
-          alert('회원가입 완료! 홈으로 돌아갑니다.');
+          updateProfile(authService.currentUser, {
+            displayName: nickName,
+          })
+            .then(() => {
+              alert('회원가입 완료! 홈으로 돌아갑니다.');
 
-          setEmail('');
-          setPw('');
-          setCheckPw('');
-          setNickName('');
-          navigation.navigate('Tabs', { screen: 'Main' });
+              setEmail('');
+              setPw('');
+              setCheckPw('');
+              setNickName('');
+              navigation.navigate('Tabs', { screen: 'Main' });
+            })
+            .catch((error) => {
+              console.log(error.message);
+            });
         })
-        .catch((error) => {
-          console.log(error.message);
+        .catch((e) => {
+          console.log('에러', e.message);
+          if (e.message.includes('email-already-in-use')) {
+            alert('이미 등록된 계정입니다.');
+          }
         });
-    });
+    } else {
+      alert('비밀번호가 일치하지 않습니다.');
+    }
   };
 
   return (
@@ -42,13 +84,14 @@ export default function Join({ navigation: { navigate } }) {
         <Logo source={require('../assets/logo.png')} />
         <SubmitBox>
           <InputTitle>이메일</InputTitle>
-          <InputBox onChangeText={setEmail} value={email} />
+          <InputBox ref={emailRef} onChangeText={setEmail} value={email} />
           <InputTitle>비밀번호</InputTitle>
           <InputBox
             textContentType="password"
             secureTextEntry={true}
             onChangeText={setPw}
             value={pw}
+            ref={pwRef}
           />
           <InputTitle>비밀번호 확인</InputTitle>
           <InputBox

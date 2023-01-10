@@ -27,7 +27,6 @@ const LeaveMemberModal = ({
 
   const deleteUserHandler = () => {
     const credential = EmailAuthProvider.credential(user.email, password);
-
     reauthenticateWithCredential(user, credential)
       .then(() => {
         deleteUser(user)
@@ -42,6 +41,7 @@ const LeaveMemberModal = ({
       })
       .catch((e) => {
         console.log(e);
+        alert('비밀번호가 틀렸습니다.');
       });
   };
 

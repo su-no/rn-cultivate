@@ -21,31 +21,6 @@ const MyComments = () => {
         <CommentContent>판소리 너무 좋아!</CommentContent>
         <CommentDate>2022-01-16</CommentDate>
       </CommentBox>
-      <CommentBox>
-        <CommentTitle>판소리 어쩌고 저쩌고...</CommentTitle>
-        <CommentContent>판소리 너무 좋아!</CommentContent>
-        <CommentDate>2022-01-16</CommentDate>
-      </CommentBox>
-      <CommentBox>
-        <CommentTitle>판소리 어쩌고 저쩌고...</CommentTitle>
-        <CommentContent>판소리 너무 좋아!</CommentContent>
-        <CommentDate>2022-01-16</CommentDate>
-      </CommentBox>
-      <CommentBox>
-        <CommentTitle>판소리 어쩌고 저쩌고...</CommentTitle>
-        <CommentContent>판소리 너무 좋아!</CommentContent>
-        <CommentDate>2022-01-16</CommentDate>
-      </CommentBox>
-      <CommentBox>
-        <CommentTitle>판소리 어쩌고 저쩌고...</CommentTitle>
-        <CommentContent>판소리 너무 좋아!</CommentContent>
-        <CommentDate>2022-01-16</CommentDate>
-      </CommentBox>
-      <CommentBox>
-        <CommentTitle>판소리 어쩌고 저쩌고...</CommentTitle>
-        <CommentContent>판소리 너무 좋아!</CommentContent>
-        <CommentDate>2022-01-16</CommentDate>
-      </CommentBox>
     </CommentContainer>
   );
 };
