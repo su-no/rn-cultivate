@@ -1,4 +1,4 @@
-import react from 'react';
+import react, { useState } from 'react';
 import { TextInput, View, Modal } from 'react-native';
 import {
   CenteredView,
@@ -9,26 +9,12 @@ import {
   ModalView,
 } from './style';
 import { LIGHT_GRAY_COLOR } from '../../common/colors';
-import { updateProfile } from 'firebase/auth';
+import styled from '@emotion/native';
+import { BLUE_COLOR, PINK_COLOR } from '../../common/colors';
 
-const ChangeNickNameModal = ({
-  setModalVisible,
-  modalVisible,
-  setNewNickName,
-  newNickName,
-  user,
-}) => {
-  const changeNickNameHandler = () => {
-    //파이어베이스에서 제공하는 프로필업데이트 함수 authService.current 의 display 키값을 바꿔준다.
-    updateProfile(user, { displayName: `${newNickName}` })
-      .then(() => {
-        alert('닉네임 변경이 완료되었습니다.');
-        setModalVisible(!modalVisible);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+const ModalForm = () => {
+  //모달 스위치 역할을 하는 state입니다.
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <Modal
@@ -42,7 +28,7 @@ const ChangeNickNameModal = ({
     >
       <CenteredView>
         <ModalView>
-          <ModalText>닉네임 변경</ModalText>
+          <ModalText>제목</ModalText>
           <TextInput
             autoFocus
             style={{
@@ -52,7 +38,7 @@ const ChangeNickNameModal = ({
               paddingLeft: 5,
             }}
             onChangeText={setNewNickName}
-            placeholder="닉네임을 입력해주세요."
+            placeholder="플레이스 홀더입니다."
           ></TextInput>
           <View style={{ flexDirection: 'row' }}>
             <ButtonCancel
@@ -62,7 +48,7 @@ const ChangeNickNameModal = ({
             >
               <ButtonText>취소</ButtonText>
             </ButtonCancel>
-            <ButtonExecute onPress={changeNickNameHandler}>
+            <ButtonExecute>
               <ButtonText>변경</ButtonText>
             </ButtonExecute>
           </View>
@@ -72,4 +58,39 @@ const ChangeNickNameModal = ({
   );
 };
 
-export default ChangeNickNameModal;
+export default ModalForm;
+
+const CenteredView = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+`;
+const ModalView = styled.View`
+  margin: 20px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 35px;
+  align-items: center;
+`;
+const ModalText = styled.Text`
+  margin-bottom: 15px;
+  text-align: center;
+`;
+const ButtonCancel = styled.Pressable`
+  margin: 2px;
+  padding: 10px;
+  width: 100px;
+  background-color: ${BLUE_COLOR};
+`;
+const ButtonExecute = styled.Pressable`
+  margin: 2px;
+  padding: 10px;
+  width: 100px;
+  background-color: ${PINK_COLOR};
+`;
+const ButtonText = styled.Text`
+  color: white;
+  font-weight: bold;
+  text-align: center;
+`;

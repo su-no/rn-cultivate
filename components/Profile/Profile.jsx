@@ -24,7 +24,6 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
-  updateProfile,
 } from 'firebase/auth';
 import { useState } from 'react';
 import LeaveMemberModal from '../LeaveMemberModal/LeaveMemberModal';
@@ -43,7 +42,7 @@ function Profile() {
   const checkNewPasswordHandler = newPassword === checkNewPassword;
 
   const logOutHandler = () => {
-    Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
+    Alert.alert(null, '로그아웃 하시겠습니까?', [
       {
         text: '취소',
         style: 'cancel',
@@ -54,7 +53,7 @@ function Profile() {
         onPress: () => {
           signOut(authService)
             .then(() => {
-              alert('로그아웃 완료되었습니다. 메인화면으로 이동합니다.');
+              alert('로그아웃 완료되었습니다.');
               navigation.navigate('Tabs', { screen: 'Main' });
             })
             .catch((error) => {
@@ -167,7 +166,6 @@ function Profile() {
             </ProfileDetailBox>
           </ProfileContents>
         )}
-        {/* 비번 변경박스 시작 */}
         <ProfileDetailBox
           style={{
             flexDirection: 'row-reverse',
