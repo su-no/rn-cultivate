@@ -24,8 +24,6 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { useState } from 'react';
 import LeaveMemberModal from '../LeaveMemberModal/LeaveMemberModal';

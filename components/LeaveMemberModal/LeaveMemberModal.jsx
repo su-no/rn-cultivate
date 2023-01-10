@@ -41,6 +41,7 @@ const LeaveMemberModal = ({
       })
       .catch((e) => {
         console.log(e);
+        alert('비밀번호가 틀렸습니다.');
       });
   };
 
