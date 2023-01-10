@@ -1,10 +1,7 @@
 import { Linking, View } from 'react-native';
-import { useQuery } from 'react-query';
-import { getDetail } from '../../common/api';
 import * as S from './styles';
 import DetailInfo from '../DetailInfo/DetailInfo';
 import VioletButton from '../VioletButton/VioletButton';
-import Loader from '../Loader/Loader';
 
 export default function DetailTopContainer({ detail }) {
   const {

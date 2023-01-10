@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { authService } from '../../common/firebase';
+import { checkInput } from '../../common/utils';
 import { GRAY_COLOR } from '../../common/colors';
 import * as S from './styles';
 
@@ -10,17 +11,15 @@ export default function Input({ addReview }) {
 
   const [content, setContent] = useState('');
 
-  // 리뷰 등록
   const onSubmit = async () => {
     // 유효성 검사
-    if (content.trim() === '') {
-      Alert.alert('내용을 입력하세요.');
+    const isValid = checkInput(content);
+    if (!isValid) {
       setContent('');
       return;
     }
-    // 등록
+    // 리뷰 등록 & 초기화
     await addReview(content);
-    // 초기화
     setContent('');
   };
 
