@@ -5,11 +5,12 @@ import {
   View,
   StyleSheet,
   Modal,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled, { css } from '@emotion/native';
 import { screenHeight } from '../common/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getDetail } from '../common/api';
 import TicketModal from '../components/MyTicket/TicketModal';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -22,10 +23,33 @@ import {
   SKY_COLOR,
 } from '../common/colors';
 import TicketInfo from '../components/MyTicket/TicketInfo';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryErrorResetBoundary } from 'react-query';
 import Loader from '../components/Loader/Loader';
+import { authService } from '../common/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { dbService } from '../common/firebase';
+import { async } from '@firebase/util';
 
 export default function MyTickets({ navigation: { navigate } }) {
+  const [bookmarks, setBookmarks] = useState([]);
+
+  const getBookmarks = async () => {
+    const uid = authService.currentUser.uid;
+    const q = query(
+      collection(dbService, 'bookmarks'),
+      where('uid', '==', uid),
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setBookmarks(doc.data().bookmarks);
+      console.log(bookmarks);
+    });
+  };
+
+  useEffect(() => {
+    getBookmarks().catch((e) => console.log(e));
+  }, []);
+
   const dday = 'D-Day';
   const [modalVisible, setModalVisible] = useState(false);
   const title = '뮤지컬 캣츠 내한공연-서울 (Musical CATS)';
@@ -50,68 +74,106 @@ export default function MyTickets({ navigation: { navigate } }) {
     USE_FEE: price,
   } = detail.culturalEventInfo.row[0];
 
+  const deleteBookmarks = (uid) => {
+    Alert.alert('티켓 삭제', '정말 삭제하시겠습니까?', [
+      {
+        text: '취소',
+        style: 'cancel',
+        onPress: () => console.log('취소 클릭!'),
+      },
+      {
+        text: '삭제',
+        style: 'destructive',
+        onPress: () => {
+          const newBookmarks = bookmarks.filter((item) => item.uid !== uid);
+
+          setBookmarks(newBookmarks);
+        },
+      },
+    ]);
+  };
+
   return (
     <StSafeArea>
       <ScrollView>
-        <SwiperChildView
-          // onPress={() => navigate('Stack', { screen: 'Detail' })}
-          onPress={() => {
-            navigate('Stack', {
-              screen: 'Detail',
-              params: { title },
-            });
-          }}
-        >
-          <StTicketHeader>
-            <HeaderText>{dday}</HeaderText>
-          </StTicketHeader>
+        {bookmarks.map(() => {
+          return (
+            <SwiperChildView
+              // onPress={() => navigate('Stack', { screen: 'Detail' })}
+              onPress={() => {
+                navigate('Stack', {
+                  screen: 'Detail',
+                  params: { title },
+                });
+              }}
+            >
+              <StTicketHeader>
+                <HeaderText>{dday}</HeaderText>
+              </StTicketHeader>
 
-          <Row>
-            <BackgroundImg source={{ uri: imgPath }} />
+              <Row>
+                <BackgroundImg source={{ uri: imgPath }} />
 
-            <Column>
-              {/* 텍스트 이모지는 통합해서 */}
-              <TitleText>{title}</TitleText>
-              <TicketInfo period={period} place={place} price="상세보기" />
-            </Column>
-            <ModalView>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert('Modal has been closed.');
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.modalView}>
+                <Column>
+                  {/* 텍스트 이모지는 통합해서 */}
                   <TitleText>{title}</TitleText>
-                  <ModalPoster source={require('../assets/sampleImg2.png')} />
-                  <ScrollView>
-                    <ModalText>
-                      <TicketInfo period={period} place={place} price={price} />
-                    </ModalText>
-                  </ScrollView>
+                  <TicketInfo period={period} place={place} price="상세보기" />
+                </Column>
+                <ModalView>
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                      Alert.alert('Modal has been closed.');
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <View style={styles.modalView}>
+                      <TitleText>{title}</TitleText>
+                      <ModalPoster
+                        source={require('../assets/sampleImg2.png')}
+                      />
+                      <ScrollView>
+                        <ModalText>
+                          <TicketInfo
+                            period={period}
+                            place={place}
+                            price={price}
+                          />
+                        </ModalText>
+                      </ScrollView>
 
-                  <CloseView>
-                    <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                      <AntDesign name="check" size={24} color="black" />
-                    </Pressable>
-                    <CheckingBtn onPress={() => {}}>
-                      <AntDesign name="delete" size={24} color="black" />
-                    </CheckingBtn>
-                  </CloseView>
-                </View>
-              </Modal>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}
-              >
-                <Text style={styles.textStyle}>상세 보기</Text>
-              </Pressable>
-            </ModalView>
-          </Row>
-        </SwiperChildView>
+                      <CloseView>
+                        <Pressable
+                          onPress={() => setModalVisible(!modalVisible)}
+                        >
+                          <AntDesign name="check" size={24} color="black" />
+                        </Pressable>
+                        <CheckingBtn
+                          onPress={() => {
+                            deleteBookmarks(item.uid),
+                              navigate('Tabs', {
+                                screen: 'MyTickets',
+                              });
+                          }}
+                        >
+                          <AntDesign name="delete" size={24} color="black" />
+                        </CheckingBtn>
+                      </CloseView>
+                    </View>
+                  </Modal>
+                  <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    onPress={() => setModalVisible(true)}
+                  >
+                    <Text style={styles.textStyle}>상세 보기</Text>
+                  </Pressable>
+                </ModalView>
+              </Row>
+            </SwiperChildView>
+          );
+        })}
       </ScrollView>
     </StSafeArea>
   );
