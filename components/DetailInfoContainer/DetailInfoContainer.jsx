@@ -25,12 +25,12 @@ export default function DetailInfoContainer({ detail }) {
       {/* 공연 정보 */}
       <S.Container>
         {/* 제목 */}
-        <S.Title>{title}</S.Title>
+        <S.Title>{title !== '' ? title : '홈페이지 확인'}</S.Title>
         {/* 기간, 장소, 가격 */}
         <DetailInfo
-          period={period ?? '정보 없음'}
-          place={place ?? '정보 없음'}
-          price={price ?? '정보 없음'}
+          period={period !== '' ? period : '홈페이지 확인'}
+          place={place !== '' ? place : '홈페이지 확인'}
+          price={price !== '' ? price : '무료'}
         />
         {/* 홈페이지 가기 버튼 */}
         <VioletButton
