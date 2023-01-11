@@ -1,7 +1,6 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { screenHeight, screenWidth } from '../common/utils';
 import styled from '@emotion/native';
-import { BLACK_COLOR } from '../common/colors';
 
 export default function Main({ navigation: { navigate } }) {
   return (
@@ -13,13 +12,6 @@ export default function Main({ navigation: { navigate } }) {
         />
       </BannerContainer>
       <MainAllContainer>
-        <SearchInput
-          editable={false}
-          placeholder="검색어를 입력하세요."
-          onPressOut={() => {
-            navigate('Stack', { screen: 'Search' });
-          }}
-        />
         <OnStageContainer>
           <TitleText>
             <Text style={{ fontSize: 30 }}>On Stage</Text>
@@ -104,11 +96,4 @@ const UpcomingBox = styled.View`
 const TitleText = styled.Text`
   font-weight: 200;
   margin-top: 20px;
-`;
-
-const SearchInput = styled.TextInput`
-  border: 1px solid ${BLACK_COLOR};
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 15px;
 `;
