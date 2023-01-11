@@ -1,10 +1,11 @@
 import styled from '@emotion/native';
 import { useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getDetail } from '../common/api';
 import { BLACK_COLOR } from '../common/colors';
 import Loader from '../components/Loader/Loader';
+import SearchResult from '../components/SearchResult/SearchResult';
 
 export default function Search() {
   const [value, setValue] = useState('');
@@ -37,6 +38,7 @@ export default function Search() {
     <ScrollView style={{ margin: 20 }}>
       <SearchInput
         autoFocus
+        placeholder="검색어를 입력하세요."
         value={value}
         onChangeText={setValue}
         onSubmitEditing={searchTitle}
@@ -48,7 +50,9 @@ export default function Search() {
           {!result || isError ? (
             <Text>검색 결과가 없습니다.</Text>
           ) : (
-            result.map((item) => <Text>{item.TITLE}</Text>)
+            result
+              .slice(0, 20) // 검색결과 20건 표시
+              .map((detail) => <SearchResult detail={detail} />)
           )}
         </View>
       )}

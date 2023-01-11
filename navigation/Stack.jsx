@@ -33,9 +33,7 @@ export default function Stack({ navigation: { goBack } }) {
       }}
     >
       <NativeStack.Screen
-        options={{
-          title: '상세페이지',
-        }}
+        options={{ title: '상세페이지' }}
         name="Detail"
         component={Detail}
       />
