@@ -13,18 +13,21 @@ export default function ReviewContainer({ title, reviewData }) {
   const mutationAdd = useMutation(createReview, {
     onSuccess: () => {
       queryClient.invalidateQueries('reviews');
+      queryClient.invalidateQueries('myreviews');
     },
   });
 
   const mutationDelete = useMutation(deleteReview, {
     onSuccess: () => {
       queryClient.invalidateQueries('reviews');
+      queryClient.invalidateQueries('myreviews');
     },
   });
 
   const mutationUpdate = useMutation(updateReview, {
     onSuccess: () => {
       queryClient.invalidateQueries('reviews');
+      queryClient.invalidateQueries('myreviews');
     },
   });
 

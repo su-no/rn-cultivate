@@ -15,7 +15,6 @@ export default function Input({ addReview }) {
     // 유효성 검사
     const isValid = checkInput(content);
     if (!isValid) {
-      setContent('');
       return;
     }
     // 리뷰 등록 & 초기화

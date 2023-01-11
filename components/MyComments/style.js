@@ -11,7 +11,7 @@ const CommentHeaderTitle = styled.Text`
   font-weight: 700;
   padding-bottom: 3px;
 `;
-const CommentBox = styled.View`
+const CommentBox = styled.Pressable`
   border: 1px solid #cccccc;
   padding: 10px;
   margin-bottom: 10px;

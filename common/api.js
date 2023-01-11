@@ -38,6 +38,16 @@ export const getReviews = async (title) => {
   return reviews.sort((a, b) => b.date - a.date);
 };
 
+// firebase에서 내가 작성한 리뷰 받아오는 함수
+export const getMyReviews = async (uid) => {
+  const q = query(collection(dbService, 'reviews'), where('uid', '==', uid));
+  const reviews = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => reviews.push({ id: doc.id, ...doc.data() }));
+  // 작성일자 내림차순 정렬
+  return reviews.sort((a, b) => b.date - a.date);
+};
+
 // firebase에 리뷰를 추가하는 함수
 export const createReview = async (review) => {
   await addDoc(collection(dbService, 'reviews'), review);
