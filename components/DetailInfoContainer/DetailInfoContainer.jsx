@@ -2,10 +2,9 @@ import { Linking, View } from 'react-native';
 import * as S from './styles';
 import DetailInfo from '../DetailInfo/DetailInfo';
 import VioletButton from '../VioletButton/VioletButton';
-import Loader from '../Loader/Loader';
 import TicketSave from './TicketSave';
 
-export default function DetailTopContainer({ detail }) {
+export default function DetailInfoContainer({ detail }) {
   const {
     MAIN_IMG: imgPath,
     DATE: period,
@@ -28,7 +27,11 @@ export default function DetailTopContainer({ detail }) {
         {/* 제목 */}
         <S.Title>{title}</S.Title>
         {/* 기간, 장소, 가격 */}
-        <DetailInfo period={period} place={place} price={price} />
+        <DetailInfo
+          period={period ?? '정보 없음'}
+          place={place ?? '정보 없음'}
+          price={price ?? '정보 없음'}
+        />
         {/* 홈페이지 가기 버튼 */}
         <VioletButton
           label="홈페이지 가기"
