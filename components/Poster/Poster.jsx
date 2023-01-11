@@ -16,7 +16,7 @@ export default function Poster({ imageURL, title }) {
       <Image
         resizeMode="cover"
         source={{ uri: imageURL }}
-        style={{ width: '100%', height: 190 }}
+        style={{ width: 100, height: 190 }}
       />
     </TouchableOpacity>
   );
