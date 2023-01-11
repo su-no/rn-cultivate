@@ -11,6 +11,7 @@ import {
   PINK_COLOR,
   SKY_COLOR,
   VIOLET_COLOR,
+  WHITE_COLOR,
 } from '../common/colors';
 
 const Tab = createBottomTabNavigator();
@@ -34,6 +35,9 @@ export default function Tabs() {
       screenOptions={{
         headerTitle: () => <LogoTitle />,
         headerTitleAlign: 'center',
+      }}
+      sceneContainerStyle={{
+        backgroundColor: WHITE_COLOR,
       }}
     >
       <Tab.Screen

@@ -27,7 +27,7 @@ const MyComments = () => {
   });
 
   if (isLoading) return <Loader />;
-  if (isError) return <Error />;
+  if (isError) return <Error message="Error" />;
 
   return (
     <CommentContainer>

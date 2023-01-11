@@ -5,7 +5,6 @@ import { getDetail, getReviews } from '../common/api';
 import DetailInfoContainer from '../components/DetailInfoContainer/DetailInfoContainer';
 import Loader from '../components/Loader/Loader';
 import ReviewContainer from '../components/ReviewContainer/ReviewContainer';
-import { useCallback } from 'react';
 
 export default function Detail({ route }) {
   // * params : title 받아오기
