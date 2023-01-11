@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 function LogoTitle() {
   return (
     <Image
-      source={require('../assets/logo.png')}
+      source={require('../assets/34.png')}
       style={{
         width: 140,
         height: 20,
