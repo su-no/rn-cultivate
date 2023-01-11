@@ -35,7 +35,7 @@ export default function MyPage({ navigation: { navigate, reset } }) {
       style={{ padding: 10, backgroundColor: 'white' }}
     >
       <Profile />
-      <MyComments></MyComments>
+      <MyComments />
     </ScrollView>
   );
 }
