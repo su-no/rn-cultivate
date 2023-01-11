@@ -30,7 +30,7 @@ export default function DetailInfoContainer({ detail }) {
         <DetailInfo
           period={period !== '' ? period : '홈페이지 확인'}
           place={place !== '' ? place : '홈페이지 확인'}
-          price={price !== '' ? price : '무료'}
+          price={price !== '' ? price : '홈페이지 확인'}
         />
         {/* 홈페이지 가기 버튼 */}
         <VioletButton
