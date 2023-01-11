@@ -28,6 +28,7 @@ export default function ReviewItem({ data, deleteReview, updateReview }) {
         text: '삭제',
         onPress: async () => {
           await deleteReview(id);
+          Alert.alert('삭제되었습니다.');
         },
       },
     ]);
@@ -35,6 +36,7 @@ export default function ReviewItem({ data, deleteReview, updateReview }) {
 
   const handleUpdate = async () => {
     await updateReview({ id, editedContent });
+    Alert.alert('수정되었습니다.');
     setIsEditing(false);
   };
 
