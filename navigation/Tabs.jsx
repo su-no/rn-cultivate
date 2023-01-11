@@ -16,7 +16,6 @@ import {
 } from '../common/colors';
 
 const Tab = createBottomTabNavigator();
-
 export default function Tabs({ navigation: { navigate } }) {
   const isDark = useColorScheme() === 'dark';
 
