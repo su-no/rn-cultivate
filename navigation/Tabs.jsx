@@ -1,4 +1,4 @@
-import { Image, useColorScheme } from 'react-native';
+import { Image, Pressable, useColorScheme } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Main from '../screens/Main';
 import Category from '../screens/Category';
@@ -6,6 +6,7 @@ import MyTickets from '../screens/MyTickets';
 import MyPage from '../screens/MyPage';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import {
   BLUE_COLOR,
   PINK_COLOR,
@@ -16,18 +17,7 @@ import {
 
 const Tab = createBottomTabNavigator();
 
-function LogoTitle() {
-  return (
-    <Image
-      source={require('../assets/logo.png')}
-      style={{
-        width: 140,
-        height: 20,
-      }}
-    />
-  );
-}
-export default function Tabs() {
+export default function Tabs({ navigation: { navigate } }) {
   const isDark = useColorScheme() === 'dark';
 
   return (
@@ -40,8 +30,15 @@ export default function Tabs() {
         backgroundColor: WHITE_COLOR,
       }}
     >
+      {/* 메인 페이지 */}
       <Tab.Screen
         options={{
+          headerTitle: () => <LogoTitle />,
+          headerRight: () => (
+            <SearchButton
+              onPress={() => navigate('Stack', { screen: 'Search' })}
+            />
+          ),
           title: '메인',
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="home" size={size} color={color} />
@@ -51,6 +48,7 @@ export default function Tabs() {
         name="Main"
         component={Main}
       />
+      {/* 카테고리 페이지 */}
       <Tab.Screen
         options={{
           title: '카테고리',
@@ -66,6 +64,7 @@ export default function Tabs() {
         name="Category"
         component={Category}
       />
+      {/* 관심티켓 페이지 */}
       <Tab.Screen
         options={{
           title: '관심티켓',
@@ -77,6 +76,7 @@ export default function Tabs() {
         name="MyTickets"
         component={MyTickets}
       />
+      {/* 마이페이지 */}
       <Tab.Screen
         options={{
           title: '마이페이지',
@@ -89,5 +89,33 @@ export default function Tabs() {
         component={MyPage}
       />
     </Tab.Navigator>
+  );
+}
+
+function LogoTitle() {
+  return (
+    <Image
+      source={require('../assets/logo.png')}
+      style={{
+        width: 140,
+        height: 20,
+      }}
+    />
+  );
+}
+
+function SearchButton({ onPress }) {
+  return (
+    <Pressable onPress={onPress}>
+      <Ionicons
+        name="search"
+        size={26}
+        color="black"
+        style={{
+          marginRight: 20,
+          color: SKY_COLOR,
+        }}
+      />
+    </Pressable>
   );
 }
