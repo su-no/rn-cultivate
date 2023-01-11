@@ -1,6 +1,7 @@
 import styled from '@emotion/native';
 const CommentContainer = styled.View`
   margin-top: 10px;
+  padding-bottom: 50px;
 `;
 const CommentHeader = styled.View`
   flex-direction: row;

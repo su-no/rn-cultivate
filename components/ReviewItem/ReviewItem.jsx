@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
+
+import { authService } from '../../common/firebase';
 import { getDate } from '../../common/utils';
 import { GRAY_COLOR } from '../../common/colors';
+
 import * as S from './styles';
+
 import GrayButton from '../GrayButton/GrayButton';
-import { authService } from '../../common/firebase';
 
 export default function ReviewItem({ data, deleteReview, updateReview }) {
   const { id, content, nickname, date, uid } = data;

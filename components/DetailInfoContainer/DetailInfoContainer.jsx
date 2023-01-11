@@ -1,5 +1,8 @@
 import { Linking, View } from 'react-native';
+
+import styles from '../../common/styles';
 import * as S from './styles';
+
 import DetailInfo from '../DetailInfo/DetailInfo';
 import VioletButton from '../VioletButton/VioletButton';
 import TicketSave from './TicketSave';
@@ -33,10 +36,14 @@ export default function DetailInfoContainer({ detail }) {
           price={price !== '' ? price : '홈페이지 확인'}
         />
         {/* 홈페이지 가기 버튼 */}
-        <VioletButton
-          label="홈페이지 가기"
-          onPress={() => Linking.openURL(link)}
-        />
+        <View style={styles.shadow}>
+          <VioletButton
+            label="홈페이지 가기"
+            onPress={() =>
+              Linking.openURL(link).catch((err) => console.log('error:', err))
+            }
+          />
+        </View>
       </S.Container>
     </>
   );

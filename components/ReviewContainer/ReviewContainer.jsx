@@ -1,7 +1,7 @@
-import { View } from 'react-native';
 import { authService } from '../../common/firebase';
 
 import * as S from './styles';
+
 import Input from '../Input/Input';
 import ReviewItem from '../ReviewItem/ReviewItem';
 import useReviews from '../../hooks/useReviews';
@@ -18,19 +18,17 @@ export default function ReviewContainer({ title, reviewData }) {
 
   return (
     <S.Container>
-      <View>
-        <S.Title>후기 & 기대평</S.Title>
-        <Input addReview={handleAdd} />
-        {reviewData.map((data) => (
-          <ReviewItem
-            key={data.id}
-            id={data.id}
-            data={data}
-            deleteReview={deleteReview}
-            updateReview={updateReview}
-          />
-        ))}
-      </View>
+      <S.Title>후기 & 기대평</S.Title>
+      <Input addReview={handleAdd} />
+      {reviewData.map((data) => (
+        <ReviewItem
+          key={data.id}
+          id={data.id}
+          data={data}
+          deleteReview={deleteReview}
+          updateReview={updateReview}
+        />
+      ))}
     </S.Container>
   );
 }

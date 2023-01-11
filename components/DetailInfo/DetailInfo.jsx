@@ -1,6 +1,8 @@
 import { View } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
 import styled from '@emotion/native';
+
 import { BLACK_COLOR } from '../../common/colors';
 
 export default function DetailInfo({ period, place, price }) {

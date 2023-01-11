@@ -3,6 +3,7 @@ import { BLACK_COLOR } from '../../common/colors';
 
 export const Container = styled.View`
   margin: 20px 20px 0px 20px;
+  padding-bottom: 50px;
 `;
 
 export const Title = styled.Text`
