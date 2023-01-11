@@ -8,6 +8,7 @@ const ProfileHeader = styled.View`
 const ProfileTitle = styled.Text`
   font-size: 20px;
   font-weight: 700;
+  padding-bottom: 3px;
 `;
 const ProfileHeaderBtns = styled.View`
   flex-direction: row;
@@ -36,9 +37,8 @@ const ProfileImg = styled.Image`
   height: 60px;
 `;
 const ProfileNickNameBox = styled.View`
-  width: 50%;
+  width: 60%;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
 `;
 const ProfileNickName = styled.Text`
@@ -65,6 +65,14 @@ const ProfileDetailContents = styled.TextInput`
   font-size: 12px;
 `;
 
+const ChangePwBox = styled.View`
+  flex-direction: row-reverse;
+  width: 70px;
+  justify-content: space-between;
+  margin-top: 5px;
+  margin-left: -9px;
+`;
+
 export {
   ProfileContainer,
   ProfileHeader,
@@ -81,4 +89,5 @@ export {
   ProfileDetailBox,
   ProfileDetailTitle,
   ProfileDetailContents,
+  ChangePwBox,
 };

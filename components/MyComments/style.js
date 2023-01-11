@@ -9,6 +9,7 @@ const CommentHeader = styled.View`
 const CommentHeaderTitle = styled.Text`
   font-size: 20px;
   font-weight: 700;
+  padding-bottom: 3px;
 `;
 const CommentBox = styled.View`
   border: 1px solid #cccccc;

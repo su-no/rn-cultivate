@@ -1,24 +1,54 @@
 import { ScrollView } from 'react-native';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
+import { useQueries } from 'react-query';
+import { getDetail, getReviews } from '../common/api';
 import DetailInfoContainer from '../components/DetailInfoContainer/DetailInfoContainer';
+import Loader from '../components/Loader/Loader';
 import ReviewContainer from '../components/ReviewContainer/ReviewContainer';
+import { useCallback } from 'react';
 
-export default function Detail() {
-  // 굳이 여기서 fetch하지 않고, Main/Category 페이지에서 Poster 클릭할 때 props로 data를 넘겨주면 될 것 같음.
+export default function Detail({ route }) {
+  // * params : title 받아오기
+  const { title } = route.params;
 
-  // 일단 fetch해서 가져오는 방법 사용했음.
+  const queries = useQueries([
+    {
+      // firebase에서 공연 상세정보 받아오는 함수
+      queryKey: 'detail',
+      queryFn: () => getDetail(title),
+      enabled: !!title,
+    },
+    {
+      // firebase에서 리뷰 데이터 받아오는 함수
+      queryKey: 'reviews',
+      queryFn: () => getReviews(title),
+    },
+  ]);
 
-  // const title =
-  //   'EO(서)발레·서발레씨어터가 함께하는 크리스마스 최고의 선물 호두까기 인형';
-  const title = '뮤지컬 캣츠 내한공연-서울 (Musical CATS)';
+  const [
+    { data: detail, isLoading: isDetailLoading },
+    { data: reviewData, isLoading: isReviewLoading },
+  ] = queries;
+
+  if (!detail || isDetailLoading || isReviewLoading) {
+    return <Loader />;
+  }
+  if (!detail?.culturalEventInfo) {
+    console.log('해당하는 정보가 없습니다.');
+    return;
+  }
 
   return (
-    <>
-      <ScrollView>
-        {/* 공연 정보 */}
-        <DetailInfoContainer title={title} />
-        {/* 후기 & 기대평 */}
-        <ReviewContainer title={title} />
-      </ScrollView>
-    </>
+    <ScrollView>
+      {/* 공연 정보 */}
+      <DetailInfoContainer detail={detail} />
+      {/* 후기 & 기대평 */}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.select({ ios: 'padding' })}
+      >
+        <ReviewContainer title={title} reviewData={reviewData} />
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
