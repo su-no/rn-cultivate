@@ -5,6 +5,7 @@ import { YELLOW_COLOR, VIOLET_COLOR, WHITE_COLOR } from '../common/colors';
 import Detail from '../screens/Detail';
 import Login from '../screens/Login';
 import Join from '../screens/Join';
+import Search from '../screens/Search';
 
 const NativeStack = createNativeStackNavigator();
 
@@ -47,6 +48,11 @@ export default function Stack({ navigation: { goBack } }) {
         options={{ title: '회원가입' }}
         name="Join"
         component={Join}
+      />
+      <NativeStack.Screen
+        options={{ title: '검색' }}
+        name="Search"
+        component={Search}
       />
     </NativeStack.Navigator>
   );
