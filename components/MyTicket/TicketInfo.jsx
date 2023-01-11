@@ -6,7 +6,7 @@ import { BLACK_COLOR } from '../../common/colors';
 
 export default function TicketInfo({ period, place, price }) {
   return (
-    <>
+    <Detail>
       <DetailView>
         <Ionicons
           name="calendar-sharp"
@@ -34,22 +34,24 @@ export default function TicketInfo({ period, place, price }) {
         />
         <DetailText>{price}</DetailText>
       </DetailView>
-    </>
+    </Detail>
   );
 }
+
+const Detail = styled.View`
+  flex-direction: column;
+`;
 
 const DetailView = styled.View`
   flex-direction: row;
 `;
 
 const DetailText = styled.Text`
-  /* font-size: 13px;
-  font-weight: 500;
-  margin: 3px; */
   word-break: break-all;
   font-size: 13px;
   flex-shrink: 1;
   font-weight: 500;
   color: ${BLACK_COLOR};
   margin-top: 4px;
+  flex-direction: column;
 `;
