@@ -21,6 +21,7 @@ export default function Input({ addReview }) {
     // 리뷰 등록 & 초기화
     await addReview(content);
     setContent('');
+    Alert.alert('작성이 완료되었습니다.');
   };
 
   const user = authService.currentUser;
