@@ -66,8 +66,12 @@ const ImagePickerComponent = () => {
     <>
       <Pressable onPress={selectImage}>
         <Image
-          style={{ width: 100, height: 100, borderRadius: 50 }}
-          source={{ uri: profile }}
+          style={{ width: 120, height: 120, borderRadius: 60 }}
+          source={{
+            uri:
+              profile ??
+              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png',
+          }}
         ></Image>
       </Pressable>
 
