@@ -17,7 +17,7 @@ import { useRef, useState } from 'react';
 import ViewShot from 'react-native-view-shot';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function TicketDetail({ title, navigate }) {
+export default function TicketDetail({ title, navigate, getBookmarks }) {
   // 공유할 이미지 컴포넌트 ref
   const viewRef = useRef();
 
@@ -76,8 +76,8 @@ export default function TicketDetail({ title, navigate }) {
           delTicket(title)
             .then(() => {
               alert('관심티켓에서 삭제 완료');
-              // setModalVisible(!modalVisible);
-              navigation.navigate('Tabs', { screen: 'Main' });
+              setModalVisible(!modalVisible);
+              getBookmarks();
             })
             .catch((error) => {
               console.log(error);

@@ -32,7 +32,7 @@ const TicketModal = ({
       <Modal
         animationType="slide"
         transparent={true}
-        // visible={visible}
+        visible={modalVisible}
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);

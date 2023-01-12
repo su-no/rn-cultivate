@@ -1,30 +1,23 @@
-import React, { useState } from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import { Pressable, Text, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Pressable, Text, Image, TextInput } from 'react-native';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { authService, storage } from '../../common/firebase';
 import { updateProfile } from 'firebase/auth';
+import * as ImagePicker from 'expo-image-picker';
+import { BLUE_COLOR, SKY_COLOR } from '../../common/colors';
 
 const ImagePickerComponent = () => {
   const user = authService.currentUser;
-  // console.log(user.photoURL);
-  const storageRef = ref(storage, 'profile/psh5575@gmail.com');
+  const [dp, setDp] = useState(false);
+  const [profile, setProfile] = useState(user.photoURL ?? null);
 
   //현재 이미지 주소
-  const [imageUrl, serImageUrl] = useState();
+  const [image, setImage] = useState(null);
   //권한 요청을 위한 hooks
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-  let src = `"https://firebasestorage.googleapis.com/v0/b/react-native-todolist-4aa67.appspot.com/o/profile%2Fpsh5575%40gmail.com?alt=media&token
-  =116b7c33-cb14-4f28-a5e1-0bdfe249bd02"`;
 
-  const showCurrentImg = () => {
-    getDownloadURL(storageRef).then((url) => {
-      console.log(url);
-    });
-  };
-  showCurrentImg();
-
-  const uploadImage = async () => {
+  //이미지 선택
+  const selectImage = async () => {
     // 권한 확인코드: 권한 없으면 물어보고, 승인하지 않으면 함수 종료
     if (!status.granted) {
       const permission = await requestPermission();
@@ -33,27 +26,62 @@ const ImagePickerComponent = () => {
       }
     }
     //이미지 업로드 기능
-    const result = await ImagePicker.launchImageLibraryAsync({
+    const imageData = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
+      allowsEditing: true,
       quality: 1,
-      aspect: [1, 1],
+      aspect: [3, 3],
     });
-    if (result.canceled) {
+    if (imageData.canceled) {
       return null; //이미지 업로드 취소한 경우
     }
-    //이미지 업로드 결과 및 이미지 경로 업데이트
-    serImageUrl(result.assets[0].uri);
 
-    //파이어베이스 관련 코드
+    const source = { uri: imageData.uri };
+    console.log(source);
+    setImage(source);
+    setDp(true);
+  };
+
+  //업로드
+  const uploadImage = async () => {
+    const response = await fetch(image.uri);
+    const blob = await response.blob();
+    const filename = user.email;
+    const storageRef = ref(storage, filename);
+    uploadBytes(storageRef, blob)
+      .then((snapshot) => {
+        getDownloadURL(ref(storage, user.email)).then((url) => {
+          updateProfile(user, {
+            photoURL: url,
+          });
+          setProfile(url);
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    setDp(false);
   };
 
   return (
     <>
-      <Image style={{ width: 30, height: 30 }} source={{ uri: src }}></Image>
-      <Pressable onPress={uploadImage}>
-        <Text>업로드</Text>
+      <Pressable onPress={selectImage}>
+        <Image
+          style={{ width: 100, height: 100, borderRadius: 50 }}
+          source={{ uri: profile }}
+        ></Image>
       </Pressable>
+
+      {dp && (
+        <Pressable
+          onPress={uploadImage}
+          style={{ width: 100, alignItems: 'center' }}
+        >
+          <Text style={{ color: BLUE_COLOR, fontWeight: '700', fontSize: 17 }}>
+            업로드
+          </Text>
+        </Pressable>
+      )}
     </>
   );
 };
