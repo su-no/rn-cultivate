@@ -16,6 +16,9 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { BLACK_COLOR } from '../../common/colors';
 import { doc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { async } from '@firebase/util';
+import { useColorScheme } from 'react-native';
+
+// const isDark = useColorScheme() === 'dark';
 
 const TicketModal = ({
   title,
@@ -26,7 +29,7 @@ const TicketModal = ({
   deleteBookmarks,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const isDark = useColorScheme() === 'dark';
   return (
     <ModalView>
       <Modal
@@ -39,7 +42,10 @@ const TicketModal = ({
         }}
       >
         <BgView>
-          <View style={styles.modalView}>
+          <View
+            style={styles.modalView}
+            backgroundColor={isDark ? '#333333' : '#ffffff'}
+          >
             <TitleText>{title}</TitleText>
             <ModalPoster source={{ uri: imgPath }} />
             <ScrollView>
@@ -50,11 +56,19 @@ const TicketModal = ({
 
             <CloseView>
               <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                <AntDesign name="check" size={24} color="black" />
+                <AntDesign
+                  name="check"
+                  size={24}
+                  color={isDark ? '#ffffff' : '#272727'}
+                />
               </Pressable>
               {/* <TicketModal /> */}
               <CheckingBtn onPress={deleteBookmarks}>
-                <AntDesign name="delete" size={24} color="black" />
+                <AntDesign
+                  name="delete"
+                  size={24}
+                  color={isDark ? '#ffffff' : '#272727'}
+                />
               </CheckingBtn>
             </CloseView>
           </View>
@@ -76,7 +90,7 @@ const TitleText = styled.Text`
   word-break: break-all;
   font-size: 20px;
   font-weight: bold;
-  color: ${BLACK_COLOR};
+  color: ${(props) => props.theme.color.title};
   margin-top: 15px;
   margin-bottom: 5px;
 `;
@@ -119,7 +133,7 @@ const styles = StyleSheet.create({
   modalView: {
     marginTop: 95,
     margin: 25,
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#ffffff',
     borderRadius: 20,
     padding: 15,
     alignItems: 'center',

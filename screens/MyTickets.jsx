@@ -45,6 +45,7 @@ export default function MyTickets({ navigation: { navigate } }) {
 
 const StSafeArea = styled.SafeAreaView`
   flex: 1;
+  background-color: ${(props) => props.theme.color.background};
 `;
 const StView = styled.View`
   background-color: ${(props) => props.theme.color.background};
