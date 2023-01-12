@@ -1,46 +1,30 @@
-import { useState, useEffect } from 'react';
-import { ScrollView, Text, View, FlatList } from 'react-native';
-import { screenHeight } from '../common/utils';
+import { useState } from 'react';
+import {
+  ScrollView,
+  View,
+  FlatList,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
+import { useQuery } from 'react-query';
+import Swiper from 'react-native-swiper';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Swiper from 'react-native-swiper';
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import { screenHeight, formatDate, getCurrentDate } from '../common/utils';
 import { getData } from '../common/api';
-import { useQuery } from 'react-query';
+import { DARK_GRAY_COLOR, VIOLET_COLOR } from '../common/colors';
 import Poster from '../components/Poster/Poster';
-import { formatDate, getCurrentDate } from '../common/utils';
 
 export default function Main() {
+  const isDark = useColorScheme() === 'dark';
+
   const [onstageData, setOnstageData] = useState([]);
   const [upcomingData, setUpcomingData] = useState([]);
 
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: 'data',
     queryFn: () => getData(),
-  });
-
-  if (isLoading) {
-    return;
-  }
-
-  const UpcomingShow = ({ item, idx }) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          paddingVertical: 10,
-          alignContent: 'center',
-        }}
-      >
-        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
-      </View>
-    );
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
+    onSuccess: () => {
       const onstage = [];
       const upcoming = [];
       data?.forEach((item) => {
@@ -55,8 +39,26 @@ export default function Main() {
       });
       setOnstageData(onstage);
       setUpcomingData(upcoming);
-    }
-  }, []);
+    },
+  });
+
+  if (isLoading) {
+    return;
+  }
+
+  const UpcomingShow = ({ item, idx }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignContent: 'center',
+        }}
+      >
+        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
+      </View>
+    );
+  };
 
   return (
     data && (
@@ -65,6 +67,7 @@ export default function Main() {
         numColumns={3}
         data={upcomingData}
         renderItem={UpcomingShow}
+        contentContainerStyle={{ paddingBottom: 30 }}
         columnWrapperStyle={{
           justifyContent: 'space-between',
           display: 'flex',
@@ -99,7 +102,7 @@ export default function Main() {
                 <SwiperChildView>
                   <BackgroundImg
                     style={StyleSheet.absoluteFill}
-                    source={require('../assets/bannerHighlight.jpg')}
+                    source={require('../assets/matilda.jpg')}
                   />
                   <LinearGradient
                     style={{ position: 'absolute', top: 0, left: 0 }}
@@ -110,12 +113,16 @@ export default function Main() {
 
               <MainAllContainer>
                 <OnStageContainer>
-                  <TitleText>
-                    <Text style={{ fontSize: 25 }}>On Stage</Text>
+                  <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
+                    On Stage
                   </TitleText>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <ScrollView
+                    style={{ paddingBottom: 10 }}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                  >
                     {onstageData.map((item, idx) => (
-                      <View style={{ paddingTop: 15, paddingRight: 10 }}>
+                      <View style={{ paddingRight: 10 }}>
                         <Poster
                           imageURL={item.MAIN_IMG}
                           title={item.TITLE}
@@ -126,8 +133,8 @@ export default function Main() {
                   </ScrollView>
                 </OnStageContainer>
 
-                <TitleText>
-                  <Text style={{ fontSize: 25 }}>Upcoming</Text>
+                <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
+                  Upcoming
                 </TitleText>
               </MainAllContainer>
             </>
@@ -141,7 +148,7 @@ export default function Main() {
 const SwiperChildView = styled.View`
   flex: 1;
   justify-content: flex-end;
-  height: ${screenHeight / 3 + 'px'};
+  height: ${screenHeight / 3.7 + 'px'};
 `;
 
 const BackgroundImg = styled.Image`
@@ -153,9 +160,13 @@ const BackgroundImg = styled.Image`
 const MainAllContainer = styled.View`
   padding: 0 15px;
 `;
-const OnStageContainer = styled.View``;
+const OnStageContainer = styled.View`
+  margin: 10px 0;
+`;
 
 const TitleText = styled.Text`
-  font-weight: 300;
-  margin-top: 20px;
+  color: ${({ color }) => color};
+  font-size: 25px;
+  font-weight: 500;
+  margin: 10px 0;
 `;

@@ -1,7 +1,7 @@
 import { Linking, View } from 'react-native';
 
 import styles from '../../common/styles';
-import * as S from './styles';
+import { Poster, Container, Title, TicketContainer, Ticket } from './styles';
 
 import DetailInfo from '../DetailInfo/DetailInfo';
 import VioletButton from '../VioletButton/VioletButton';
@@ -21,14 +21,14 @@ export default function DetailInfoContainer({ detail }) {
     <>
       {/* 포스터 이미지 */}
       <View>
-        <S.Poster source={{ uri: imgPath }} />
+        <Poster source={{ uri: imgPath }} />
         {/* 관심티켓 버튼 */}
         <TicketSave title={title} />
       </View>
       {/* 공연 정보 */}
-      <S.Container>
+      <Container>
         {/* 제목 */}
-        <S.Title>{title !== '' ? title : '홈페이지 확인'}</S.Title>
+        <Title>{title !== '' ? title : '홈페이지 확인'}</Title>
         {/* 기간, 장소, 가격 */}
         <DetailInfo
           period={period !== '' ? period : '홈페이지 확인'}
@@ -44,7 +44,7 @@ export default function DetailInfoContainer({ detail }) {
             }
           />
         </View>
-      </S.Container>
+      </Container>
     </>
   );
 }

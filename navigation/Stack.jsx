@@ -1,7 +1,7 @@
 import { useColorScheme } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { YELLOW_COLOR, VIOLET_COLOR, WHITE_COLOR } from '../common/colors';
+import { VIOLET_COLOR, WHITE_COLOR, BLACK_COLOR } from '../common/colors';
 import Detail from '../screens/Detail';
 import Login from '../screens/Login';
 import Join from '../screens/Join';
@@ -21,14 +21,12 @@ export default function Stack({ navigation: { goBack } }) {
             label="뒤로"
             onPress={() => goBack()}
             labelVisible
-            labelStyle={{
-              color: isDark ? YELLOW_COLOR : VIOLET_COLOR,
-            }}
-            tintColor={isDark ? YELLOW_COLOR : VIOLET_COLOR}
+            labelStyle={{ color: VIOLET_COLOR }}
+            tintColor={VIOLET_COLOR}
           />
         ),
         contentStyle: {
-          backgroundColor: WHITE_COLOR,
+          backgroundColor: isDark ? BLACK_COLOR : WHITE_COLOR,
         },
       }}
     >

@@ -16,8 +16,6 @@ const queryClient = new QueryClient();
 export default function App() {
   const isDark = useColorScheme() === 'dark';
 
-  console.log(isDark ? 'dark' : 'light');
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>

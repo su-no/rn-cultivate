@@ -7,6 +7,7 @@ export default function Poster({ imageURL, title }) {
   const { navigate } = useNavigation();
   return (
     <TouchableOpacity
+      activeOpacity={0.7}
       style={styles.shadow}
       onPress={() => {
         navigate('Stack', {

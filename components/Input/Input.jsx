@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { authService } from '../../common/firebase';
 import { checkInput } from '../../common/utils';
-import { GRAY_COLOR } from '../../common/colors';
+import { DARK_GRAY_COLOR, GRAY_COLOR } from '../../common/colors';
 import * as S from './styles';
 
 export default function Input({ addReview }) {
+  const isDark = useColorScheme() === 'dark';
   const { push } = useNavigation();
 
   const [content, setContent] = useState('');
@@ -57,6 +58,7 @@ export default function Input({ addReview }) {
           onChangeText={setContent}
           onSubmitEditing={onSubmit}
           maxLength={50}
+          placeholderTextColor={isDark ? DARK_GRAY_COLOR : GRAY_COLOR}
         />
       )}
     </>
