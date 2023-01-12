@@ -38,7 +38,7 @@ export default function DetailInfoContainer({ detail }) {
         {/* 홈페이지 가기 버튼 */}
         <View style={styles.shadow}>
           <VioletButton
-            label="홈페이지 가기"
+            label="홈페이지 방문"
             onPress={() =>
               Linking.openURL(link).catch((err) => console.log('error:', err))
             }
