@@ -12,8 +12,8 @@ export const Container = styled.Pressable`
 export const Poster = styled.Image`
   width: 100px;
   height: 150px;
-  margin-right: 10px;
-  border-radius: 7px;
+  margin-right: 16px;
+  border-radius: 6px;
 `;
 
 export const Title = styled.Text`

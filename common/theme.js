@@ -18,6 +18,7 @@ export const lightTheme = {
     inputText: WHITE_COLOR,
     background: WHITE_COLOR,
     ticketHeader: BLACK_COLOR,
+    categoryTitle: BLACK_COLOR,
   },
 };
 
@@ -32,5 +33,6 @@ export const darkTheme = {
     inputText: BLACK_COLOR,
     background: BLACK_COLOR,
     ticketHeader: GRAY_COLOR,
+    categoryTitle: WHITE_COLOR,
   },
 };
