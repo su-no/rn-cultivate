@@ -29,17 +29,13 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   // useQuery
-  const {
-    isLoading,
-    isError,
-    data: detail,
-  } = useQuery({
+  const { isLoading, data: detail } = useQuery({
     queryKey: title,
     queryFn: () => getDetail(title),
   });
 
   if (isLoading) {
-    return <Loader />;
+    return null;
   }
 
   const {
