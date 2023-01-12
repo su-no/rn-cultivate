@@ -132,7 +132,8 @@ const StyledBtn = styled.View`
 const StyledBtnText = styled.Text`
   font-size: 40px;
   text-align: center;
-  color: ${(props) => props.color};
+  color: ${(props) =>
+    props.color === 'black' ? props.theme.color.categoryTitle : props.color};
 `;
 
 const PosterList = styled.FlatList`
