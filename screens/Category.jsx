@@ -14,6 +14,7 @@ import {
 } from '../common/colors';
 import Poster from '../components/Poster/Poster';
 import { getData } from '../common/api';
+import styles from '../common/styles';
 
 export default function Category({}) {
   const [category, setCategory] = useState('All');
@@ -61,6 +62,7 @@ export default function Category({}) {
       <StyledBtns>
         {['All', '강의', '전시', '공연', '축제'].map((name, idx) => (
           <StyledBtn
+            style={styles.shadow}
             key={idx}
             onPress={() => setCategory(name)}
             color={colors[idx]}
@@ -105,7 +107,6 @@ const StyledBtn = styled.Pressable`
   width: 50px;
   height: 30px;
   justify-content: center;
-  border: 1px solid ${GRAY_COLOR};
   border-radius: 5px;
   background-color: ${(props) => props.color};
 `;
