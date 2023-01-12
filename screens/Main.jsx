@@ -42,10 +42,6 @@ export default function Main() {
     },
   });
 
-  if (isLoading) {
-    return;
-  }
-
   const UpcomingShow = ({ item, idx }) => {
     return (
       <View
@@ -60,88 +56,92 @@ export default function Main() {
     );
   };
 
+  if (!data || upcomingData.length === 0 || onstageData.length === 0) {
+    console.log('로딩 중');
+    return;
+  }
+  console.log('로딩 완료');
+
   return (
-    data && (
-      <FlatList
-        keyExtractor={(item, idx) => idx}
-        numColumns={3}
-        data={upcomingData}
-        renderItem={UpcomingShow}
-        contentContainerStyle={{ paddingBottom: 30 }}
-        columnWrapperStyle={{
-          justifyContent: 'space-between',
-          display: 'flex',
-          paddingHorizontal: 15,
-        }}
-        ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-        ListHeaderComponent={() => {
-          return (
-            <>
-              <Swiper height="100%" showsPagination={false} autoplay loop>
-                <SwiperChildView>
-                  <BackgroundImg
-                    style={StyleSheet.absoluteFill}
-                    source={require('../assets/banner.png')}
-                  />
-                  <LinearGradient
-                    style={{ position: 'absolute', top: 0, left: 0 }}
-                    colors={['transparent', 'red']}
-                  />
-                </SwiperChildView>
+    <FlatList
+      keyExtractor={(item, idx) => item.TITLE}
+      numColumns={3}
+      data={upcomingData}
+      renderItem={UpcomingShow}
+      contentContainerStyle={{ paddingBottom: 30 }}
+      columnWrapperStyle={{
+        justifyContent: 'space-between',
+        display: 'flex',
+        paddingHorizontal: 15,
+      }}
+      ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
+      ListHeaderComponent={() => {
+        return (
+          <>
+            <Swiper height="100%" showsPagination={false} autoplay loop>
+              <SwiperChildView>
+                <BackgroundImg
+                  style={StyleSheet.absoluteFill}
+                  source={require('../assets/banner.png')}
+                />
+                <LinearGradient
+                  style={{ position: 'absolute', top: 0, left: 0 }}
+                  colors={['transparent', 'red']}
+                />
+              </SwiperChildView>
 
-                <SwiperChildView>
-                  <BackgroundImg
-                    style={StyleSheet.absoluteFill}
-                    source={require('../assets/cultureday.jpg')}
-                  />
-                  <LinearGradient
-                    style={{ position: 'absolute', top: 0, left: 0 }}
-                    colors={['transparent', 'black']}
-                  />
-                </SwiperChildView>
-                <SwiperChildView>
-                  <BackgroundImg
-                    style={StyleSheet.absoluteFill}
-                    source={require('../assets/bannerHighlight.jpg')}
-                  />
-                  <LinearGradient
-                    style={{ position: 'absolute', top: 0, left: 0 }}
-                    colors={['transparent', 'black']}
-                  />
-                </SwiperChildView>
-              </Swiper>
+              <SwiperChildView>
+                <BackgroundImg
+                  style={StyleSheet.absoluteFill}
+                  source={require('../assets/cultureday.jpg')}
+                />
+                <LinearGradient
+                  style={{ position: 'absolute', top: 0, left: 0 }}
+                  colors={['transparent', 'black']}
+                />
+              </SwiperChildView>
+              <SwiperChildView>
+                <BackgroundImg
+                  style={StyleSheet.absoluteFill}
+                  source={require('../assets/bannerHighlight.jpg')}
+                />
+                <LinearGradient
+                  style={{ position: 'absolute', top: 0, left: 0 }}
+                  colors={['transparent', 'black']}
+                />
+              </SwiperChildView>
+            </Swiper>
 
-              <MainAllContainer>
-                <OnStageContainer>
-                  <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
-                    On Stage
-                  </TitleText>
-                  <ScrollView
-                    style={{ paddingBottom: 10 }}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    {onstageData.map((item, idx) => (
-                      <View style={{ paddingRight: 10 }}>
-                        <Poster
-                          imageURL={item.MAIN_IMG}
-                          title={item.TITLE}
-                          key={idx}
-                        />
-                      </View>
-                    ))}
-                  </ScrollView>
-                </OnStageContainer>
-
+            <MainAllContainer>
+              <OnStageContainer>
                 <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
-                  Upcoming
+                  On Stage
                 </TitleText>
-              </MainAllContainer>
-            </>
-          );
-        }}
-      />
-    )
+                <ScrollView
+                  style={{ paddingBottom: 10 }}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                >
+                  {onstageData.map((item, idx) => (
+                    <View style={{ paddingRight: 10 }}>
+                      <Poster
+                        imageURL={item.MAIN_IMG}
+                        title={item.TITLE}
+                        key={item.TITLE}
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
+              </OnStageContainer>
+
+              <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
+                Upcoming
+              </TitleText>
+            </MainAllContainer>
+          </>
+        );
+      }}
+    />
   );
 }
 
