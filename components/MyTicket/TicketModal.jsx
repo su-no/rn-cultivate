@@ -23,7 +23,6 @@ const TicketModal = ({
   modalVisible,
   setModalVisible,
 }) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const isDark = useColorScheme() === 'dark';
   return (
     <ModalView>

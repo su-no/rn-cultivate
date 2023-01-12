@@ -89,6 +89,7 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
       style={{ flex: 1 }}
     >
       <SwiperChildView
+        activeOpacity={0.7}
         onPress={() => {
           navigate('Stack', {
             screen: 'Detail',
