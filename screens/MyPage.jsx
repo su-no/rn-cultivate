@@ -1,11 +1,10 @@
-import styled from '@emotion/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { ScrollView, Text, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native';
 import MyComments from '../components/MyComments/MyComments';
 import Profile from '../components/Profile/Profile';
 import { authService } from '../common/firebase';
 
-export default function MyPage({ navigation: { navigate, reset } }) {
+export default function MyPage({ navigation: { reset } }) {
   useFocusEffect(() => {
     if (authService.currentUser === null) {
       reset({

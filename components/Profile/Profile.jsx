@@ -46,6 +46,7 @@ function Profile() {
 
   const checkNewPasswordHandler = newPassword === checkNewPassword;
 
+  //로그아웃 함수
   const logOutHandler = () => {
     Alert.alert(null, '로그아웃 하시겠습니까?', [
       {
@@ -103,6 +104,7 @@ function Profile() {
 
   return (
     <ProfileContainer>
+      {/* 회원탈퇴  */}
       <LeaveMemberModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -110,6 +112,7 @@ function Profile() {
         password={password}
         setPassword={setPassword}
       />
+      {/* 닉네임변경 */}
       <ChangeNickNameModal
         setModalVisible={setModalDp}
         modalVisible={modalDp}
@@ -136,12 +139,6 @@ function Profile() {
       <ProfileBox>
         <ProfileContents direction={'row'}>
           <ProfileImgBox>
-            {/* <ProfileImg source={require('../../assets/ticket.png')} /> */}
-            {/* <ProfileImg
-              source={{
-                uri: 'gs://react-native-todolist-4aa67.appspot.com/profile/psh5575@gmail.com',
-              }}
-            /> */}
             <ImagePickerComponent user={user} />
           </ProfileImgBox>
           <ProfileNickNameBox>

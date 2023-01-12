@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Pressable, Text, Image, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { Pressable, Text, Image } from 'react-native';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { authService, storage } from '../../common/firebase';
 import { updateProfile } from 'firebase/auth';
 import * as ImagePicker from 'expo-image-picker';
-import { BLUE_COLOR, SKY_COLOR } from '../../common/colors';
+import { BLUE_COLOR } from '../../common/colors';
 
 const ImagePickerComponent = () => {
   const user = authService.currentUser;
@@ -36,8 +36,7 @@ const ImagePickerComponent = () => {
       return null; //이미지 업로드 취소한 경우
     }
 
-    const source = { uri: imageData.uri };
-    console.log(source);
+    const source = { uri: imageData.assets[0].uri };
     setImage(source);
     setDp(true);
   };
@@ -49,7 +48,7 @@ const ImagePickerComponent = () => {
     const filename = user.email;
     const storageRef = ref(storage, filename);
     uploadBytes(storageRef, blob)
-      .then((snapshot) => {
+      .then(() => {
         getDownloadURL(ref(storage, user.email)).then((url) => {
           updateProfile(user, {
             photoURL: url,

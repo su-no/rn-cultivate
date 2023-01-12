@@ -62,7 +62,7 @@ const ProfileDetailBox = styled.View`
 const ProfileDetailTitle = styled.Text`
   font-size: 12px;
   font-weight: 700;
-  color: ${(props) => props.theme.title};
+  color: ${(props) => props.theme.color.title};
 `;
 const ProfileDetailContents = styled.TextInput`
   background-color: lightgray;
