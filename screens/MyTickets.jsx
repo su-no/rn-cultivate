@@ -34,7 +34,14 @@ export default function MyTickets({ navigation: { navigate } }) {
     <StSafeArea>
       <ScrollView>
         {bookmarks.map((title, i) => {
-          return <TicketDetail title={title} navigate={navigate} key={i} />;
+          return (
+            <TicketDetail
+              title={title}
+              navigate={navigate}
+              key={i}
+              getBookmarks={getBookmarks}
+            />
+          );
         })}
       </ScrollView>
     </StSafeArea>

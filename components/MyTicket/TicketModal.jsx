@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, Modal, ScrollView, Alert } from 'react-native';
 import styled from '@emotion/native';
 import TicketInfo from '../../components/MyTicket/TicketInfo';
@@ -13,9 +13,9 @@ const TicketModal = ({
   place,
   price,
   deleteBookmarks,
+  modalVisible,
+  setModalVisible,
 }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <ModalView>
       <Modal
