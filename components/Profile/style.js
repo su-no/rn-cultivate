@@ -9,14 +9,19 @@ const ProfileTitle = styled.Text`
   font-size: 20px;
   font-weight: 700;
   padding-bottom: 3px;
+  color: ${(props) => props.theme.color.title};
 `;
 const ProfileHeaderBtns = styled.View`
   flex-direction: row;
 `;
 const ProfileButton = styled.TouchableOpacity``;
 const ProfileButtonText = styled.Text`
-  color: ${(props) => props.color};
+  color: ${(props) => props.color ?? props.theme.color.title};
+
   margin-right: 10px;
+`;
+const ChangeText = styled.Text`
+  color: ${(props) => props.theme.color.title};
 `;
 
 const ProfileBox = styled.View`
@@ -44,6 +49,7 @@ const ProfileNickNameBox = styled.View`
 const ProfileNickName = styled.Text`
   font-size: 20px;
   margin-right: 10px;
+  color: ${(props) => props.theme.color.title};
 `;
 const ProfileDetailBox = styled.View`
   width: 300px;
@@ -56,6 +62,7 @@ const ProfileDetailBox = styled.View`
 const ProfileDetailTitle = styled.Text`
   font-size: 12px;
   font-weight: 700;
+  color: ${(props) => props.theme.title};
 `;
 const ProfileDetailContents = styled.TextInput`
   background-color: lightgray;
@@ -63,6 +70,11 @@ const ProfileDetailContents = styled.TextInput`
   height: 40px;
   padding-left: 10px;
   font-size: 12px;
+  color: ${(props) => props.theme.title};
+`;
+
+const EmailText = styled.Text`
+  color: ${(props) => props.theme.color.title};
 `;
 
 const ChangePwBox = styled.View`
@@ -90,4 +102,6 @@ export {
   ProfileDetailTitle,
   ProfileDetailContents,
   ChangePwBox,
+  EmailText,
+  ChangeText,
 };

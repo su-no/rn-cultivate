@@ -16,7 +16,6 @@ import {
 } from '../common/colors';
 
 const Tab = createBottomTabNavigator();
-
 export default function Tabs({ navigation: { navigate } }) {
   const isDark = useColorScheme() === 'dark';
 
@@ -25,9 +24,6 @@ export default function Tabs({ navigation: { navigate } }) {
       screenOptions={{
         headerTitle: () => <LogoTitle />,
         headerTitleAlign: 'center',
-      }}
-      sceneContainerStyle={{
-        backgroundColor: WHITE_COLOR,
       }}
     >
       {/* 메인 페이지 */}
@@ -68,6 +64,7 @@ export default function Tabs({ navigation: { navigate } }) {
       <Tab.Screen
         options={{
           title: '관심티켓',
+          unmountOnBlur: true,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="ticket" size={size} color={color} />
           ),

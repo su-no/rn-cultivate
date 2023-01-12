@@ -30,10 +30,7 @@ export default function MyPage({ navigation: { navigate, reset } }) {
   });
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{ padding: 10, backgroundColor: 'white' }}
-    >
+    <ScrollView showsVerticalScrollIndicator={false} style={{ padding: 10 }}>
       <Profile />
       <MyComments />
     </ScrollView>

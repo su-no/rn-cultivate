@@ -1,6 +1,8 @@
 import { Alert, Text, View } from 'react-native';
 import {
   ChangePwBox,
+  ChangeText,
+  EmailText,
   ProfileBox,
   ProfileButton,
   ProfileButtonText,
@@ -138,7 +140,7 @@ function Profile() {
             <View>
               <ProfileNickName>안녕하세요,</ProfileNickName>
               <ProfileNickName>{user?.displayName}님</ProfileNickName>
-              <Text>({user?.email})</Text>
+              <EmailText>({user?.email})</EmailText>
             </View>
           </ProfileNickNameBox>
         </ProfileContents>
@@ -189,10 +191,10 @@ function Profile() {
           {dp === true && (
             <ChangePwBox>
               <ProfileButton onPress={changePwHandler}>
-                <Text>변경</Text>
+                <ChangeText>변경</ChangeText>
               </ProfileButton>
               <ProfileButton onPress={() => setDp(false)}>
-                <Text>취소</Text>
+                <ChangeText>취소</ChangeText>
               </ProfileButton>
             </ChangePwBox>
           )}
@@ -200,7 +202,7 @@ function Profile() {
         {dp === false && (
           <View style={{ flexDirection: 'row-reverse' }}>
             <ProfileButton onPress={() => setDp(true)}>
-              <Text>비밀번호 변경</Text>
+              <ChangeText>비밀번호 변경</ChangeText>
             </ProfileButton>
 
             <ProfileButton
@@ -209,7 +211,7 @@ function Profile() {
               }}
               style={{ paddingRight: 10 }}
             >
-              <Text>닉네임 변경</Text>
+              <ChangeText>닉네임 변경</ChangeText>
             </ProfileButton>
           </View>
         )}

@@ -8,7 +8,7 @@ export default function VioletButton({ label, onPress }) {
       activeOpacity={0.8}
       style={{
         backgroundColor: VIOLET_COLOR,
-        padding: 12,
+        padding: 10,
         borderWidth: 1,
         borderRadius: 5,
         borderColor: BLACK_COLOR,
@@ -18,7 +18,7 @@ export default function VioletButton({ label, onPress }) {
     >
       <Text
         style={{
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: '500',
           color: WHITE_COLOR,
           textAlign: 'center',
