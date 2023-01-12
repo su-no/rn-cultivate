@@ -48,7 +48,13 @@ export default function Category({}) {
 
   const { data, error, isLoading } = useQuery({
     queryKey: 'data',
-    queryFn: () => getData(),
+    queryFn: async () => {
+      const data = await getData();
+      return data.map((item, index) => ({
+        ...item,
+        id: index,
+      }));
+    },
   });
 
   const [category, setCategory] = useState('All');
