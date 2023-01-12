@@ -1,4 +1,4 @@
-import { Image, Pressable, useColorScheme } from 'react-native';
+import { Image, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Main from '../screens/Main';
 import Category from '../screens/Category';
@@ -20,23 +20,23 @@ import { authService } from '../common/firebase';
 
 const Tab = createBottomTabNavigator();
 export default function Tabs({ navigation: { navigate } }) {
-  const isDark = useColorScheme() === 'dark';
   const isSignedIn = !!authService.currentUser;
 
   return (
     <Tab.Navigator
       screenOptions={{
         headerTitle: () => <LogoTitle />,
+        headerTitleAlign: 'left',
+        headerRight: () => (
+          <SearchButton
+            onPress={() => navigate('Stack', { screen: 'Search' })}
+          />
+        ),
       }}
     >
       {/* 메인 페이지 */}
       <Tab.Screen
         options={{
-          headerRight: () => (
-            <SearchButton
-              onPress={() => navigate('Stack', { screen: 'Search' })}
-            />
-          ),
           title: '메인',
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="home" size={size} color={color} />
@@ -49,11 +49,6 @@ export default function Tabs({ navigation: { navigate } }) {
       {/* 카테고리 페이지 */}
       <Tab.Screen
         options={{
-          headerRight: () => (
-            <SearchButton
-              onPress={() => navigate('Stack', { screen: 'Search' })}
-            />
-          ),
           title: '카테고리',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -71,11 +66,14 @@ export default function Tabs({ navigation: { navigate } }) {
       <Tab.Screen
         options={{
           headerTitle: isSignedIn ? () => <LogoTitle /> : '로그인',
-          headerRight: () => (
-            <SearchButton
-              onPress={() => navigate('Stack', { screen: 'Search' })}
-            />
-          ),
+          headerTitleAlign: isSignedIn ? 'left' : 'center',
+          headerRight: isSignedIn
+            ? () => (
+                <SearchButton
+                  onPress={() => navigate('Stack', { screen: 'Search' })}
+                />
+              )
+            : null,
           title: '관심티켓',
           unmountOnBlur: true,
           tabBarIcon: ({ color, size }) => (
@@ -90,6 +88,14 @@ export default function Tabs({ navigation: { navigate } }) {
       <Tab.Screen
         options={{
           headerTitle: isSignedIn ? () => <LogoTitle /> : '로그인',
+          headerTitleAlign: isSignedIn ? 'left' : 'center',
+          headerRight: isSignedIn
+            ? () => (
+                <SearchButton
+                  onPress={() => navigate('Stack', { screen: 'Search' })}
+                />
+              )
+            : null,
           title: '마이페이지',
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="smileo" size={size} color={color} />
