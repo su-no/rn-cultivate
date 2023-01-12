@@ -130,6 +130,8 @@ export default function TicketDetail({ title, navigate }) {
             period={period}
             place={place}
             price={price}
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
           />
         </Row>
       </SwiperChildView>

@@ -24,15 +24,15 @@ const TicketModal = ({
   place,
   price,
   deleteBookmarks,
+  setModalVisible,
+  modalVisible,
 }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <ModalView>
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        // visible={visible}
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
