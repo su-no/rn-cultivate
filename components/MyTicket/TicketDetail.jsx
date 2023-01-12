@@ -1,7 +1,7 @@
 import styled, { css } from '@emotion/native';
-import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 
-import { screenHeight } from '../../common/utils';
+import { screenHeight, shareImage } from '../../common/utils';
 import { WHITE_COLOR, BLACK_COLOR } from '../../common/colors';
 
 import { getDetail } from '../../common/api';
@@ -13,9 +13,14 @@ import TicketInfo from '../../components/MyTicket/TicketInfo';
 import { doc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { authService, dbService } from '../../common/firebase';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import ViewShot from 'react-native-view-shot';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TicketDetail({ title, navigate }) {
+  // 공유할 이미지 컴포넌트 ref
+  const viewRef = useRef();
+
   const dday = 'D-Day'; //디데이 구하기 추가...구현
   const uid = authService.currentUser.uid;
   const navigation = useNavigation();
@@ -83,55 +88,72 @@ export default function TicketDetail({ title, navigate }) {
   };
 
   return (
-    <SwiperChildView
-      onPress={() => {
-        navigate('Stack', {
-          screen: 'Detail',
-          params: { title },
-        });
-      }}
+    <ViewShot
+      ref={viewRef}
+      options={{ fileName: 'shared', format: 'png', quality: 1 }}
+      style={{ flex: 1 }}
     >
-      <StTicketHeader>
-        <HeaderText>{dday}</HeaderText>
-      </StTicketHeader>
-
-      <Row>
-        <BackgroundImg source={{ uri: imgPath }} />
-
-        <Column>
-          <TitleText>{title}</TitleText>
-          <TicketInfo period={period} place={place} price="상세보기" />
-        </Column>
-        {/* <TicketModal /> */}
-        <TicketModal
-          title={title}
-          // delTicket={delTicket}
-          deleteBookmarks={deleteBookmarks}
-          imgPath={imgPath}
-          period={period}
-          place={place}
-          price={price}
-        />
-      </Row>
-    </SwiperChildView>
+      <SwiperChildView
+        onPress={() => {
+          navigate('Stack', {
+            screen: 'Detail',
+            params: { title },
+          });
+        }}
+      >
+        <StTicketHeader>
+          <HeaderText>{dday}</HeaderText>
+          <Pressable
+            // 이벤트 버블링 방지
+            onTouchEnd={(e) => e.stopPropagation()}
+            // 버튼 클릭하면 공유하기
+            onPressOut={async () => {
+              const uri = await viewRef.current.capture();
+              shareImage(uri);
+            }}
+          >
+            <Ionicons name="share-outline" size={18} color={WHITE_COLOR} />
+          </Pressable>
+        </StTicketHeader>
+        <Row>
+          <BackgroundImg source={{ uri: imgPath }} />
+          <Column>
+            <TitleText>{title}</TitleText>
+            <TicketInfo period={period} place={place} price="상세보기" />
+          </Column>
+          {/* <TicketModal /> */}
+          <TicketModal
+            title={title}
+            // delTicket={delTicket}
+            deleteBookmarks={deleteBookmarks}
+            imgPath={imgPath}
+            period={period}
+            place={place}
+            price={price}
+          />
+        </Row>
+      </SwiperChildView>
+    </ViewShot>
   );
 }
 
 const SwiperChildView = styled.TouchableOpacity`
   flex: 1;
-  justify-content: flex-end;
   height: ${screenHeight / 4 + 'px'};
   margin: 10px;
   border-radius: 15px;
 `;
 
 const StTicketHeader = styled.View`
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   height: ${screenHeight / 22 + 'px'};
   background-color: ${BLACK_COLOR};
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   width: 100%;
+  padding: 10px;
 `;
 
 const BackgroundImg = styled.Image`
@@ -168,7 +190,5 @@ const TitleText = styled.Text`
 
 const HeaderText = styled.Text`
   color: ${WHITE_COLOR};
-  padding: 5px;
   font-weight: 600;
-  margin-left: 10px;
 `;
