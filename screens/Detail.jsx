@@ -1,12 +1,9 @@
-import { ScrollView } from 'react-native';
-import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useQueries } from 'react-query';
 import { getDetail, getReviews } from '../common/api';
 import DetailInfoContainer from '../components/DetailInfoContainer/DetailInfoContainer';
 import Loader from '../components/Loader/Loader';
 import ReviewContainer from '../components/ReviewContainer/ReviewContainer';
-import { useCallback } from 'react';
-import TicketDetail from '../components/MyTicket/TicketDetail';
 
 export default function Detail({ route }) {
   // * params : title 받아오기
