@@ -1,4 +1,4 @@
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled, { css } from '@emotion/native';
 import { useEffect, useState } from 'react';
@@ -33,16 +33,18 @@ export default function MyTickets({ navigation: { navigate } }) {
   return (
     <StSafeArea>
       <ScrollView>
-        {bookmarks.map((title, i) => {
-          return (
-            <TicketDetail
-              getBookmarks={getBookmarks}
-              title={title}
-              navigate={navigate}
-              key={i}
-            />
-          );
-        })}
+        <StView>
+          {bookmarks.map((title, i) => {
+            return (
+              <TicketDetail
+                getBookmarks={getBookmarks}
+                title={title}
+                navigate={navigate}
+                key={i}
+              />
+            );
+          })}
+        </StView>
       </ScrollView>
     </StSafeArea>
   );
@@ -50,4 +52,8 @@ export default function MyTickets({ navigation: { navigate } }) {
 
 const StSafeArea = styled.SafeAreaView`
   flex: 1;
+  background-color: ${(props) => props.theme.color.background};
+`;
+const StView = styled.View`
+  background-color: ${(props) => props.theme.color.background};
 `;

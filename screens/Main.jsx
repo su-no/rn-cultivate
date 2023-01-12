@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, View, FlatList } from 'react-native';
 import { screenHeight } from '../common/utils';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,25 +10,35 @@ import { getData } from '../common/api';
 import { useQuery } from 'react-query';
 import Poster from '../components/Poster/Poster';
 import { formatDate, getCurrentDate } from '../common/utils';
+import {
+  BLACK_COLOR,
+  BLUE_COLOR,
+  DARK_GRAY_COLOR,
+  PINK_COLOR,
+} from '../common/colors';
 
-export default function Main({ navigation: { navigate } }) {
+export default function Main() {
   const [onstageData, setOnstageData] = useState([]);
   const [upcomingData, setUpcomingData] = useState([]);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: 'data',
     queryFn: () => getData(),
     onSuccess: () => {
+      const onstage = [];
+      const upcoming = [];
       data?.forEach((item) => {
         const startdate = formatDate(item.STRTDATE);
         const enddate = formatDate(item.END_DATE);
         const today = getCurrentDate();
         if (startdate <= today && today <= enddate) {
-          setOnstageData((prev) => [...prev, item]);
+          onstage.push(item);
         } else if (startdate > today) {
-          setUpcomingData((prev) => [...prev, item]);
+          upcoming.push(item);
         }
       });
+      setOnstageData(onstage);
+      setUpcomingData(upcoming);
     },
   });
 
@@ -37,106 +47,98 @@ export default function Main({ navigation: { navigate } }) {
   }
 
   console.log('---------------------');
+  const UpcomingShow = ({ item, idx }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignContent: 'center',
+        }}
+      >
+        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
+      </View>
+    );
+  };
+
   return (
     data && (
-      <ScrollView style={{ flex: 1 }}>
-        <Swiper height="100%" showsPagination={false} autoplay loop>
-          <SwiperChildView>
-            <BackgroundImg
-              style={StyleSheet.absoluteFill}
-              source={require('../assets/banner.png')}
-            />
-            <LinearGradient
-              style={{ position: 'absolute', top: 0, left: 0 }}
-              colors={['transparent', 'red']}
-            />
-          </SwiperChildView>
-
-          <SwiperChildView>
-            <BackgroundImg
-              style={StyleSheet.absoluteFill}
-              source={require('../assets/cultureday.jpg')}
-            />
-            <LinearGradient
-              style={{ position: 'absolute', top: 0, left: 0 }}
-              colors={['transparent', 'black']}
-            />
-          </SwiperChildView>
-          <SwiperChildView>
-            <BackgroundImg
-              style={StyleSheet.absoluteFill}
-              source={require('../assets/color.jpg')}
-            />
-            <LinearGradient
-              style={{ position: 'absolute', top: 0, left: 0 }}
-              colors={['transparent', 'black']}
-            />
-          </SwiperChildView>
-        </Swiper>
-        <MainAllContainer>
-          <OnStageContainer>
-            <TitleText>
-              <Text style={{ fontSize: 30 }}>On Stage</Text>
-            </TitleText>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {onstageData.map((item, idx) => (
-                <View style={{ paddingTop: 15, paddingRight: 20 }}>
-                  <Poster
-                    imageURL={item.MAIN_IMG}
-                    title={item.TITLE}
-                    key={idx}
+      <FlatList
+        keyExtractor={(item, idx) => idx}
+        numColumns={3}
+        data={upcomingData}
+        renderItem={UpcomingShow}
+        contentContainerStyle={{ paddingBottom: 30 }}
+        columnWrapperStyle={{
+          justifyContent: 'space-between',
+          display: 'flex',
+          paddingHorizontal: 15,
+        }}
+        // contentContainerStyle={{ backgroundColor: 'pink' }}
+        ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
+        ListHeaderComponent={() => {
+          return (
+            <>
+              <Swiper height="100%" showsPagination={false} autoplay loop>
+                <SwiperChildView>
+                  <BackgroundImg
+                    style={StyleSheet.absoluteFill}
+                    source={require('../assets/banner.png')}
                   />
-                </View>
-              ))}
-            </ScrollView>
-          </OnStageContainer>
-          <UpcomingContainer>
-            {/* upcomingData.((item) => <View>Onstage : 정보,,,</View>) */}
-            <TitleText>
-              <Text style={{ fontSize: 30 }}>Upcoming</Text>
-            </TitleText>
-            <View>
-              {upcomingData.map((item, idx) => (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    paddingTop: 15,
-                    paddingRight: 20,
-                  }}
-                >
-                  <Poster
-                    imageURL={item.MAIN_IMG}
-                    title={item.TITLE}
-                    key={idx}
+                  <LinearGradient
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                    colors={['transparent', 'red']}
                   />
-                </View>
-              ))}
-            </View>
-          </UpcomingContainer>
+                </SwiperChildView>
 
-          {[
-            '뮤지컬 캣츠 내한공연-서울 (Musical CATS)',
-            'EO(서)발레·서발레씨어터가 함께하는 크리스마스 최고의 선물 호두까기 인형',
-            '삶을 통해 배워온 樂_ 현섭하다 Ⅲ',
-            '[2022 서울라이트 DDP] 크리스마스 행사',
-            'TANGO CARNIVAL',
-            // 맵1
-          ].map((title, idx) => (
-            <TouchableOpacity
-              key={idx + 10000}
-              onPress={() => {
-                navigate('Stack', {
-                  screen: 'Detail',
-                  params: { title },
-                });
-              }}
-            >
-              <Text>{title}</Text>
-            </TouchableOpacity>
-          ))}
-        </MainAllContainer>
-      </ScrollView>
+                <SwiperChildView>
+                  <BackgroundImg
+                    style={StyleSheet.absoluteFill}
+                    source={require('../assets/cultureday.jpg')}
+                  />
+                  <LinearGradient
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                    colors={['transparent', 'black']}
+                  />
+                </SwiperChildView>
+                <SwiperChildView>
+                  <BackgroundImg
+                    style={StyleSheet.absoluteFill}
+                    source={require('../assets/bannerHighlight.jpg')}
+                  />
+                  <LinearGradient
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                    colors={['transparent', 'black']}
+                  />
+                </SwiperChildView>
+              </Swiper>
+
+              <MainAllContainer>
+                <OnStageContainer>
+                  <TitleText color={DARK_GRAY_COLOR}>On Stage</TitleText>
+                  <ScrollView
+                    style={{ paddingBottom: 10 }}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    {onstageData.map((item, idx) => (
+                      <View style={{ paddingRight: 10 }}>
+                        <Poster
+                          imageURL={item.MAIN_IMG}
+                          title={item.TITLE}
+                          key={idx}
+                        />
+                      </View>
+                    ))}
+                  </ScrollView>
+                </OnStageContainer>
+
+                <TitleText color={DARK_GRAY_COLOR}>Upcoming</TitleText>
+              </MainAllContainer>
+            </>
+          );
+        }}
+      />
     )
   );
 }
@@ -144,23 +146,25 @@ export default function Main({ navigation: { navigate } }) {
 const SwiperChildView = styled.View`
   flex: 1;
   justify-content: flex-end;
-  height: ${screenHeight / 3 + 'px'};
-  background-color: green;
+  height: ${screenHeight / 3.7 + 'px'};
 `;
 
 const BackgroundImg = styled.Image`
   height: 100%;
   width: 100%;
+  resize: vertical;
 `;
 
 const MainAllContainer = styled.View`
-  padding: 20px;
+  padding: 0 15px;
 `;
-const OnStageContainer = styled.View``;
-
-const UpcomingContainer = styled.View``;
+const OnStageContainer = styled.View`
+  margin: 10px 0;
+`;
 
 const TitleText = styled.Text`
-  font-weight: 200;
-  margin-top: 20px;
+  font-size: 25px;
+  color: ${(props) => props.color};
+  font-weight: 500;
+  margin: 10px 0;
 `;
