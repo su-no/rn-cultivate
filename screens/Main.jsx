@@ -24,7 +24,6 @@ export default function Main() {
     return;
   }
 
-  console.log('---------------------');
   const UpcomingShow = ({ item, idx }) => {
     return (
       <View
@@ -71,7 +70,6 @@ export default function Main() {
           display: 'flex',
           paddingHorizontal: 15,
         }}
-        // contentContainerStyle={{ backgroundColor: 'pink' }}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
         ListHeaderComponent={() => {
           return (
