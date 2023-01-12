@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { screenHeight, screenWidth } from '../../common/utils';
+import { screenWidth } from '../../common/utils';
 import styles from '../../common/styles';
 
 export default function Poster({ imageURL, title }) {
@@ -25,7 +25,6 @@ export default function Poster({ imageURL, title }) {
         }}
       >
         <Image
-          // defaultSource={require('../../assets/cats.jpg')}
           resizeMode="cover"
           source={{ uri: imageURL }}
           style={{

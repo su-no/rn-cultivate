@@ -5,17 +5,26 @@ import {
   FlatList,
   StyleSheet,
   useColorScheme,
+  TouchableOpacity,
+  Linking,
 } from 'react-native';
 import { useQuery } from 'react-query';
 import Swiper from 'react-native-swiper';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { screenHeight, formatDate, getCurrentDate } from '../common/utils';
+import {
+  screenHeight,
+  screenWeight,
+  formatDate,
+  getCurrentDate,
+} from '../common/utils';
 import { getData } from '../common/api';
 import { DARK_GRAY_COLOR, VIOLET_COLOR } from '../common/colors';
 import Poster from '../components/Poster/Poster';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Main() {
+export default function Main({ title }) {
+  const { navigate } = useNavigation();
   const isDark = useColorScheme() === 'dark';
 
   const [onstageData, setOnstageData] = useState([]);
@@ -56,6 +65,28 @@ export default function Main() {
     );
   };
 
+  const bannerImages = [
+    {
+      url: 'https://www.culture.go.kr/wday/index.do',
+      img: require('../assets/banner.png'),
+      onPress: null,
+    },
+    {
+      url: 'https://namu.wiki/w/%EB%AC%B8%ED%99%94%EA%B0%80%20%EC%9E%88%EB%8A%94%20%EB%82%A0',
+      img: require('../assets/perfomer.jpg'),
+      onPress: null,
+    },
+    {
+      onPress: () =>
+        navigate('Stack', {
+          screen: 'Detail',
+          params: { title: '뮤지컬 캣츠 내한공연-서울 (Musical CATS)' },
+        }),
+      url: null,
+      img: require('../assets/catsbanner.jpg'),
+    },
+  ];
+  
   if (!data || upcomingData.length === 0 || onstageData.length === 0) {
     console.log('로딩 중');
     return;
@@ -79,39 +110,27 @@ export default function Main() {
         return (
           <>
             <Swiper height="100%" showsPagination={false} autoplay loop>
-              <SwiperChildView>
-                <BackgroundImg
-                  style={StyleSheet.absoluteFill}
-                  source={require('../assets/banner.png')}
-                />
-                <LinearGradient
-                  style={{ position: 'absolute', top: 0, left: 0 }}
-                  colors={['transparent', 'red']}
-                />
-              </SwiperChildView>
-
-              <SwiperChildView>
-                <BackgroundImg
-                  style={StyleSheet.absoluteFill}
-                  source={require('../assets/cultureday.jpg')}
-                />
-                <LinearGradient
-                  style={{ position: 'absolute', top: 0, left: 0 }}
-                  colors={['transparent', 'black']}
-                />
-              </SwiperChildView>
-              <SwiperChildView>
-                <BackgroundImg
-                  style={StyleSheet.absoluteFill}
-                  source={require('../assets/bannerHighlight.jpg')}
-                />
-                <LinearGradient
-                  style={{ position: 'absolute', top: 0, left: 0 }}
-                  colors={['transparent', 'black']}
-                />
-              </SwiperChildView>
+              {bannerImages.map((banner) => {
+                  return (
+                    <SwiperChildView>
+                      <TouchableOpacity
+                        style={StyleSheet.absoluteFill}
+                        onPress={
+                          banner.url
+                            ? () => Linking.openURL(banner.url)
+                            : banner.onPress
+                        }
+                      >
+                        <BackgroundImg source={banner.img} />
+                        <LinearGradient
+                          colors={['transparent', 'rgba(0, 0, 0, 0.6)']}
+                          style={StyleSheet.absoluteFill}
+                        />
+                      </TouchableOpacity>
+                    </SwiperChildView>
+                  );
+                })}
             </Swiper>
-
             <MainAllContainer>
               <OnStageContainer>
                 <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
