@@ -36,7 +36,7 @@ export const checkInput = (content) => {
 };
 
 export function formatDate(date) {
-  const result = parseInt(date.replaceAll('-', '').slice(0, 8));
+  const result = parseInt(date.split('-').join('').slice(0, 8));
   return result;
 }
 
