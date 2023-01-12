@@ -4,7 +4,7 @@ import * as S from './styles';
 export default function Loader() {
   return (
     <S.Container>
-      <ActivityIndicator />
+      <ActivityIndicator size="large" />
     </S.Container>
   );
 }

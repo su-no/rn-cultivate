@@ -1,8 +1,14 @@
 import styled from '@emotion/native';
-import { BLACK_COLOR, GRAY_COLOR } from '../../common/colors';
+import { BLACK_COLOR, GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../common/colors';
 
 export const Container = styled.View`
   margin-bottom: 20px;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom-width: 1px;
+  border-bottom-color: ${GRAY_COLOR};
 `;
 
 export const EditInput = styled.TextInput`
@@ -12,16 +18,6 @@ export const EditInput = styled.TextInput`
   border-color: ${BLACK_COLOR};
   font-size: 16px;
   margin-bottom: 5px;
-`;
-
-export const AboveLine = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${GRAY_COLOR};
 `;
 
 export const TextBlack = styled.Text`
@@ -36,7 +32,10 @@ export const TextGray = styled.Text`
   color: ${GRAY_COLOR};
 `;
 
-export const Buttons = styled.View`
-  flex-direction: row;
-  justify-content: flex-end;
+export const Buttons = styled.Pressable`
+  position: absolute;
+  right: 26px;
+  top: 2px;
+  border: 1px solid ${LIGHT_GRAY_COLOR};
+  border-radius: 3px;
 `;

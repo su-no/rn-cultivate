@@ -1,25 +1,27 @@
-import { GREEN_COLOR, YELLOW_COLOR } from './colors';
+import { BLACK_COLOR, GREEN_COLOR, WHITE_COLOR, YELLOW_COLOR } from './colors';
 
 export const lightTheme = {
   color: {
-    titleOnImg: 'white',
+    titleOnImg: WHITE_COLOR,
     overviewOnImg: '#d2dae2',
     listTitle: GREEN_COLOR,
-    title: 'black',
+    title: BLACK_COLOR,
     overview: '#1e272e',
     modalBg: '#d2dae2',
-    inputText: 'white',
+    inputText: WHITE_COLOR,
+    background: WHITE_COLOR,
   },
 };
 
 export const darkTheme = {
   color: {
-    titleOnImg: 'white',
+    titleOnImg: WHITE_COLOR,
     overviewOnImg: '#d2dae2',
     listTitle: YELLOW_COLOR,
-    title: 'white',
+    title: WHITE_COLOR,
     overview: '#d2dae2',
     modalBg: '#d2dae2',
-    inputText: 'black',
+    inputText: BLACK_COLOR,
+    background: BLACK_COLOR,
   },
 };

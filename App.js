@@ -10,12 +10,14 @@ import { useColorScheme } from 'react-native';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Root from './navigation/Root';
 import { darkTheme, lightTheme } from './common/theme';
-<co></co>;
 
 const queryClient = new QueryClient();
 
 export default function App() {
   const isDark = useColorScheme() === 'dark';
+
+  console.log(isDark ? 'dark' : 'light');
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>

@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -30,12 +31,25 @@ export const getReviews = async (title) => {
   const q = query(
     collection(dbService, 'reviews'),
     where('title', '==', title),
+    orderBy('date', 'desc'),
   );
   const reviews = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => reviews.push({ id: doc.id, ...doc.data() }));
-  // 작성일자 내림차순 정렬
-  return reviews.sort((a, b) => b.date - a.date);
+  return reviews;
+};
+
+// firebase에서 내가 작성한 리뷰 받아오는 함수
+export const getMyReviews = async (uid) => {
+  const q = query(
+    collection(dbService, 'reviews'),
+    where('uid', '==', uid),
+    orderBy('date', 'desc'),
+  );
+  const reviews = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => reviews.push({ id: doc.id, ...doc.data() }));
+  return reviews;
 };
 
 // firebase에 리뷰를 추가하는 함수
@@ -56,7 +70,7 @@ export const updateReview = async ({ id, editedContent }) => {
 };
 
 export const getData = async () => {
-  const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/1000`;
+  const path = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/1/100`;
   return fetch(path)
     .then((res) => res.json())
     .then((data) =>
