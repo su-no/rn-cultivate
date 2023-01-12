@@ -38,25 +38,27 @@ const TicketModal = ({
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.modalView}>
-          <TitleText>{title}</TitleText>
-          <ModalPoster source={{ uri: imgPath }} />
-          <ScrollView>
-            <ModalText>
-              <TicketInfo period={period} place={place} price={price} />
-            </ModalText>
-          </ScrollView>
+        <BgView>
+          <View style={styles.modalView}>
+            <TitleText>{title}</TitleText>
+            <ModalPoster source={{ uri: imgPath }} />
+            <ScrollView>
+              <ModalText>
+                <TicketInfo period={period} place={place} price={price} />
+              </ModalText>
+            </ScrollView>
 
-          <CloseView>
-            <Pressable onPress={() => setModalVisible(!modalVisible)}>
-              <AntDesign name="check" size={24} color="black" />
-            </Pressable>
-            {/* <TicketModal /> */}
-            <CheckingBtn onPress={deleteBookmarks}>
-              <AntDesign name="delete" size={24} color="black" />
-            </CheckingBtn>
-          </CloseView>
-        </View>
+            <CloseView>
+              <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                <AntDesign name="check" size={24} color="black" />
+              </Pressable>
+              {/* <TicketModal /> */}
+              <CheckingBtn onPress={deleteBookmarks}>
+                <AntDesign name="delete" size={24} color="black" />
+              </CheckingBtn>
+            </CloseView>
+          </View>
+        </BgView>
       </Modal>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
@@ -82,11 +84,18 @@ const TitleText = styled.Text`
 const CloseView = styled.View`
   flex-direction: row;
 `;
+
+const BgView = styled.View`
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  justify-content: center;
+  /* align-items: center; */
+`;
+
 const ModalView = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 60px;
 `;
 
 const ModalPoster = styled.Image`
@@ -131,9 +140,9 @@ const styles = StyleSheet.create({
   buttonOpen: {
     backgroundColor: '#cccccc',
   },
-  buttonClose: {
-    backgroundColor: '#19a1f4',
-  },
+  // buttonClose: {
+  //   backgroundColor: '#19a1f4',
+  // },
   textStyle: {
     color: '#af72f9',
     fontWeight: 'bold',

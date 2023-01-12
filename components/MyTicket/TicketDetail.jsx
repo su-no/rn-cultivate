@@ -128,7 +128,7 @@ const SwiperChildView = styled.TouchableOpacity`
 const StTicketHeader = styled.View`
   justify-content: flex-end;
   height: ${screenHeight / 22 + 'px'};
-  background-color: ${BLACK_COLOR};
+  background-color: ${(props) => props.theme.color.ticketHeader};
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   width: 100%;
@@ -161,7 +161,7 @@ const TitleText = styled.Text`
   word-break: break-all;
   font-size: 20px;
   font-weight: bold;
-  color: ${BLACK_COLOR};
+  color: ${(props) => props.theme.color.title};
   margin-top: 10px;
   margin-bottom: 5px;
 `;
