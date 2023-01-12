@@ -2,25 +2,28 @@ import React from 'react';
 import * as S from '../DetailInfoContainer/styles';
 import { authService, dbService } from '../../common/firebase';
 // import { useMutation, useQueryClient } from 'react-query';
-import { addDoc, collection } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
 import { useState } from 'react';
 
 export default function TicketSave({ title }) {
   // 티켓 찜하기
-  const [newTicket, setNewTicket] = useState({});
-  const user = authService.currentUser;
+  // const [newTicket, setNewTicket] = useState({});
+  const uid = authService.currentUser.uid;
 
-  // const addTicket = async () => {
-  //   const docRef = await addDoc(collection(dbService, 'bookmarks'));
-  //   console.log(docRef.id)
-  // };
+  //2. 티켓을 눌렀을때, 그 티켓의 타이틀?정보가 저장되게 만들어보자.
+
+  const addTicket = async () => {
+    // 조건문만들어서 배열이 없을때도 만들기
+    const docRef = doc(dbService, 'bookmarks', uid);
+    console.log(docRef);
+    await updateDoc(docRef, {
+      bookmarks: arrayUnion(title),
+    });
+  };
 
   return (
-    <S.TicketContainer
-      activeOpacity={0.8}
-      onPress={() => console.log(user.uid)}
-    >
+    <S.TicketContainer activeOpacity={0.8} onPress={addTicket}>
       {/* '관심티켓 추가/삭제' */}
       <S.Ticket source={require('../../assets/ticket.png')} />
     </S.TicketContainer>
@@ -28,7 +31,7 @@ export default function TicketSave({ title }) {
 }
 
 // 1. 티켓 아이콘을 누른다.
-// 2.
+//
 
 // {
 //   userEmail: abcd@amgeilf.comd, // <- authService.currentUser.email

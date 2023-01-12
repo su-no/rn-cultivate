@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 import { Ionicons } from '@expo/vector-icons';
+
+import styles from '../../common/styles';
 import {
   Container,
   Poster,
@@ -38,7 +41,9 @@ export default function SearchResult({ detail }) {
       }}
     >
       {/* 포스터 */}
-      <Poster source={{ uri: imgPath }} />
+      <View style={styles.shadow}>
+        <Poster source={{ uri: imgPath }} />
+      </View>
       {/* 공연 정보 */}
       <View style={{ flexShrink: 1 }}>
         <Title>{title !== '' ? title : '홈페이지 확인'}</Title>
