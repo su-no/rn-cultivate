@@ -1,4 +1,5 @@
 import { Alert, Dimensions } from 'react-native';
+import * as Sharing from 'expo-sharing';
 
 // 스크린 사이즈
 export const { width: screenWidth, height: screenHeight } =
@@ -32,4 +33,18 @@ export const checkInput = (content) => {
     return false;
   }
   return true;
+};
+
+// 이미지 공유하기
+export const shareImage = async (uri) => {
+  const path = Platform.OS === 'ios' ? `file://${uri}` : uri;
+  try {
+    await Sharing.shareAsync(path, {
+      dialogTitle: '공유하기',
+      mimeType: 'image/png',
+      UTI: 'image/png',
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
