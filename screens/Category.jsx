@@ -1,10 +1,131 @@
 import { useEffect, useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { useQuery } from 'react-query';
 import styled from '@emotion/native';
-import { GRAY_COLOR, BLACK_COLOR } from '../common/colors';
+import {
+  WHITE_COLOR,
+  PINK_COLOR,
+  VIOLET_COLOR,
+  BLUE_COLOR,
+  SKY_COLOR,
+  GRAY_COLOR,
+  BLACK_COLOR,
+  LIGHT_GRAY_COLOR,
+} from '../common/colors';
 import Poster from '../components/Poster/Poster';
 import { getData } from '../common/api';
+
+export default function Category({}) {
+  const [category, setCategory] = useState('All');
+
+  const [lectureDatas, setLectureDatas] = useState([]);
+  const [exhibitionsDatas, setExhibitionsDatas] = useState([]);
+  const [showsDatas, setShowsDatas] = useState([]);
+  const [festivalsDatas, setFestivalsDatas] = useState([]);
+
+  const currentCategory = {
+    강의: lectureDatas,
+    전시: exhibitionsDatas,
+    공연: showsDatas,
+    축제: festivalsDatas,
+    All: data,
+  };
+
+  const { data, isSuccess, isLoading } = useQuery({
+    queryKey: 'data',
+    queryFn: getData,
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      setLectureDatas(data.filter((item) => lectures.includes(item.CODENAME)));
+      setExhibitionsDatas(
+        data.filter((item) => exhibitions.includes(item.CODENAME)),
+      );
+      setShowsDatas(data.filter((item) => shows.includes(item.CODENAME)));
+      setFestivalsDatas(
+        data.filter((item) => festivals.includes(item.CODENAME)),
+      );
+    }
+  }, []);
+
+  const Show = ({ item }) => (
+    <PosterWrap>
+      <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
+    </PosterWrap>
+  );
+
+  if (isLoading) return;
+  return (
+    <StyledWrap>
+      <StyledBtns>
+        {['All', '강의', '전시', '공연', '축제'].map((name, idx) => (
+          <StyledBtn
+            key={idx}
+            onPress={() => setCategory(name)}
+            color={colors[idx]}
+          >
+            <StyledBtnText
+              color={category === name ? BLACK_COLOR : WHITE_COLOR}
+            >
+              {name}
+            </StyledBtnText>
+          </StyledBtn>
+        ))}
+      </StyledBtns>
+      <PosterList
+        keyExtractor={(item, idx) => idx}
+        numColumns={3}
+        data={currentCategory[category] ?? data}
+        extraData={category}
+        renderItem={Show}
+        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+      />
+    </StyledWrap>
+  );
+}
+
+const StyledWrap = styled.View`
+  align-items: center;
+  margin-top: 10px;
+  flex: 1;
+  padding: 0 15px;
+`;
+
+const StyledBtns = styled.View`
+  margin-top: 10px;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
+  margin-bottom: 10px;
+`;
+
+const StyledBtn = styled.Pressable`
+  width: 50px;
+  height: 30px;
+  justify-content: center;
+  border: 1px solid ${GRAY_COLOR};
+  border-radius: 5px;
+  background-color: ${(props) => props.color};
+`;
+
+const StyledBtnText = styled.Text`
+  font-size: 20px;
+  text-align: center;
+  color: ${(props) =>
+    props.color === 'black' ? props.theme.color.categoryTitle : props.color};
+`;
+
+const PosterList = styled.FlatList`
+  width: 100%;
+  margin-top: 10px;
+`;
+
+const PosterWrap = styled.TouchableOpacity`
+  width: 33.33%;
+  padding: 0 1%;
+`;
 
 // 공연
 const shows = [
@@ -33,122 +154,10 @@ const festivals = [
 // 강의
 const lectures = ['문화교양/강좌'];
 
-export default function Category({}) {
-  const [category, setCategory] = useState('All');
-
-  const [lectureDatas, setLectureDatas] = useState([]);
-  const [exhibitionsDatas, setExhibitionsDatas] = useState([]);
-  const [showsDatas, setShowsDatas] = useState([]);
-  const [festivalsDatas, setFestivalsDatas] = useState([]);
-
-  const { data, isSuccess } = useQuery({
-    queryKey: 'data',
-    queryFn: getData,
-  });
-
-  const temp = () => {
-    if (category === '강의') {
-      return lectureDatas;
-    } else if (category === '전시') {
-      return exhibitionsDatas;
-    } else if (category === '공연') {
-      return showsDatas;
-    } else if (category === '축제') {
-      return festivalsDatas;
-    } else if (category === 'All') {
-      return data;
-    }
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      setLectureDatas(data.filter((item) => lectures.includes(item.CODENAME)));
-      setExhibitionsDatas(
-        data.filter((item) => exhibitions.includes(item.CODENAME)),
-      );
-      setShowsDatas(data.filter((item) => shows.includes(item.CODENAME)));
-      setFestivalsDatas(
-        data.filter((item) => festivals.includes(item.CODENAME)),
-      );
-    }
-  }, []);
-
-  const Show = ({ item }) => (
-    <PosterWrap>
-      <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
-    </PosterWrap>
-  );
-
-  return (
-    <StyledWrap>
-      <StyledBtn>
-        <TouchableOpacity onPress={() => setCategory('All')}>
-          <StyledBtnText color={category === 'All' ? BLACK_COLOR : GRAY_COLOR}>
-            All
-          </StyledBtnText>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCategory('강의')}>
-          <StyledBtnText color={category === '강의' ? BLACK_COLOR : GRAY_COLOR}>
-            강의
-          </StyledBtnText>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCategory('전시')}>
-          <StyledBtnText color={category === '전시' ? BLACK_COLOR : GRAY_COLOR}>
-            전시
-          </StyledBtnText>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCategory('공연')}>
-          <StyledBtnText color={category === '공연' ? BLACK_COLOR : GRAY_COLOR}>
-            공연
-          </StyledBtnText>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCategory('축제')}>
-          <StyledBtnText color={category === '축제' ? BLACK_COLOR : GRAY_COLOR}>
-            축제
-          </StyledBtnText>
-        </TouchableOpacity>
-      </StyledBtn>
-
-      <PosterList
-        keyExtractor={(item, idx) => idx}
-        numColumns={3}
-        data={temp()}
-        extraData={category}
-        renderItem={Show}
-        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-      />
-    </StyledWrap>
-  );
-}
-
-const StyledWrap = styled.View`
-  align-items: center;
-  margin-top: 10px;
-  flex: 1;
-`;
-
-const StyledBtn = styled.View`
-  margin-top: 10px;
-  flex-direction: row;
-  align-items: center;
-
-  width: 100%;
-  justify-content: space-around;
-`;
-
-const StyledBtnText = styled.Text`
-  font-size: 40px;
-  text-align: center;
-  color: ${(props) => props.color};
-`;
-
-const PosterList = styled.FlatList`
-  width: 100%;
-  margin-top: 10px;
-  padding: 15px;
-`;
-
-const PosterWrap = styled.TouchableOpacity`
-  width: 33.33%;
-  padding: 0 1%;
-`;
+const colors = [
+  LIGHT_GRAY_COLOR,
+  PINK_COLOR,
+  VIOLET_COLOR,
+  BLUE_COLOR,
+  SKY_COLOR,
+];
