@@ -34,6 +34,10 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
     queryFn: () => getDetail(title),
   });
 
+  if (isLoading) {
+    return null;
+  }
+
   const {
     MAIN_IMG: imgPath,
     DATE: period,
