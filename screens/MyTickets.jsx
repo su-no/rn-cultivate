@@ -8,9 +8,9 @@ import { dbService } from '../common/firebase';
 
 import TicketDetail from '../components/MyTicket/TicketDetail';
 
-export default function MyTickets({ navigation: { navigate } }) {
-  const [bookmarks, setBookmarks] = useState([]);
+export default function MyTickets({ navigation: { navigate, reset } }) {
   const uid = authService.currentUser.uid;
+  const [bookmarks, setBookmarks] = useState([]);
 
   const getBookmarks = async () => {
     const uid = authService.currentUser.uid;
