@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  FlatList,
-} from 'react-native';
+import { ScrollView, Text, View, FlatList } from 'react-native';
 import { screenHeight } from '../common/utils';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,14 +11,37 @@ import { useQuery } from 'react-query';
 import Poster from '../components/Poster/Poster';
 import { formatDate, getCurrentDate } from '../common/utils';
 
-export default function Main({ navigation: { navigate } }) {
+export default function Main() {
   const [onstageData, setOnstageData] = useState([]);
   const [upcomingData, setUpcomingData] = useState([]);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: 'data',
     queryFn: () => getData(),
-    onSuccess: () => {
+  });
+
+  if (isLoading) {
+    return;
+  }
+
+  console.log('---------------------');
+  const UpcomingShow = ({ item, idx }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          paddingVertical: 10,
+          alignContent: 'center',
+        }}
+      >
+        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
+      </View>
+    );
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
       const onstage = [];
       const upcoming = [];
       data?.forEach((item) => {
@@ -39,28 +56,8 @@ export default function Main({ navigation: { navigate } }) {
       });
       setOnstageData(onstage);
       setUpcomingData(upcoming);
-    },
-  });
-
-  if (isLoading) {
-    return;
-  }
-
-  console.log('---------------------');
-  const UpcomingShow = ({ item, idx }) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          paddingTop: 15,
-          paddingRight: 20,
-        }}
-      >
-        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
-      </View>
-    );
-  };
+    }
+  }, []);
 
   return (
     data && (
@@ -69,7 +66,12 @@ export default function Main({ navigation: { navigate } }) {
         numColumns={3}
         data={upcomingData}
         renderItem={UpcomingShow}
-        columnWrapperStyle={{ paddingHorizontal: 20 }}
+        columnWrapperStyle={{
+          justifyContent: 'space-between',
+          display: 'flex',
+          paddingHorizontal: 15,
+        }}
+        // contentContainerStyle={{ backgroundColor: 'pink' }}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
         ListHeaderComponent={() => {
           return (
@@ -115,7 +117,7 @@ export default function Main({ navigation: { navigate } }) {
                   </TitleText>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {onstageData.map((item, idx) => (
-                      <View style={{ paddingTop: 15, paddingRight: 20 }}>
+                      <View style={{ paddingTop: 15, paddingRight: 10 }}>
                         <Poster
                           imageURL={item.MAIN_IMG}
                           title={item.TITLE}
@@ -151,7 +153,7 @@ const BackgroundImg = styled.Image`
 `;
 
 const MainAllContainer = styled.View`
-  padding: 0 20px;
+  padding: 0 15px;
 `;
 const OnStageContainer = styled.View``;
 
