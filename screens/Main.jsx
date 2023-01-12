@@ -80,7 +80,7 @@ export default function Main({ title }) {
       onPress: () =>
         navigate('Stack', {
           screen: 'Detail',
-          params: { title },
+          params: { title: '뮤지컬 캣츠 내한공연-서울 (Musical CATS)' },
         }),
       url: null,
       img: require('../assets/catsbanner.jpg'),
