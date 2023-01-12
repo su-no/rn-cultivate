@@ -1,33 +1,8 @@
-import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 import MyComments from '../components/MyComments/MyComments';
 import Profile from '../components/Profile/Profile';
-import { authService } from '../common/firebase';
 
-export default function MyPage({ navigation: { reset } }) {
-  useFocusEffect(() => {
-    if (authService.currentUser === null) {
-      reset({
-        index: 1,
-        routes: [
-          {
-            name: 'Tabs',
-            params: {
-              screen: 'Main',
-            },
-          },
-          {
-            name: 'Stack',
-            params: {
-              screen: 'Login',
-            },
-          },
-        ],
-      });
-      return;
-    }
-  });
-
+export default function MyPage() {
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ padding: 10 }}>
       <Profile />
