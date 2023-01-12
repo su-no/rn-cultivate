@@ -10,6 +10,7 @@ export const lightTheme = {
     modalBg: '#d2dae2',
     inputText: WHITE_COLOR,
     background: WHITE_COLOR,
+    categoryTitle: BLACK_COLOR,
   },
 };
 
@@ -23,5 +24,6 @@ export const darkTheme = {
     modalBg: '#d2dae2',
     inputText: BLACK_COLOR,
     background: BLACK_COLOR,
+    categoryTitle: WHITE_COLOR,
   },
 };
