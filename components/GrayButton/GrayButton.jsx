@@ -1,7 +1,8 @@
-import { Pressable, Text } from 'react-native';
-import { GRAY_COLOR } from '../../common/colors';
+import { Pressable, Text, useColorScheme } from 'react-native';
+import { DARK_GRAY_COLOR, GRAY_COLOR } from '../../common/colors';
 
 export default function GrayButton({ label, onPress }) {
+  const isDark = useColorScheme() === 'dark';
   return (
     <Pressable
       onPress={onPress}
@@ -11,7 +12,11 @@ export default function GrayButton({ label, onPress }) {
         paddingVertical: 6,
       }}
     >
-      <Text style={{ color: GRAY_COLOR, fontSize: 15 }}>{label}</Text>
+      <Text
+        style={{ color: isDark ? DARK_GRAY_COLOR : GRAY_COLOR, fontSize: 15 }}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 }

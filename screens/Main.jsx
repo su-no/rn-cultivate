@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
-import { ScrollView, Text, View, FlatList } from 'react-native';
-import { screenHeight } from '../common/utils';
+import { useState } from 'react';
+import {
+  ScrollView,
+  View,
+  FlatList,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
+import { useQuery } from 'react-query';
+import Swiper from 'react-native-swiper';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Swiper from 'react-native-swiper';
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import { screenHeight, formatDate, getCurrentDate } from '../common/utils';
 import { getData } from '../common/api';
-import { useQuery } from 'react-query';
+import { DARK_GRAY_COLOR, VIOLET_COLOR } from '../common/colors';
 import Poster from '../components/Poster/Poster';
-import { formatDate, getCurrentDate } from '../common/utils';
-import {
-  BLACK_COLOR,
-  BLUE_COLOR,
-  DARK_GRAY_COLOR,
-  PINK_COLOR,
-} from '../common/colors';
 
 export default function Main() {
+  const isDark = useColorScheme() === 'dark';
+
   const [onstageData, setOnstageData] = useState([]);
   const [upcomingData, setUpcomingData] = useState([]);
 
@@ -46,7 +46,6 @@ export default function Main() {
     return;
   }
 
-  console.log('---------------------');
   const UpcomingShow = ({ item, idx }) => {
     return (
       <View
@@ -74,7 +73,6 @@ export default function Main() {
           display: 'flex',
           paddingHorizontal: 15,
         }}
-        // contentContainerStyle={{ backgroundColor: 'pink' }}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
         ListHeaderComponent={() => {
           return (
@@ -115,7 +113,9 @@ export default function Main() {
 
               <MainAllContainer>
                 <OnStageContainer>
-                  <TitleText color={DARK_GRAY_COLOR}>On Stage</TitleText>
+                  <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
+                    On Stage
+                  </TitleText>
                   <ScrollView
                     style={{ paddingBottom: 10 }}
                     horizontal
@@ -133,7 +133,9 @@ export default function Main() {
                   </ScrollView>
                 </OnStageContainer>
 
-                <TitleText color={DARK_GRAY_COLOR}>Upcoming</TitleText>
+                <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
+                  Upcoming
+                </TitleText>
               </MainAllContainer>
             </>
           );
@@ -163,8 +165,8 @@ const OnStageContainer = styled.View`
 `;
 
 const TitleText = styled.Text`
+  color: ${({ color }) => color};
   font-size: 25px;
-  color: ${(props) => props.color};
   font-weight: 500;
   margin: 10px 0;
 `;
