@@ -121,12 +121,12 @@ const Logo = styled.Image`
   width: 80%;
   height: 40px;
   margin-bottom: 50px;
-  margin-top: 100px;
+  margin-top: 150px;
 `;
 const SubmitBox = styled.View`
   width: 95%;
   height: 45%;
-  padding: 80px 40px 20px 40px;
+  padding: 30px 40px 20px 40px;
   align-items: center;
 `;
 const InputBox = styled.TextInput`

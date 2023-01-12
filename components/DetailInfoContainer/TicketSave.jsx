@@ -2,6 +2,7 @@ import React from 'react';
 import * as S from '../DetailInfoContainer/styles';
 import { authService, dbService } from '../../common/firebase';
 import { doc, updateDoc, arrayUnion, setDoc, getDoc } from 'firebase/firestore';
+import { Alert } from 'react-native';
 
 export default function TicketSave({ title }) {
   // 티켓 찜하기
@@ -28,6 +29,7 @@ export default function TicketSave({ title }) {
     await updateDoc(docRef, {
       bookmarks: arrayUnion(title),
     }).catch((e) => console.log(e));
+    Alert.alert('', '관심티켓에 등록되었습니다.');
   };
 
   return (

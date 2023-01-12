@@ -1,8 +1,13 @@
 import styled from '@emotion/native';
-import { Alert, Pressable } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
 
 import { screenHeight, shareImage } from '../../common/utils';
-import { WHITE_COLOR, BLACK_COLOR } from '../../common/colors';
+import {
+  WHITE_COLOR,
+  PINK_COLOR,
+  SKY_COLOR,
+  VIOLET_COLOR,
+} from '../../common/colors';
 
 import { getDetail } from '../../common/api';
 import { useQuery } from 'react-query';
@@ -20,7 +25,6 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
   // 공유할 이미지 컴포넌트 ref
   const viewRef = useRef();
 
-  const dday = 'D-Day'; //디데이 구하기 추가...구현
   const uid = authService.currentUser.uid;
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -81,6 +85,11 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
       },
     ]);
   };
+  const date = new Date();
+  const month = String(date.getMonth() + 1);
+  const day = String(date.getDate()).padStart(2, '0');
+
+  const today = month + day;
 
   return (
     <ViewShot
@@ -97,8 +106,22 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
           });
         }}
       >
-        <StTicketHeader>
-          <HeaderText>{dday}</HeaderText>
+        <StTicketHeader
+          color={
+            parseInt(period.slice(5, 10).replace('-', '')) > today
+              ? SKY_COLOR
+              : parseInt(period.slice(5, 10).replace('-', '')) < today
+              ? PINK_COLOR
+              : VIOLET_COLOR
+          }
+        >
+          <HeaderText>
+            {parseInt(period.slice(5, 10).replace('-', '')) > today
+              ? 'Upcoming'
+              : parseInt(period.slice(5, 10).replace('-', '')) < today
+              ? 'On Stage'
+              : 'Today'}
+          </HeaderText>
           <Pressable
             // 버튼 클릭하면 공유하기
             onPress={async () => {
@@ -145,7 +168,9 @@ const StTicketHeader = styled.View`
   justify-content: space-between;
   align-items: center;
   height: ${screenHeight / 22 + 'px'};
-  background-color: ${(props) => props.theme.color.ticketHeader};
+  /* background-color: ${(props) => props.theme.color.ticketHeader}; */
+  background-color: ${(props) => props.color};
+
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   width: 100%;
