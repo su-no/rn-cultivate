@@ -1,4 +1,4 @@
-import { Alert, Text, View } from 'react-native';
+import { Alert, Text, View, Pressable } from 'react-native';
 import {
   ChangePwBox,
   ChangeText,
@@ -30,10 +30,12 @@ import {
 import { useState } from 'react';
 import LeaveMemberModal from '../LeaveMemberModal/LeaveMemberModal';
 import ChangeNickNameModal from '../ChangeNickNameModal/ChangeNickNameModal';
+import ImagePickerComponent from '../ImagePickerComponent/ImagePickerComponent';
 function Profile() {
   const navigation = useNavigation();
   const user = authService.currentUser;
-  authService.languageCode = 'ko';
+  authService.languageCode = 'ko'; //이메일 보낼때 언어 설정 'ko' = 한국어
+
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [checkNewPassword, setCheckNewPassword] = useState(null);
@@ -134,7 +136,13 @@ function Profile() {
       <ProfileBox>
         <ProfileContents direction={'row'}>
           <ProfileImgBox>
-            <ProfileImg source={require('../../assets/ticket.png')} />
+            {/* <ProfileImg source={require('../../assets/ticket.png')} /> */}
+            {/* <ProfileImg
+              source={{
+                uri: 'gs://react-native-todolist-4aa67.appspot.com/profile/psh5575@gmail.com',
+              }}
+            /> */}
+            <ImagePickerComponent user={user} />
           </ProfileImgBox>
           <ProfileNickNameBox>
             <View>
