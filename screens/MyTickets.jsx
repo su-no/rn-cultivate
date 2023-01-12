@@ -36,10 +36,10 @@ export default function MyTickets({ navigation: { navigate } }) {
         {bookmarks.map((title, i) => {
           return (
             <TicketDetail
+              getBookmarks={getBookmarks}
               title={title}
               navigate={navigate}
               key={i}
-              getBookmarks={getBookmarks}
             />
           );
         })}
