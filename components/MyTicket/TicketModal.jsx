@@ -23,8 +23,7 @@ const TicketModal = ({
   period,
   place,
   price,
-  delTicket,
-  // navigate,
+  deleteBookmarks,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -53,7 +52,7 @@ const TicketModal = ({
               <AntDesign name="check" size={24} color="black" />
             </Pressable>
             {/* <TicketModal /> */}
-            <CheckingBtn onPress={delTicket}>
+            <CheckingBtn onPress={deleteBookmarks}>
               <AntDesign name="delete" size={24} color="black" />
             </CheckingBtn>
           </CloseView>

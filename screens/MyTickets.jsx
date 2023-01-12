@@ -24,7 +24,7 @@ export default function MyTickets({ navigation: { navigate } }) {
     });
   };
 
-  console.log(bookmarks);
+  // console.log(bookmarks);
 
   useEffect(() => {
     getBookmarks().catch((e) => console.log(e));
@@ -33,8 +33,8 @@ export default function MyTickets({ navigation: { navigate } }) {
   return (
     <StSafeArea>
       <ScrollView>
-        {bookmarks.map((title) => {
-          return <TicketDetail title={title} navigate={navigate} />;
+        {bookmarks.map((title, i) => {
+          return <TicketDetail title={title} navigate={navigate} key={i} />;
         })}
       </ScrollView>
     </StSafeArea>

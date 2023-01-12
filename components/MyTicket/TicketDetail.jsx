@@ -12,11 +12,16 @@ import TicketModal from './TicketModal';
 import TicketInfo from '../../components/MyTicket/TicketInfo';
 import { doc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { authService, dbService } from '../../common/firebase';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 
 export default function TicketDetail({ title, navigate }) {
   const dday = 'D-Day'; //디데이 구하기 추가...구현
   const uid = authService.currentUser.uid;
+  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
+  // useQuery
   const {
     isLoading,
     isError,
@@ -40,9 +45,8 @@ export default function TicketDetail({ title, navigate }) {
   // console.log(title, imgPath, period, place, price);
   // console.log(detail.culturalEventInfo.row[0]);
 
-  console.log(title);
-
   // 파이어베이스에 저장한 배열의 타이틀을 삭제해보자->이걸 delbookmark안으로?
+
   const delTicket = async () => {
     const docRef = doc(dbService, 'bookmarks', uid);
     console.log(docRef);
@@ -52,22 +56,31 @@ export default function TicketDetail({ title, navigate }) {
     });
   };
 
-  // const deleteBookmarks = () => {
-  //   Alert.alert('티켓 삭제', '정말 삭제하시겠습니까?', [
-  //     {
-  //       text: '취소',
-  //       style: 'cancel',
-  //       onPress: () => console.log('취소 클릭!'),
-  //     },
-  //     {
-  //       text: '삭제',
-  //       style: 'destructive',
-  //       onPress: () => {
-  //         delTicket(title);
-  //       },
-  //     },
-  //   ]);
-  // };
+  // alert창 안으로 넣어서 만들어주자
+  const deleteBookmarks = () => {
+    Alert.alert('관심 티켓 ', '정말 삭제하시겠습니까?', [
+      {
+        text: '취소',
+        style: 'cancel',
+        onPress: () => console.log('취소 클릭!'),
+      },
+      {
+        text: '삭제',
+        style: 'destructive',
+        onPress: () => {
+          delTicket(title)
+            .then(() => {
+              alert('관심티켓에서 삭제 완료');
+              setModalVisible(!modalVisible);
+              navigation.navigate('Tabs', { screen: 'Main' });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+      },
+    ]);
+  };
 
   return (
     <SwiperChildView
@@ -92,12 +105,12 @@ export default function TicketDetail({ title, navigate }) {
         {/* <TicketModal /> */}
         <TicketModal
           title={title}
-          delTicket={delTicket}
+          // delTicket={delTicket}
+          deleteBookmarks={deleteBookmarks}
           imgPath={imgPath}
           period={period}
           place={place}
           price={price}
-          navigate={navigate}
         />
       </Row>
     </SwiperChildView>
