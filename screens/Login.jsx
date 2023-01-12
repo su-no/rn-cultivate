@@ -14,7 +14,7 @@ export default function Login({ navigation: { navigate } }) {
   const emailRef = useRef(null);
   const pwRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
-  authService.languageCode = 'ko';
+  authService.languageCode = 'ko'; //비밀번호 재설정 이메일 보낼때 언어 선택 'ko' = 한국어
 
   const handleLogin = () => {
     //유효성 검사
