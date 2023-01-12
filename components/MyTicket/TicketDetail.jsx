@@ -1,4 +1,4 @@
-import styled, { css } from '@emotion/native';
+import styled from '@emotion/native';
 import { Alert, Pressable } from 'react-native';
 
 import { screenHeight, shareImage } from '../../common/utils';
@@ -12,7 +12,6 @@ import TicketModal from './TicketModal';
 import TicketInfo from '../../components/MyTicket/TicketInfo';
 import { doc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { authService, dbService } from '../../common/firebase';
-import { useNavigation } from '@react-navigation/native';
 import { useRef, useState } from 'react';
 import ViewShot from 'react-native-view-shot';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,7 +22,6 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
 
   const dday = 'D-Day'; //디데이 구하기 추가...구현
   const uid = authService.currentUser.uid;
-  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
   // useQuery
@@ -46,9 +44,6 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
     PLACE: place,
     USE_FEE: price,
   } = detail.culturalEventInfo.row[0];
-
-  // console.log(title, imgPath, period, place, price);
-  // console.log(detail.culturalEventInfo.row[0]);
 
   // 파이어베이스에 저장한 배열의 타이틀을 삭제해보자->이걸 delbookmark안으로?
 
@@ -104,10 +99,8 @@ export default function TicketDetail({ title, navigate, getBookmarks }) {
         <StTicketHeader>
           <HeaderText>{dday}</HeaderText>
           <Pressable
-            // 이벤트 버블링 방지
-            onTouchEnd={(e) => e.stopPropagation()}
             // 버튼 클릭하면 공유하기
-            onPressOut={async () => {
+            onPress={async () => {
               const uri = await viewRef.current.capture();
               shareImage(uri);
             }}

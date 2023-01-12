@@ -1,21 +1,10 @@
 import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Modal,
-  ScrollView,
-  Alert,
-} from 'react-native';
-import { useState } from 'react';
-import styled, { css } from '@emotion/native';
+import { Text, View, StyleSheet, Modal, ScrollView, Alert } from 'react-native';
+import styled from '@emotion/native';
 import TicketInfo from '../../components/MyTicket/TicketInfo';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { BLACK_COLOR } from '../../common/colors';
-import { doc, updateDoc, arrayRemove } from 'firebase/firestore';
-import { async } from '@firebase/util';
 
 const TicketModal = ({
   title,
@@ -24,8 +13,8 @@ const TicketModal = ({
   place,
   price,
   deleteBookmarks,
-  setModalVisible,
   modalVisible,
+  setModalVisible,
 }) => {
   return (
     <ModalView>
@@ -39,11 +28,15 @@ const TicketModal = ({
         }}
       >
         <View style={styles.modalView}>
-          <TitleText>{title}</TitleText>
+          <TitleText>{title !== '' ? title : '홈페이지 확인'}</TitleText>
           <ModalPoster source={{ uri: imgPath }} />
           <ScrollView>
             <ModalText>
-              <TicketInfo period={period} place={place} price={price} />
+              <TicketInfo
+                period={period !== '' ? period : '홈페이지 확인'}
+                place={place !== '' ? place : '홈페이지 확인'}
+                price={price !== '' ? price : '홈페이지 확인'}
+              />
             </ModalText>
           </ScrollView>
 

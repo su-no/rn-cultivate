@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { screenHeight } from '../common/utils';
 import styled from '@emotion/native';
@@ -8,21 +9,34 @@ import { StyleSheet } from 'react-native';
 import { getData } from '../common/api';
 import { useQuery } from 'react-query';
 import Poster from '../components/Poster/Poster';
+import { formatDate, getCurrentDate } from '../common/utils';
 
 export default function Main({ navigation: { navigate } }) {
+  const [onstageData, setOnstageData] = useState([]);
+  const [upcomingData, setUpcomingData] = useState([]);
+
   const { data, isLoading } = useQuery({
     queryKey: 'data',
     queryFn: () => getData(),
+    onSuccess: () => {
+      data?.forEach((item) => {
+        const startdate = formatDate(item.STRTDATE);
+        const enddate = formatDate(item.END_DATE);
+        const today = getCurrentDate();
+        if (startdate <= today && today <= enddate) {
+          setOnstageData((prev) => [...prev, item]);
+        } else if (startdate > today) {
+          setUpcomingData((prev) => [...prev, item]);
+        }
+      });
+    },
   });
+
   if (isLoading) {
     return;
   }
-  const year = String(new Date().getFullYear());
-  const month = String(new Date().getMonth() + 1).padStart(2, 0);
-  const day = String(new Date().getDate()).padStart(2, 0);
-  const today = parseInt(year + month + day);
-  console.log(today);
 
+  console.log('---------------------');
   return (
     data && (
       <ScrollView style={{ flex: 1 }}>
@@ -65,51 +79,40 @@ export default function Main({ navigation: { navigate } }) {
               <Text style={{ fontSize: 30 }}>On Stage</Text>
             </TitleText>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {/* <FlatList
-                horizontal
-                contentContainerStyle={{ paddingHorizontal: 20 }}
-                data={data}
-                renderItem={({ data }) =>  <Poster
-                    imageURL={data.MAIN_IMG}
-                    title={data.TITLE}
-                    key={data.id}
-                  />}
-                keyExtractor={(item) => item.id}
-                ItemSeparatorComponent={<View style={{ width: 10 }} />}
-              /> */}
-
-              {/* 맵2 */}
-              {data.map((item, idx) => {
-                return (
+              {onstageData.map((item, idx) => (
+                <View style={{ paddingTop: 15, paddingRight: 20 }}>
                   <Poster
                     imageURL={item.MAIN_IMG}
                     title={item.TITLE}
                     key={idx}
                   />
-                );
-              })}
+                </View>
+              ))}
             </ScrollView>
           </OnStageContainer>
           <UpcomingContainer>
+            {/* upcomingData.((item) => <View>Onstage : 정보,,,</View>) */}
             <TitleText>
               <Text style={{ fontSize: 30 }}>Upcoming</Text>
             </TitleText>
-
-            <UpcomingBox>
-              {/* <TouchableOpacity> */}
-              <UpcomingList
-                keyExtractor={(item) => item.TITLE}
-                numColumns={3}
-                data={data}
-                // renderItem={Show}
-                ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-              />
-              {/* <Image
-                source={require('../assets/cats.jpg')}
-                style={{ width: 100, height: 200 }}
-              />
-            </TouchableOpacity> */}
-            </UpcomingBox>
+            <View>
+              {upcomingData.map((item, idx) => (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    paddingTop: 15,
+                    paddingRight: 20,
+                  }}
+                >
+                  <Poster
+                    imageURL={item.MAIN_IMG}
+                    title={item.TITLE}
+                    key={idx}
+                  />
+                </View>
+              ))}
+            </View>
           </UpcomingContainer>
 
           {[
@@ -155,32 +158,7 @@ const MainAllContainer = styled.View`
 `;
 const OnStageContainer = styled.View``;
 
-const OnStageBox = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 350px;
-`;
-
-const OnStageList = styled.FlatList`
-  width: 100%;
-  margin-top: 10px;
-  padding: 15px;
-`;
-
 const UpcomingContainer = styled.View``;
-
-const UpcomingBox = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const UpcomingList = styled.FlatList`
-  width: 100%;
-  margin-top: 10px;
-  padding: 15px;
-`;
 
 const TitleText = styled.Text`
   font-weight: 200;

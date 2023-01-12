@@ -35,6 +35,19 @@ export const checkInput = (content) => {
   return true;
 };
 
+export function formatDate(date) {
+  const result = parseInt(date.replaceAll('-', '').slice(0, 8));
+  return result;
+}
+
+export function getCurrentDate() {
+  const date = new Date();
+  const year = String(date.getFullYear());
+  const month = String(date.getMonth() + 1).padStart(2, 0);
+  const day = String(date.getDate()).padStart(2, 0);
+  const today = parseInt(year + month + day);
+  return today;
+}
 // 이미지 공유하기
 export const shareImage = async (uri) => {
   const path = Platform.OS === 'ios' ? `file://${uri}` : uri;

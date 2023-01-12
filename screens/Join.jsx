@@ -88,7 +88,7 @@ export default function Join({ navigation: { navigate } }) {
           <InputTitle>비밀번호</InputTitle>
           <InputBox
             textContentType="password"
-            secureTextEntry={true}
+            secureTextEntry={false}
             onChangeText={setPw}
             value={pw}
             ref={pwRef}
@@ -96,7 +96,7 @@ export default function Join({ navigation: { navigate } }) {
           <InputTitle>비밀번호 확인</InputTitle>
           <InputBox
             textContentType="password"
-            secureTextEntry={true}
+            secureTextEntry={false}
             onChangeText={setCheckPw}
             value={checkPw}
           />
