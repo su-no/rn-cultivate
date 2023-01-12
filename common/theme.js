@@ -19,6 +19,11 @@ export const lightTheme = {
     background: WHITE_COLOR,
     ticketHeader: BLACK_COLOR,
     categoryTitle: BLACK_COLOR,
+
+    common: BLACK_COLOR,
+    gray: GRAY_COLOR,
+    lightGray: LIGHT_GRAY_COLOR,
+    white: WHITE_COLOR,
   },
 };
 
@@ -34,5 +39,10 @@ export const darkTheme = {
     background: BLACK_COLOR,
     ticketHeader: GRAY_COLOR,
     categoryTitle: WHITE_COLOR,
+
+    common: WHITE_COLOR,
+    gray: GRAY_COLOR,
+    lightGray: LIGHT_GRAY_COLOR,
+    white: WHITE_COLOR,
   },
 };
