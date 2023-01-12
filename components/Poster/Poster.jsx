@@ -13,11 +13,14 @@ export default function Poster({ imageURL, title }) {
         });
       }}
     >
-      <Image
-        resizeMode="cover"
-        source={{ uri: imageURL }}
-        style={{ width: 110, height: 165 }}
-      />
+      <View style={{ backgroundColor: 'gray' }}>
+        <Image
+          // defaultSource={require('../../assets/cats.jpg')}
+          resizeMode="cover"
+          source={{ uri: imageURL }}
+          style={{ width: 110, height: 165 }}
+        />
+      </View>
     </TouchableOpacity>
   );
 }

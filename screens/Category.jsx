@@ -32,46 +32,58 @@ const festivals = [
 const lectures = ['문화교양/강좌'];
 
 export default function Category({}) {
+  const temp = () => {
+    if (category === '강의') {
+      return lectureDatas;
+    } else if (category === '전시') {
+      return exhibitionsDatas;
+    } else if (category === '공연') {
+      return showsDatas;
+    } else if (category === '축제') {
+      return festivalsDatas;
+    } else if (category === 'All') {
+      return data;
+    }
+  };
+
   const { data, error, isLoading } = useQuery({
     queryKey: 'data',
-    queryFn: () => getData(),
+    queryFn: async () => {
+      const data = await getData();
+      return data.map((item, index) => ({
+        ...item,
+        id: index,
+      }));
+    },
   });
 
   const [category, setCategory] = useState('All');
 
-  const [filteredData, setFilteredData] = useState([]);
+  const [lectureDatas, setLectureDatas] = useState([]);
+  const [exhibitionsDatas, setExhibitionsDatas] = useState([]);
+  const [showsDatas, setShowsDatas] = useState([]);
+  const [festivalsDatas, setFestivalsDatas] = useState([]);
 
   useEffect(() => {
     if (data) {
-      switch (category) {
-        case 'All':
-          return setFilteredData(data);
-
-        case '강의':
-          return setFilteredData(
-            data.filter((item) => lectures.includes(item.CODENAME)),
-          );
-        case '전시':
-          return setFilteredData(
-            data.filter((item) => exhibitions.includes(item.CODENAME)),
-          );
-        case '공연':
-          return setFilteredData(
-            data.filter((item) => shows.includes(item.CODENAME)),
-          );
-        case '축제':
-          return setFilteredData(
-            data.filter((item) => festivals.includes(item.CODENAME)),
-          );
-      }
+      setLectureDatas(data.filter((item) => lectures.includes(item.CODENAME)));
+      setExhibitionsDatas(
+        data.filter((item) => exhibitions.includes(item.CODENAME)),
+      );
+      setShowsDatas(data.filter((item) => shows.includes(item.CODENAME)));
+      setFestivalsDatas(
+        data.filter((item) => festivals.includes(item.CODENAME)),
+      );
     }
-  }, [data, category]);
+  }, [data]);
 
-  const Show = ({ item }) => (
-    <PosterWrap>
-      <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
-    </PosterWrap>
-  );
+  const Show = ({ item, index }) => {
+    return (
+      <PosterWrap>
+        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
+      </PosterWrap>
+    );
+  };
 
   return (
     <StyledWrap>
@@ -104,9 +116,10 @@ export default function Category({}) {
       </StyledBtn>
 
       <PosterList
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item) => item.id}
         numColumns={3}
-        data={filteredData}
+        data={temp()}
+        extraData={category}
         renderItem={Show}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
       />
