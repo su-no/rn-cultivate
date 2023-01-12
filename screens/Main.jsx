@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ScrollView,
   View,
@@ -12,59 +12,16 @@ import { useQuery } from 'react-query';
 import Swiper from 'react-native-swiper';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import {
-  screenHeight,
-  screenWeight,
-  formatDate,
-  getCurrentDate,
-} from '../common/utils';
+import { screenHeight, formatDate, getCurrentDate } from '../common/utils';
 import { getData } from '../common/api';
 import { DARK_GRAY_COLOR, VIOLET_COLOR } from '../common/colors';
 import Poster from '../components/Poster/Poster';
 import { useNavigation } from '@react-navigation/native';
+import Loader from '../components/Loader/Loader';
 
-export default function Main({ title }) {
+export default function Main() {
   const { navigate } = useNavigation();
   const isDark = useColorScheme() === 'dark';
-
-  const [onstageData, setOnstageData] = useState([]);
-  const [upcomingData, setUpcomingData] = useState([]);
-
-  const { data, isLoading, isSuccess } = useQuery({
-    queryKey: 'data',
-    queryFn: () => getData(),
-    onSuccess: () => {
-      const onstage = [];
-      const upcoming = [];
-      data?.forEach((item) => {
-        const startdate = formatDate(item.STRTDATE);
-        const enddate = formatDate(item.END_DATE);
-        const today = getCurrentDate();
-        if (startdate <= today && today <= enddate) {
-          onstage.push(item);
-        } else if (startdate > today) {
-          upcoming.push(item);
-        }
-      });
-      setOnstageData(onstage);
-      setUpcomingData(upcoming);
-    },
-  });
-
-  const UpcomingShow = ({ item, idx }) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          alignContent: 'center',
-        }}
-      >
-        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
-      </View>
-    );
-  };
-
   const bannerImages = [
     {
       url: 'https://www.culture.go.kr/wday/index.do',
@@ -86,16 +43,40 @@ export default function Main({ title }) {
       img: require('../assets/catsbanner.jpg'),
     },
   ];
-  
-  if (!data || upcomingData.length === 0 || onstageData.length === 0) {
-    console.log('로딩 중');
-    return;
+
+  const [onstageData, setOnstageData] = useState(null);
+  const [upcomingData, setUpcomingData] = useState(null);
+
+  const { data, isLoading } = useQuery({
+    queryKey: 'data',
+    queryFn: getData,
+  });
+
+  useEffect(() => {
+    if (!data) return;
+    const onstage = [];
+    const upcoming = [];
+    data.forEach((item) => {
+      const startdate = formatDate(item.STRTDATE);
+      const enddate = formatDate(item.END_DATE);
+      const today = getCurrentDate();
+      if (startdate <= today && today <= enddate) {
+        onstage.push(item);
+      } else if (startdate > today) {
+        upcoming.push(item);
+      }
+    });
+    setOnstageData(onstage);
+    setUpcomingData(upcoming);
+  }, [data]);
+
+  if (isLoading || !onstageData || !upcomingData) {
+    return <Loader />;
   }
-  console.log('로딩 완료');
 
   return (
     <FlatList
-      keyExtractor={(item, idx) => item.TITLE}
+      keyExtractor={(item, idx) => idx}
       numColumns={3}
       data={upcomingData}
       renderItem={UpcomingShow}
@@ -111,25 +92,25 @@ export default function Main({ title }) {
           <>
             <Swiper height="100%" showsPagination={false} autoplay loop>
               {bannerImages.map((banner) => {
-                  return (
-                    <SwiperChildView>
-                      <TouchableOpacity
+                return (
+                  <SwiperChildView>
+                    <TouchableOpacity
+                      style={StyleSheet.absoluteFill}
+                      onPress={
+                        banner.url
+                          ? () => Linking.openURL(banner.url)
+                          : banner.onPress
+                      }
+                    >
+                      <BackgroundImg source={banner.img} />
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0, 0, 0, 0.6)']}
                         style={StyleSheet.absoluteFill}
-                        onPress={
-                          banner.url
-                            ? () => Linking.openURL(banner.url)
-                            : banner.onPress
-                        }
-                      >
-                        <BackgroundImg source={banner.img} />
-                        <LinearGradient
-                          colors={['transparent', 'rgba(0, 0, 0, 0.6)']}
-                          style={StyleSheet.absoluteFill}
-                        />
-                      </TouchableOpacity>
-                    </SwiperChildView>
-                  );
-                })}
+                      />
+                    </TouchableOpacity>
+                  </SwiperChildView>
+                );
+              })}
             </Swiper>
             <MainAllContainer>
               <OnStageContainer>
@@ -141,7 +122,7 @@ export default function Main({ title }) {
                   horizontal
                   showsHorizontalScrollIndicator={false}
                 >
-                  {onstageData.map((item, idx) => (
+                  {onstageData.map((item) => (
                     <View style={{ paddingRight: 10 }}>
                       <Poster
                         imageURL={item.MAIN_IMG}
@@ -152,7 +133,6 @@ export default function Main({ title }) {
                   ))}
                 </ScrollView>
               </OnStageContainer>
-
               <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
                 Upcoming
               </TitleText>
@@ -163,6 +143,21 @@ export default function Main({ title }) {
     />
   );
 }
+
+const UpcomingShow = ({ item, idx }) => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignContent: 'center',
+      }}
+      key={idx}
+    >
+      <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
+    </View>
+  );
+};
 
 const SwiperChildView = styled.View`
   flex: 1;
