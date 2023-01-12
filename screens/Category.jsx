@@ -1,11 +1,10 @@
-import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
-import styled from '@emotion/native';
 import { useEffect, useState } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import { useQuery } from 'react-query';
+import styled from '@emotion/native';
 import { GRAY_COLOR, BLACK_COLOR } from '../common/colors';
 import Poster from '../components/Poster/Poster';
 import { getData } from '../common/api';
-import { useQuery } from 'react-query';
-import Loader from '../components/Loader/Loader';
 
 // 공연
 const shows = [
@@ -18,8 +17,10 @@ const shows = [
   '클래식',
   '독주/독창회',
 ];
+
 // 전시
 const exhibitions = ['전시/미술'];
+
 // 축제
 const festivals = [
   '축제-문화/예술',
@@ -28,10 +29,23 @@ const festivals = [
   '축제-기타',
   '축제-자연/경관',
 ];
+
 // 강의
 const lectures = ['문화교양/강좌'];
 
 export default function Category({}) {
+  const [category, setCategory] = useState('All');
+
+  const [lectureDatas, setLectureDatas] = useState([]);
+  const [exhibitionsDatas, setExhibitionsDatas] = useState([]);
+  const [showsDatas, setShowsDatas] = useState([]);
+  const [festivalsDatas, setFestivalsDatas] = useState([]);
+
+  const { data, isSuccess } = useQuery({
+    queryKey: 'data',
+    queryFn: getData,
+  });
+
   const temp = () => {
     if (category === '강의') {
       return lectureDatas;
@@ -46,26 +60,8 @@ export default function Category({}) {
     }
   };
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: 'data',
-    queryFn: async () => {
-      const data = await getData();
-      return data.map((item, index) => ({
-        ...item,
-        id: index,
-      }));
-    },
-  });
-
-  const [category, setCategory] = useState('All');
-
-  const [lectureDatas, setLectureDatas] = useState([]);
-  const [exhibitionsDatas, setExhibitionsDatas] = useState([]);
-  const [showsDatas, setShowsDatas] = useState([]);
-  const [festivalsDatas, setFestivalsDatas] = useState([]);
-
   useEffect(() => {
-    if (data) {
+    if (isSuccess) {
       setLectureDatas(data.filter((item) => lectures.includes(item.CODENAME)));
       setExhibitionsDatas(
         data.filter((item) => exhibitions.includes(item.CODENAME)),
@@ -75,15 +71,13 @@ export default function Category({}) {
         data.filter((item) => festivals.includes(item.CODENAME)),
       );
     }
-  }, [data]);
+  }, []);
 
-  const Show = ({ item, index }) => {
-    return (
-      <PosterWrap>
-        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
-      </PosterWrap>
-    );
-  };
+  const Show = ({ item }) => (
+    <PosterWrap>
+      <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
+    </PosterWrap>
+  );
 
   return (
     <StyledWrap>
@@ -116,7 +110,7 @@ export default function Category({}) {
       </StyledBtn>
 
       <PosterList
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, idx) => idx}
         numColumns={3}
         data={temp()}
         extraData={category}

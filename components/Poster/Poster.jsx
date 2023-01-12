@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 
 export default function Poster({ imageURL, title }) {
@@ -13,7 +12,7 @@ export default function Poster({ imageURL, title }) {
         });
       }}
     >
-      <View style={{ backgroundColor: 'gray' }}>
+      <View style={{ backgroundColor: 'gray', width: 110, height: 165 }}>
         <Image
           // defaultSource={require('../../assets/cats.jpg')}
           resizeMode="cover"
