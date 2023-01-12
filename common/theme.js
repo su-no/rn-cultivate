@@ -1,4 +1,11 @@
-import { BLACK_COLOR, GREEN_COLOR, WHITE_COLOR, YELLOW_COLOR } from './colors';
+import {
+  BLACK_COLOR,
+  GRAY_COLOR,
+  GREEN_COLOR,
+  LIGHT_GRAY_COLOR,
+  WHITE_COLOR,
+  YELLOW_COLOR,
+} from './colors';
 
 export const lightTheme = {
   color: {
@@ -10,6 +17,7 @@ export const lightTheme = {
     modalBg: '#d2dae2',
     inputText: WHITE_COLOR,
     background: WHITE_COLOR,
+    ticketHeader: BLACK_COLOR,
     categoryTitle: BLACK_COLOR,
   },
 };
@@ -24,6 +32,7 @@ export const darkTheme = {
     modalBg: '#d2dae2',
     inputText: BLACK_COLOR,
     background: BLACK_COLOR,
+    ticketHeader: GRAY_COLOR,
     categoryTitle: WHITE_COLOR,
   },
 };

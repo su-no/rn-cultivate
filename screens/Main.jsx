@@ -10,6 +10,12 @@ import { getData } from '../common/api';
 import { useQuery } from 'react-query';
 import Poster from '../components/Poster/Poster';
 import { formatDate, getCurrentDate } from '../common/utils';
+import {
+  BLACK_COLOR,
+  BLUE_COLOR,
+  DARK_GRAY_COLOR,
+  PINK_COLOR,
+} from '../common/colors';
 
 export default function Main() {
   const [onstageData, setOnstageData] = useState([]);
@@ -18,30 +24,7 @@ export default function Main() {
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: 'data',
     queryFn: () => getData(),
-  });
-
-  if (isLoading) {
-    return;
-  }
-
-  console.log('---------------------');
-  const UpcomingShow = ({ item, idx }) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          paddingVertical: 10,
-          alignContent: 'center',
-        }}
-      >
-        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
-      </View>
-    );
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
+    onSuccess: () => {
       const onstage = [];
       const upcoming = [];
       data?.forEach((item) => {
@@ -56,8 +39,27 @@ export default function Main() {
       });
       setOnstageData(onstage);
       setUpcomingData(upcoming);
-    }
-  }, []);
+    },
+  });
+
+  if (isLoading) {
+    return;
+  }
+
+  console.log('---------------------');
+  const UpcomingShow = ({ item, idx }) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignContent: 'center',
+        }}
+      >
+        <Poster imageURL={item.MAIN_IMG} title={item.TITLE} key={idx} />
+      </View>
+    );
+  };
 
   return (
     data && (
@@ -66,6 +68,7 @@ export default function Main() {
         numColumns={3}
         data={upcomingData}
         renderItem={UpcomingShow}
+        contentContainerStyle={{ paddingBottom: 30 }}
         columnWrapperStyle={{
           justifyContent: 'space-between',
           display: 'flex',
@@ -112,12 +115,14 @@ export default function Main() {
 
               <MainAllContainer>
                 <OnStageContainer>
-                  <TitleText>
-                    <Text style={{ fontSize: 25 }}>On Stage</Text>
-                  </TitleText>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <TitleText color={DARK_GRAY_COLOR}>On Stage</TitleText>
+                  <ScrollView
+                    style={{ paddingBottom: 10 }}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                  >
                     {onstageData.map((item, idx) => (
-                      <View style={{ paddingTop: 15, paddingRight: 10 }}>
+                      <View style={{ paddingRight: 10 }}>
                         <Poster
                           imageURL={item.MAIN_IMG}
                           title={item.TITLE}
@@ -128,9 +133,7 @@ export default function Main() {
                   </ScrollView>
                 </OnStageContainer>
 
-                <TitleText>
-                  <Text style={{ fontSize: 25 }}>Upcoming</Text>
-                </TitleText>
+                <TitleText color={DARK_GRAY_COLOR}>Upcoming</TitleText>
               </MainAllContainer>
             </>
           );
@@ -143,7 +146,7 @@ export default function Main() {
 const SwiperChildView = styled.View`
   flex: 1;
   justify-content: flex-end;
-  height: ${screenHeight / 3 + 'px'};
+  height: ${screenHeight / 3.7 + 'px'};
 `;
 
 const BackgroundImg = styled.Image`
@@ -155,9 +158,13 @@ const BackgroundImg = styled.Image`
 const MainAllContainer = styled.View`
   padding: 0 15px;
 `;
-const OnStageContainer = styled.View``;
+const OnStageContainer = styled.View`
+  margin: 10px 0;
+`;
 
 const TitleText = styled.Text`
-  font-weight: 300;
-  margin-top: 20px;
+  font-size: 25px;
+  color: ${(props) => props.color};
+  font-weight: 500;
+  margin: 10px 0;
 `;
