@@ -71,7 +71,7 @@ export default function TicketDetail({ title, navigate }) {
           delTicket(title)
             .then(() => {
               alert('관심티켓에서 삭제 완료');
-              setModalVisible(!modalVisible);
+              // setModalVisible(!modalVisible);
               navigation.navigate('Tabs', { screen: 'Main' });
             })
             .catch((error) => {

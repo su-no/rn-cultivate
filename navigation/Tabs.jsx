@@ -67,6 +67,7 @@ export default function Tabs({ navigation: { navigate } }) {
       <Tab.Screen
         options={{
           title: '관심티켓',
+          unmountOnBlur: true,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="ticket" size={size} color={color} />
           ),

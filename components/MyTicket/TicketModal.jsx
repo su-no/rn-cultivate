@@ -75,7 +75,7 @@ const TitleText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   color: ${BLACK_COLOR};
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 5px;
 `;
 
@@ -97,7 +97,7 @@ const ModalPoster = styled.Image`
 `;
 
 const ModalText = styled.Text`
-  margin-top: 15;
+  margin-top: 15px;
   text-align: center;
   justify-content: center;
 `;
