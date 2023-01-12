@@ -137,7 +137,7 @@ const Container = styled.View`
 `;
 const Logo = styled.Image`
   width: 80%;
-  height: 60px;
+  height: 40px;
   margin-bottom: 50px;
   margin-top: 100px;
 `;

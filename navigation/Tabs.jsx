@@ -4,32 +4,34 @@ import Main from '../screens/Main';
 import Category from '../screens/Category';
 import MyTickets from '../screens/MyTickets';
 import MyPage from '../screens/MyPage';
-import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import Login from '../screens/Login';
+import {
+  AntDesign,
+  MaterialCommunityIcons,
+  Ionicons,
+} from '@expo/vector-icons';
 import {
   BLUE_COLOR,
   PINK_COLOR,
   SKY_COLOR,
   VIOLET_COLOR,
-  WHITE_COLOR,
 } from '../common/colors';
+import { authService } from '../common/firebase';
 
 const Tab = createBottomTabNavigator();
 export default function Tabs({ navigation: { navigate } }) {
   const isDark = useColorScheme() === 'dark';
+  const isSignedIn = !!authService.currentUser;
 
   return (
     <Tab.Navigator
       screenOptions={{
         headerTitle: () => <LogoTitle />,
-        headerTitleAlign: 'center',
       }}
     >
       {/* 메인 페이지 */}
       <Tab.Screen
         options={{
-          headerTitle: () => <LogoTitle />,
           headerRight: () => (
             <SearchButton
               onPress={() => navigate('Stack', { screen: 'Search' })}
@@ -47,6 +49,11 @@ export default function Tabs({ navigation: { navigate } }) {
       {/* 카테고리 페이지 */}
       <Tab.Screen
         options={{
+          headerRight: () => (
+            <SearchButton
+              onPress={() => navigate('Stack', { screen: 'Search' })}
+            />
+          ),
           title: '카테고리',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -63,6 +70,12 @@ export default function Tabs({ navigation: { navigate } }) {
       {/* 관심티켓 페이지 */}
       <Tab.Screen
         options={{
+          headerTitle: isSignedIn ? () => <LogoTitle /> : '로그인',
+          headerRight: () => (
+            <SearchButton
+              onPress={() => navigate('Stack', { screen: 'Search' })}
+            />
+          ),
           title: '관심티켓',
           unmountOnBlur: true,
           tabBarIcon: ({ color, size }) => (
@@ -71,11 +84,12 @@ export default function Tabs({ navigation: { navigate } }) {
           tabBarActiveTintColor: BLUE_COLOR,
         }}
         name="MyTickets"
-        component={MyTickets}
+        component={isSignedIn ? MyTickets : Login}
       />
       {/* 마이페이지 */}
       <Tab.Screen
         options={{
+          headerTitle: isSignedIn ? () => <LogoTitle /> : '로그인',
           title: '마이페이지',
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="smileo" size={size} color={color} />
@@ -83,7 +97,7 @@ export default function Tabs({ navigation: { navigate } }) {
           tabBarActiveTintColor: SKY_COLOR,
         }}
         name="MyPage"
-        component={MyPage}
+        component={isSignedIn ? MyPage : Login}
       />
     </Tab.Navigator>
   );
