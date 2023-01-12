@@ -87,59 +87,57 @@ export default function Main() {
         paddingHorizontal: 15,
       }}
       ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-      ListHeaderComponent={() => {
-        return (
-          <>
-            <Swiper height="100%" showsPagination={false} autoplay loop>
-              {bannerImages.map((banner) => {
-                return (
-                  <SwiperChildView>
-                    <TouchableOpacity
+      ListHeaderComponent={() => (
+        <>
+          <Swiper height="100%" showsPagination={false} autoplay loop>
+            {bannerImages.map((banner) => {
+              return (
+                <SwiperChildView>
+                  <TouchableOpacity
+                    style={StyleSheet.absoluteFill}
+                    onPress={
+                      banner.url
+                        ? () => Linking.openURL(banner.url)
+                        : banner.onPress
+                    }
+                  >
+                    <BackgroundImg source={banner.img} />
+                    <LinearGradient
+                      colors={['transparent', 'rgba(0, 0, 0, 0.6)']}
                       style={StyleSheet.absoluteFill}
-                      onPress={
-                        banner.url
-                          ? () => Linking.openURL(banner.url)
-                          : banner.onPress
-                      }
-                    >
-                      <BackgroundImg source={banner.img} />
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0, 0, 0, 0.6)']}
-                        style={StyleSheet.absoluteFill}
-                      />
-                    </TouchableOpacity>
-                  </SwiperChildView>
-                );
-              })}
-            </Swiper>
-            <MainAllContainer>
-              <OnStageContainer>
-                <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
-                  On Stage
-                </TitleText>
-                <ScrollView
-                  style={{ paddingBottom: 10 }}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                >
-                  {onstageData.map((item) => (
-                    <View style={{ paddingRight: 10 }}>
-                      <Poster
-                        imageURL={item.MAIN_IMG}
-                        title={item.TITLE}
-                        key={item.TITLE}
-                      />
-                    </View>
-                  ))}
-                </ScrollView>
-              </OnStageContainer>
+                    />
+                  </TouchableOpacity>
+                </SwiperChildView>
+              );
+            })}
+          </Swiper>
+          <MainAllContainer>
+            <OnStageContainer>
               <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
-                Upcoming
+                On Stage
               </TitleText>
-            </MainAllContainer>
-          </>
-        );
-      }}
+              <ScrollView
+                style={{ paddingBottom: 10 }}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              >
+                {onstageData.map((item, idx) => (
+                  <View style={{ paddingRight: 10 }} key={idx}>
+                    <Poster
+                      imageURL={item.MAIN_IMG}
+                      title={item.TITLE}
+                      key={item.TITLE}
+                    />
+                  </View>
+                ))}
+              </ScrollView>
+            </OnStageContainer>
+            <TitleText color={isDark ? VIOLET_COLOR : DARK_GRAY_COLOR}>
+              Upcoming
+            </TitleText>
+          </MainAllContainer>
+        </>
+      )}
     />
   );
 }

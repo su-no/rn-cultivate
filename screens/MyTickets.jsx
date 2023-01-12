@@ -7,10 +7,11 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { dbService } from '../common/firebase';
 
 import TicketDetail from '../components/MyTicket/TicketDetail';
+import Loader from '../components/Loader/Loader';
 
-export default function MyTickets({ navigation: { navigate, reset } }) {
-  const uid = authService.currentUser.uid;
+export default function MyTickets({ navigation: { navigate } }) {
   const [bookmarks, setBookmarks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getBookmarks = async () => {
     const uid = authService.currentUser.uid;
@@ -24,11 +25,15 @@ export default function MyTickets({ navigation: { navigate, reset } }) {
     });
   };
 
-  // console.log(bookmarks);
-
   useEffect(() => {
-    getBookmarks().catch((e) => console.log(e));
+    getBookmarks()
+      .then(() => setIsLoading(false))
+      .catch((e) => console.log(e));
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <StSafeArea>
