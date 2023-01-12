@@ -1,9 +1,11 @@
-import styled from '@emotion/native';
 import { useCallback, useState } from 'react';
 import { Alert, RefreshControl, ScrollView, View } from 'react-native';
 import { useQuery, useQueryClient } from 'react-query';
+import styled from '@emotion/native';
+
 import { getDetail } from '../common/api';
 import { BLACK_COLOR } from '../common/colors';
+
 import Loader from '../components/Loader/Loader';
 import Error from '../components/Error/Error';
 import SearchResult from '../components/SearchResult/SearchResult';

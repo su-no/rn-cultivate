@@ -25,9 +25,6 @@ export default function Tabs({ navigation: { navigate } }) {
         headerTitle: () => <LogoTitle />,
         headerTitleAlign: 'center',
       }}
-      sceneContainerStyle={{
-        backgroundColor: WHITE_COLOR,
-      }}
     >
       {/* 메인 페이지 */}
       <Tab.Screen

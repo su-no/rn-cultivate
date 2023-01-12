@@ -32,7 +32,7 @@ export const TextGray = styled.Text`
   color: ${GRAY_COLOR};
 `;
 
-export const Buttons = styled.View`
+export const Buttons = styled.Pressable`
   position: absolute;
   right: 26px;
   top: 2px;
