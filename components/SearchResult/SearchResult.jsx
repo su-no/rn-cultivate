@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { View, useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -12,8 +12,11 @@ import {
   DescriptionRow,
   DescriptionText,
 } from './styles';
+import { BLACK_COLOR, WHITE_COLOR } from '../../common/colors';
 
 export default function SearchResult({ detail }) {
+  const isDark = useColorScheme() === 'dark';
+
   const {
     MAIN_IMG: imgPath,
     DATE: period,
@@ -51,7 +54,7 @@ export default function SearchResult({ detail }) {
           <Ionicons
             name="calendar-sharp"
             size={ICON_SIZE}
-            color="black"
+            color={isDark ? WHITE_COLOR : BLACK_COLOR}
             style={{ marginRight: 8 }}
           />
           <DescriptionText>
@@ -62,7 +65,7 @@ export default function SearchResult({ detail }) {
           <Ionicons
             name="location-outline"
             size={ICON_SIZE}
-            color="black"
+            color={isDark ? WHITE_COLOR : BLACK_COLOR}
             style={{ marginRight: 8 }}
           />
           <DescriptionText>
@@ -73,7 +76,7 @@ export default function SearchResult({ detail }) {
           <Ionicons
             name="pricetag-outline"
             size={ICON_SIZE}
-            color="black"
+            color={isDark ? WHITE_COLOR : BLACK_COLOR}
             style={{ marginRight: 8 }}
           />
           <DescriptionText>

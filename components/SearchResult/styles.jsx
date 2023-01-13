@@ -21,6 +21,7 @@ export const Title = styled.Text`
   font-weight: 500;
   line-height: 24px;
   margin-bottom: 8px;
+  color: ${(props) => props.theme.color.title};
 `;
 
 export const DescriptionRow = styled.View`
@@ -32,6 +33,6 @@ export const DescriptionText = styled.Text`
   word-break: break-all;
   font-size: 14px;
   flex-shrink: 1;
-  color: ${BLACK_COLOR};
+  color: ${(props) => props.theme.color.title};
   margin-top: 2px;
 `;
