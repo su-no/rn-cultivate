@@ -36,7 +36,7 @@ export const darkTheme = {
     overview: '#d2dae2',
     modalBg: '#d2dae2',
     inputText: BLACK_COLOR,
-    background: BLACK_COLOR,
+    background: LIGHT_GRAY_COLOR,
     ticketHeader: GRAY_COLOR,
     categoryTitle: WHITE_COLOR,
 

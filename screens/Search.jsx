@@ -87,9 +87,10 @@ const Container = styled.View`
 `;
 
 const SearchInput = styled.TextInput`
-  border: 1px solid ${BLACK_COLOR};
+  border: ${(props) => props.theme.color.lightGray};
   border-radius: 5px;
   padding: 10px;
   font-size: 15px;
   margin-bottom: 20px;
+  background-color: ${(props) => props.theme.color.background};
 `;
