@@ -92,5 +92,5 @@ const SearchInput = styled.TextInput`
   padding: 10px;
   font-size: 15px;
   margin-bottom: 20px;
-  background-color: ${(props) => props.theme.color.background};
+  background-color: ${(props) => props.theme.color.inputBackground};
 `;
