@@ -1,4 +1,4 @@
-import { Alert, Text, View, Pressable } from 'react-native';
+import { Alert, View } from 'react-native';
 import {
   ChangePwBox,
   ChangeText,
@@ -13,7 +13,6 @@ import {
   ProfileDetailTitle,
   ProfileHeader,
   ProfileHeaderBtns,
-  ProfileImg,
   ProfileImgBox,
   ProfileNickName,
   ProfileNickNameBox,

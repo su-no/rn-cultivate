@@ -1,7 +1,7 @@
 import { Linking, View } from 'react-native';
 
 import styles from '../../common/styles';
-import { Poster, Container, Title, TicketContainer, Ticket } from './styles';
+import { Poster, Container, Title } from './styles';
 
 import DetailInfo from '../DetailInfo/DetailInfo';
 import VioletButton from '../VioletButton/VioletButton';

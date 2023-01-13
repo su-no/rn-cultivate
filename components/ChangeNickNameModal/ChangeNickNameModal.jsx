@@ -1,4 +1,3 @@
-import react from 'react';
 import { TextInput, View, Modal } from 'react-native';
 import {
   CenteredView,
