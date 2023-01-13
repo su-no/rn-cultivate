@@ -122,12 +122,8 @@ export default function Main() {
                 showsHorizontalScrollIndicator={false}
               >
                 {onstageData.map((item, idx) => (
-                  <View style={{ paddingRight: 10 }} key={idx}>
-                    <Poster
-                      imageURL={item.MAIN_IMG}
-                      title={item.TITLE}
-                      key={item.TITLE}
-                    />
+                  <View style={{ paddingRight: 10 }} key={idx + 10000}>
+                    <Poster imageURL={item.MAIN_IMG} title={item.TITLE} />
                   </View>
                 ))}
               </ScrollView>

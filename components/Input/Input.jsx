@@ -3,7 +3,7 @@ import { Alert, useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { authService } from '../../common/firebase';
 import { checkInput } from '../../common/utils';
-import { DARK_GRAY_COLOR, GRAY_COLOR } from '../../common/colors';
+import { GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../common/colors';
 import * as S from './styles';
 
 export default function Input({ addReview }) {
@@ -48,7 +48,6 @@ export default function Input({ addReview }) {
           }
           placeholder="로그인이 필요한 서비스입니다."
           placeholderTextColor={GRAY_COLOR}
-          backgroundColor="#e8e8e8"
           editable={false}
         />
       ) : (
@@ -58,7 +57,7 @@ export default function Input({ addReview }) {
           onChangeText={setContent}
           onSubmitEditing={onSubmit}
           maxLength={50}
-          placeholderTextColor={isDark ? DARK_GRAY_COLOR : GRAY_COLOR}
+          placeholderTextColor={isDark ? LIGHT_GRAY_COLOR : GRAY_COLOR}
         />
       )}
     </>

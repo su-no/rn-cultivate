@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, useColorScheme, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
 import { authService } from '../../common/firebase';
 import { getDate } from '../../common/utils';
-import { GRAY_COLOR } from '../../common/colors';
+import { GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../common/colors';
 
 import * as S from './styles';
 
 import GrayButton from '../GrayButton/GrayButton';
 
 export default function ReviewItem({ data, deleteReview, updateReview }) {
+  const isDark = useColorScheme() === 'dark';
   const { id, content, nickname, date, uid } = data;
 
   // 로그인한 사용자와 리뷰 작성한 사용자 일치하는지 확인
@@ -53,6 +54,7 @@ export default function ReviewItem({ data, deleteReview, updateReview }) {
             onChangeText={setEditedContent}
             onSubmitEditing={handleUpdate}
             autoFocus
+            color={isDark ? LIGHT_GRAY_COLOR : GRAY_COLOR}
           />
         ) : (
           <S.TextBlack>{content}</S.TextBlack>

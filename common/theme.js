@@ -1,5 +1,6 @@
 import {
   BLACK_COLOR,
+  DARK_GRAY_COLOR,
   GRAY_COLOR,
   GREEN_COLOR,
   LIGHT_GRAY_COLOR,
@@ -24,7 +25,8 @@ export const lightTheme = {
     gray: GRAY_COLOR,
     lightGray: LIGHT_GRAY_COLOR,
     white: WHITE_COLOR,
-    inputBackground: WHITE_COLOR,
+    // inputBackground: WHITE_COLOR,
+    input: WHITE_COLOR,
   },
 };
 
@@ -45,6 +47,7 @@ export const darkTheme = {
     gray: GRAY_COLOR,
     lightGray: LIGHT_GRAY_COLOR,
     white: WHITE_COLOR,
-    inputBackground: LIGHT_GRAY_COLOR,
+    // inputBackground: LIGHT_GRAY_COLOR,
+    input: DARK_GRAY_COLOR,
   },
 };

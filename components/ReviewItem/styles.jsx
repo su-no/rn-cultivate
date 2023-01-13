@@ -1,9 +1,5 @@
 import styled from '@emotion/native';
-import {
-  DARK_GRAY_COLOR,
-  GRAY_COLOR,
-  LIGHT_GRAY_COLOR,
-} from '../../common/colors';
+import { GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../common/colors';
 
 export const Container = styled.View`
   margin-bottom: 20px;
@@ -15,15 +11,15 @@ export const Container = styled.View`
 `;
 
 export const EditInput = styled.TextInput`
+  color: ${(props) => props.color};
   border-width: 1px;
   border-radius: 4px;
   margin-right: 10px;
   padding: 2px 10px;
   font-size: 14px;
   margin-bottom: 10px;
-  color: ${DARK_GRAY_COLOR};
   border-color: ${(props) => props.theme.color.common};
-  background-color: ${(props) => props.theme.color.common};
+  background-color: ${(props) => props.theme.color.input};
 `;
 
 export const TextBlack = styled.Text`
