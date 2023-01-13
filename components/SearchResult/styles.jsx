@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { BLACK_COLOR, LIGHT_GRAY_COLOR } from '../../common/colors';
+import { LIGHT_GRAY_COLOR } from '../../common/colors';
 
 export const Container = styled.Pressable`
   flex-direction: row;

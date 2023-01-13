@@ -1,6 +1,5 @@
 import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import styled, { css } from '@emotion/native';
+import styled from '@emotion/native';
 import { useEffect, useState } from 'react';
 import { authService } from '../common/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';

@@ -8,7 +8,6 @@ import {
   VIOLET_COLOR,
   BLUE_COLOR,
   SKY_COLOR,
-  GRAY_COLOR,
   BLACK_COLOR,
   LIGHT_GRAY_COLOR,
 } from '../common/colors';

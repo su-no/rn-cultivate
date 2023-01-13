@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { Alert, ScrollView, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import {
   VIOLET_COLOR,
   LIGHT_GRAY_COLOR,

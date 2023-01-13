@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { Alert, Pressable, View } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 
 import { screenHeight, shareImage } from '../../common/utils';
 import {
@@ -12,7 +12,6 @@ import {
 import { getDetail } from '../../common/api';
 import { useQuery } from 'react-query';
 
-import Loader from '../Loader/Loader';
 import TicketModal from './TicketModal';
 import TicketInfo from '../../components/MyTicket/TicketInfo';
 import { doc, updateDoc, arrayRemove } from 'firebase/firestore';

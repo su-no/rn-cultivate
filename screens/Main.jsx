@@ -90,9 +90,9 @@ export default function Main() {
       ListHeaderComponent={() => (
         <>
           <Swiper height="100%" showsPagination={false} autoplay loop>
-            {bannerImages.map((banner) => {
+            {bannerImages.map((banner, idx) => {
               return (
-                <SwiperChildView>
+                <SwiperChildView key={idx}>
                   <TouchableOpacity
                     style={StyleSheet.absoluteFill}
                     onPress={

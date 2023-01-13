@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import { useState } from 'react';
 import { TextInput, View, Modal } from 'react-native';
 import {
   CenteredView,

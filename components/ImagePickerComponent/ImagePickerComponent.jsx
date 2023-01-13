@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Pressable, Text, Image } from 'react-native';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { authService, storage } from '../../common/firebase';
