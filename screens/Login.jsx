@@ -2,13 +2,20 @@ import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRef, useState } from 'react';
-import { Pressable, ScrollView, Text } from 'react-native';
-import { VIOLET_COLOR, LIGHT_GRAY_COLOR } from '../common/colors';
+import { Pressable, ScrollView, Text, useColorScheme } from 'react-native';
+import {
+  VIOLET_COLOR,
+  LIGHT_GRAY_COLOR,
+  WHITE_COLOR,
+  BLACK_COLOR,
+} from '../common/colors';
 import { authService } from '../common/firebase';
 import ResetPasswordModal from '../components/ResetPasswordModal/ResetPasswordModal';
 
 export default function Login({ navigation: { navigate } }) {
   const navigation = useNavigation();
+  const isDark = useColorScheme() === 'dark';
+
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const emailRef = useRef(null);
@@ -42,7 +49,7 @@ export default function Login({ navigation: { navigate } }) {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: 'white' }}>
+    <ScrollView style={{ backgroundColor: isDark ? 'black' : 'white' }}>
       <Container>
         <ResetPasswordModal
           modalVisible={modalVisible}
@@ -82,6 +89,7 @@ export default function Login({ navigation: { navigate } }) {
                   textDecorationLine: 'underline',
                   fontWeight: '600',
                   fontSize: 12,
+                  color: isDark ? WHITE_COLOR : BLACK_COLOR,
                 }}
               >
                 비밀번호 재설정
@@ -100,6 +108,7 @@ export default function Login({ navigation: { navigate } }) {
                   textDecorationLine: 'underline',
                   fontWeight: '600',
                   fontSize: 12,
+                  color: isDark ? WHITE_COLOR : BLACK_COLOR,
                 }}
               >
                 회원가입
@@ -115,7 +124,6 @@ export default function Login({ navigation: { navigate } }) {
 const Container = styled.View`
   flex: 1;
   align-items: center;
-  background-color: white;
 `;
 const Logo = styled.Image`
   width: 80%;
@@ -151,5 +159,6 @@ const GuideText = styled.Text`
   padding-right: 10px;
   font-weight: 600;
   font-size: 12px;
+  color: ${(props) => props.theme.color.title};
 `;
 const SwitchBtn = styled.TouchableOpacity``;

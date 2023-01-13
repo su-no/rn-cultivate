@@ -1,15 +1,23 @@
 import styled from '@emotion/native';
 import { Alert, ScrollView, Text } from 'react-native';
-import { VIOLET_COLOR, LIGHT_GRAY_COLOR, BLACK_COLOR } from '../common/colors';
+import {
+  VIOLET_COLOR,
+  LIGHT_GRAY_COLOR,
+  BLACK_COLOR,
+  WHITE_COLOR,
+} from '../common/colors';
 //회원가입 관련
 import { useRef, useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { authService } from '../common/firebase';
 import { useNavigation } from '@react-navigation/native';
 import { emailRegex, pwRegex } from '../common/utils';
+import useColorScheme from 'react-native/Libraries/Utilities/useColorScheme';
 
 export default function Join({ navigation: { navigate } }) {
   const navigation = useNavigation();
+  const isDark = useColorScheme() === 'dark';
+
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [checkPw, setCheckPw] = useState('');
@@ -79,7 +87,7 @@ export default function Join({ navigation: { navigate } }) {
 
   return (
     //스크롤 뷰를 넣어놔야 닉네임<텍스트인풋>을 클릭했을때 포커스가 잘 잡힘
-    <ScrollView style={{ backgroundColor: 'white' }}>
+    <ScrollView style={{ backgroundColor: isDark ? 'black' : 'white' }}>
       <Container>
         <Logo source={require('../assets/logo.png')} />
         <SubmitBox>
@@ -119,6 +127,7 @@ export default function Join({ navigation: { navigate } }) {
                   textDecorationLine: 'underline',
                   fontWeight: '600',
                   fontSize: 12,
+                  color: isDark ? WHITE_COLOR : BLACK_COLOR,
                 }}
               >
                 로그인
@@ -151,7 +160,7 @@ const InputTitle = styled.Text`
   width: 92%;
   font-size: 15px;
   font-weight: 600;
-  color: ${BLACK_COLOR};
+  color: ${(props) => props.theme.color.title};
 `;
 const InputBox = styled.TextInput`
   background-color: ${LIGHT_GRAY_COLOR};
@@ -176,5 +185,6 @@ const GuideText = styled.Text`
   padding-right: 10px;
   font-weight: 600;
   font-size: 12px;
+  color: ${(props) => props.theme.color.title};
 `;
 const SwitchBtn = styled.TouchableOpacity``;
