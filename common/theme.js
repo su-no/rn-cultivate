@@ -24,6 +24,7 @@ export const lightTheme = {
     gray: GRAY_COLOR,
     lightGray: LIGHT_GRAY_COLOR,
     white: WHITE_COLOR,
+    inputBackground: WHITE_COLOR,
   },
 };
 
@@ -36,7 +37,7 @@ export const darkTheme = {
     overview: '#d2dae2',
     modalBg: '#d2dae2',
     inputText: BLACK_COLOR,
-    background: LIGHT_GRAY_COLOR,
+    background: BLACK_COLOR,
     ticketHeader: GRAY_COLOR,
     categoryTitle: WHITE_COLOR,
 
@@ -44,5 +45,6 @@ export const darkTheme = {
     gray: GRAY_COLOR,
     lightGray: LIGHT_GRAY_COLOR,
     white: WHITE_COLOR,
+    inputBackground: LIGHT_GRAY_COLOR,
   },
 };
