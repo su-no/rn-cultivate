@@ -10,8 +10,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { dbService } from './firebase';
-
-export const API_KEY = '78526f445070736837397761636864';
+import { API_KEY } from '@env';
 
 // firebase에서 title과 일치하는 상세정보 받아오는 함수
 export const getDetail = async (title) => {
